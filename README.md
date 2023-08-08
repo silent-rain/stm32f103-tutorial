@@ -1,0 +1,14 @@
+# STM32F103开发板使用案例
+这是一个关于 STM32F103 开发板使用案例，记录一些测试的案例。
+
+
+## 相关文档
+[环境搭建](./docs/环境搭建.md)
+[编译与部署](./docs/编译与部署.md)
+[GDB调试](./docs/GDB调试.md)
+
+
+## 参考文档
+[官方嵌入式](https://www.rust-lang.org/zh-CN/what/embedded)
+[stm32f1xx-hal](https://github.com/stm32-rs/stm32f1xx-hal)
+
