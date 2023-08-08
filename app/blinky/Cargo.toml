@@ -1,14 +1,9 @@
 [package]
-name = "stm32f103-tutorial"
+name = "blinky"
 version = "0.1.0"
 edition = "2021"
-authors = ["silent-rain"]
-license = ""
-repository = ""
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-[workspace]
-members = ["app/blinky"]
 
 [dependencies]
 embedded-hal = "1.0.0-alpha.11"
