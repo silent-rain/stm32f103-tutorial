@@ -3,6 +3,7 @@
 
 
 ## 示例目录
+[Hello World](./core/hello)
 [LED 闪烁](./core/blinky)
 
 
