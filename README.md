@@ -19,4 +19,3 @@
 ## 参考文档
 [官方嵌入式](https://www.rust-lang.org/zh-CN/what/embedded)
 [stm32f1xx-hal](https://github.com/stm32-rs/stm32f1xx-hal)
-

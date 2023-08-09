@@ -3,7 +3,7 @@ name = "stm32f103-tutorial"
 version = "0.1.0"
 edition = "2021"
 authors = ["silent-rain"]
-license = ""
+license = "LICENSE"
 repository = ""
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -11,8 +11,6 @@ repository = ""
 members = ["app/blinky"]
 
 [dependencies]
-# blinky = {path = "app/blinky"}
-
 embedded-hal = "1.0.0-alpha.11"
 nb = "1"
 cortex-m = "0.7.7"
@@ -21,8 +19,3 @@ cortex-m-rt = "0.7.3"
 panic-halt = "0.2.0"
 # 开发板型号: STM32F103C8T6
 stm32f1xx-hal = {version = "0.10.0", features = ["rt", "stm32f103", "high"]}
-
-
-[[bin]]
-name = "blinky"
-path = "app/blinky"
