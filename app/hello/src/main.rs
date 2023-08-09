@@ -14,6 +14,10 @@ use cortex_m_rt::entry;
 
 #[entry]
 fn main() -> ! {
+    let mut _y;
+    let x = 42;
+    _y = x;
+    hprintln!("y: {:#?}", _y);
     hprintln!("Hello, world!");
     loop {}
 }

@@ -35,6 +35,7 @@ $3 = (i32 *) 0x2000fffc
 
 ## 指令解释
 - break main: 在此处设置断点
+- delete <breakpoint-num>: 删除所需的断点
 - continue/c: 继续执行程序，直到遇到断点
 - layout src: 使用GDB的文本用户界面 (TUI)
 - tui disable: 离开TUI模式
@@ -43,7 +44,7 @@ $3 = (i32 *) 0x2000fffc
 - next: 继续执行程序
 - info locals: 打印所有局部变量
 - layout asm: 命令切换到反汇编视图
-- stepi: 一次前进一条指令
+- stepi: 将打印语句和处理器下一步将执行的指令的行号
 - Ctrl+C: 如果您错误地使用了next或continue命令，并且GDB卡住了，您可以通过点击Ctrl+C来取消卡住。
 - disassemble /m: 命令围绕您当前所在的行反汇编程序。
 - monitor reset: 重启程序
