@@ -1,5 +1,10 @@
 # GDB调试
 
+## 指定配置启动 GDB
+```shell
+arm-none-eabi-gdb -iex 'add-auto-load-safe-path .' -q target/thumbv7m-none-eabi/debug/hello
+```
+
 ## 调试案例
 ```shell
 $ # 在一个不同的终端上
