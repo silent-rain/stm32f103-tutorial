@@ -12,10 +12,12 @@
 ## 相关文档
 [环境搭建](./docs/环境搭建.md)
 [编译与部署](./docs/编译与部署.md)
-[GDB调试](./docs/GDB调试.md)
 [术语介绍](./docs/术语介绍.md)
+[GDB调试](./docs/GDB调试.md)
+[Renode仿真模拟](./docs/Renode仿真模拟.md)
 
 
 ## 参考文档
 [官方嵌入式](https://www.rust-lang.org/zh-CN/what/embedded)
 [stm32f1xx-hal](https://github.com/stm32-rs/stm32f1xx-hal)
+[openocd 调试使用指南](https://www.python100.com/html/5F3U4P5L64PA.html)
