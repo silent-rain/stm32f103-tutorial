@@ -3,7 +3,7 @@
 ## 调试案例
 ```shell
 $ # 在一个不同的终端上
-$ arm-none-eabi-gdb -q target/thumbv7m-none-eabi/debug/app
+$ arm-none-eabi-gdb -q target/thumbv7m-none-eabi/debug/hello
 Reading symbols from target/thumbv7m-none-eabi/debug/app...done.
 
 (gdb) target remote :3333
@@ -31,3 +31,22 @@ $3 = (i32 *) 0x2000fffc
 (gdb) quit
 
 ```
+
+
+## 指令解释
+- break main: 在此处设置断点
+- continue/c: 继续执行程序，直到遇到断点
+- layout src: 使用GDB的文本用户界面 (TUI)
+- tui disable: 离开TUI模式
+- print x: 使用print命令检查这些堆栈/局部变量
+- print &x: 打印变量x的地址
+- next: 继续执行程序
+- info locals: 打印所有局部变量
+- layout asm: 命令切换到反汇编视图
+- stepi: 一次前进一条指令
+- Ctrl+C: 如果您错误地使用了next或continue命令，并且GDB卡住了，您可以通过点击Ctrl+C来取消卡住。
+- disassemble /m: 命令围绕您当前所在的行反汇编程序。
+- monitor reset: 重启程序
+- load: 重新加载程序
+- quit: 退出 GDB
+
