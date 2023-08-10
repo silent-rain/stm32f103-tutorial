@@ -13,7 +13,7 @@
 
 ## 相关文档
 
-[环境搭建](./docs/环境搭建.md)
+[Archlinux 环境搭建](./docs/Archlinux环境搭建.md)
 [编译与部署](./docs/编译与部署.md)
 [术语介绍](./docs/术语介绍.md)
 [GDB 调试](./docs/GDB调试.md)
