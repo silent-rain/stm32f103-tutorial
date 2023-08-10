@@ -34,13 +34,14 @@ start @stm32f103.resc
 machine StartGdbServer 3333 true
 ```
 
-runMacro sysbus LoadELF @target/thumbv7m-none-eabi/debug/hello
-
 ## GDB 连接 Renode
 
 ```shell
 # 启动 GDB
-arm-none-eabi-gdb target/thumbv7m-none-eabi/debug/hello
+# 默认启动
+# arm-none-eabi-gdb target/thumbv7m-none-eabi/debug/hello
+# 指定当前目录下的.gdbinit配置文件启动
+arm-none-eabi-gdb -iex 'add-auto-load-safe-path .' -q target/thumbv7m-none-eabi/debug/hello
 
 # 连接 Renode
 target remote :3333

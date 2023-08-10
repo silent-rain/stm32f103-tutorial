@@ -2,6 +2,8 @@
 
 ## 指定配置启动 GDB
 
+指定当前目录下的.gdbinit 配置文件启动
+
 ```shell
 arm-none-eabi-gdb -iex 'add-auto-load-safe-path .' -q target/thumbv7m-none-eabi/debug/hello
 ```
@@ -10,7 +12,7 @@ arm-none-eabi-gdb -iex 'add-auto-load-safe-path .' -q target/thumbv7m-none-eabi/
 
 ```shell
 $ # 在一个不同的终端上
-$ arm-none-eabi-gdb -q target/thumbv7m-none-eabi/debug/hello
+$ arm-none-eabi-gdb -iex 'add-auto-load-safe-path .' -q target/thumbv7m-none-eabi/debug/hello
 Reading symbols from target/thumbv7m-none-eabi/debug/app...done.
 
 (gdb) target remote :3333
