@@ -4,8 +4,9 @@
 
 ## 示例目录
 
-- [Hello World](./core/hello/README.md)
-- [LED 闪烁](./core/blinky/README.md)
+- [Hello World](./app/hello)
+- [打开用户指示灯](./app/turns_user_led)
+- [LED 闪烁](./app/blinky)
 
 ## 代办事项
 

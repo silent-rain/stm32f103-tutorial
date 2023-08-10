@@ -304,6 +304,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "turns_user_led"
+version = "0.1.0"
+dependencies = [
+ "cortex-m-rt",
+ "embedded-hal 1.0.0-alpha.11",
+ "panic-halt",
+ "stm32f1xx-hal",
+]
+
+[[package]]
 name = "unicode-ident"
 version = "1.0.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"

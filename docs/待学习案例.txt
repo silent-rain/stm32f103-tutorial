@@ -1,11 +1,12 @@
 hello.rs
+blinky.rs
+led.rs
 
 i2c-bme280
 adc-dma-circ.rs
 adc-dma-rx.rs
 adc.rs
 adc_temperature.rs
-blinky.rs
 blinky_generic.rs
 blinky_rtc.rs
 blinky_rtcalarm_irq.rs
@@ -23,7 +24,6 @@ exti.rs
 exti_rtic.rs
 gpio_input.rs
 itm.rs
-led.rs
 mfrc522.rs
 motor.rs.disabled
 mpu9250.rs.disabled

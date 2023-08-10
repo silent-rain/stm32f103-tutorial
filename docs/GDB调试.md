@@ -41,15 +41,15 @@ $3 = (i32 *) 0x2000fffc
 
 ```
 
-## 案例2
-- 如果仿真卡死, 在Renode 中进行重启仿真 
+## 案例 2
+
+- 如果仿真卡死, 在 Renode 中进行重启仿真
   ```shell
   (machine-0) machine Reset
   ```
 
-
 ```shell
-# arm-none-eabi-gdb target/thumbv7m-none-eabi/debug/hello
+# arm-none-eabi-gdb target/thumbv7m-none-eabi/debug/turns_user_led
 
 (gdb) target remote :3333
 Remote debugging using :3333
@@ -95,7 +95,6 @@ $1 = 42
 (gdb) quit
 
 ```
-
 
 ## 指令解释
 
