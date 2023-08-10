@@ -41,15 +41,74 @@ $3 = (i32 *) 0x2000fffc
 
 ```
 
+## 案例2
+- 如果仿真卡死, 在Renode 中进行重启仿真 
+  ```shell
+  (machine-0) machine Reset
+  ```
+
+
+```shell
+# arm-none-eabi-gdb target/thumbv7m-none-eabi/debug/hello
+
+(gdb) target remote :3333
+Remote debugging using :3333
+0x08000130 in Reset ()
+
+(gdb) load
+Loading section .vector_table, size 0x130 lma 0x8000000
+Loading section .text, size 0x1b78 lma 0x8000130
+Loading section .rodata, size 0x55c lma 0x8001cb0
+Start address 0x08000130, load size 8708
+Transfer rate: 566 KB/sec, 2177 bytes/write.
+
+(gdb) list main
+10      use cortex_m_semihosting::hprintln;
+11      use stm32f1xx_hal as _;
+12
+13      use cortex_m_rt::entry;
+14
+15      #[entry]
+16      fn main() -> ! {
+17          let mut _y;
+18          let x = 42;
+19          _y = x;
+
+(gdb) break 18
+Breakpoint 1 at 0x8000218: file app/hello/src/main.rs, line 18.
+
+(gdb) c
+Continuing.
+
+Breakpoint 1, hello::__cortex_m_rt_main () at app/hello/src/main.rs:18
+18          let x = 42;
+
+
+(gdb) step
+19          _y = x;
+
+
+(gdb) print x
+$1 = 42
+
+
+(gdb) quit
+
+```
+
+
 ## 指令解释
 
 - break main: 在此处设置断点
+- info break: 列出所有当前的断点
 - delete <breakpoint-num>: 删除所需的断点
 - continue/c: 继续执行程序，直到遇到断点
 - layout src: 使用 GDB 的文本用户界面 (TUI)
 - tui disable: 离开 TUI 模式
 - print x: 使用 print 命令检查这些堆栈/局部变量
 - print &x: 打印变量 x 的地址
+- list: 查看源码
+- list mian: 指定位置查看
 - next: 继续执行程序
 - info locals: 打印所有局部变量
 - layout asm: 命令切换到反汇编视图

@@ -17,5 +17,14 @@ monitor arm semihosting enable
 
 load
 step
-break main
+
+# list main
+
+# break 18
+
+# info break
+
+# continue
+
+# print x
 
