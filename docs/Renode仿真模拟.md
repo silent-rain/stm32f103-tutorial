@@ -41,7 +41,7 @@ machine StartGdbServer 3333 true
 # 默认启动
 # arm-none-eabi-gdb target/thumbv7m-none-eabi/debug/hello
 # 指定当前目录下的.gdbinit配置文件启动
-arm-none-eabi-gdb -iex 'add-auto-load-safe-path .' -q target/thumbv7m-none-eabi/debug/hello
+arm-none-eabi-gdb -iex 'add-auto-load-safe-path .' -q target/thumbv7m-none-eabi/debug/blinky
 
 # 连接 Renode
 target remote :3333
@@ -63,5 +63,8 @@ Clear
 
 [renode 指南](https://renode.readthedocs.io/en/latest/introduction/installing.html)
 [renode 代码仓库](https://github.com/renode/renode)
+[在 Renode 中使用 Python](https://renode.readthedocs.io/en/latest/basic/using-python.html)
 [Renode 开启 GDB 调试](https://renode.readthedocs.io/en/latest/debugging/gdb.html)
 [使用 GDB 进行调](https://jzow.github.io/discovery/microbit/05-led-roulette/debug-it.html)
+
+/home/one/Documents/code/RustEmbedProject/stm32f103-tutorial/app/turns_user_led/signal_simulation.py

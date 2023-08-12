@@ -53,7 +53,21 @@ sudo pacman -S arm-none-eabi-gdb minicom
 
 ## 仿真模拟器
 
+### renode 模拟器(推荐)
+
+#### 安装
+
+```
+wget https://github.com/renode/renode/releases/download/v1.14.0/renode-1.14.0-1-x86_64.pkg.tar.xz
+
+sudo pacman -U ./renode-1.14.0-1-x86_64.pkg.tar.xz
+
+renode -v
+```
+
 ### 有 ARM 仿真支持的 QEMU
+
+使用该模拟器需要安装 stm32 的插件
 
 #### 安装
 
@@ -75,16 +89,4 @@ qemu-system-arm \
       -S \
       -nographic \
       -kernel target/thumbv7m-none-eabi/debug/blinky
-```
-
-### renode 模拟器
-
-#### 安装
-
-```
-wget https://github.com/renode/renode/releases/download/v1.14.0/renode-1.14.0-1-x86_64.pkg.tar.xz
-
-sudo pacman -U ./renode-1.14.0-1-x86_64.pkg.tar.xz
-
-renode -v
 ```
