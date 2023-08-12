@@ -12,6 +12,7 @@
 - [闪烁 LED](./app/blinky)
 - [闪烁 LED 灯阵列](./app/blinky_led_array)
 - [LED 流水灯](./app/led_flow_light)
+- [蜂鸣器](./app/buzzer)
 
 ## 代办事项
 
