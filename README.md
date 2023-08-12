@@ -7,6 +7,7 @@
 - [Hello World](./app/helloworld)
 - [打开用户指示灯](./app/turns_user_led)
 - [闪烁 LED](./app/blinky)
+- [闪烁 LED 灯阵列](./app/blinky_led_array)
 
 ## 代办事项
 

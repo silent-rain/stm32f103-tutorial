@@ -41,6 +41,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "blinky_led_array"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "nb 1.1.0",
+ "panic-halt",
+ "stm32f1xx-hal",
+]
+
+[[package]]
 name = "bxcan"
 version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
