@@ -59,6 +59,27 @@ machine Reset
 Clear
 ```
 
+## 查看所有外设
+
+```shell
+peripherals
+```
+
+## 系统总线挂钩
+
+- 在访问特定外设进行读取后执行 Python 脚本
+
+```shell
+(machine) sysbus SetHookAfterPeripheralRead gpioPortA "print '%s peripheral has been accessed to read'"
+```
+
+- 在访问特定外围设备进行写入之前执行 Python 脚本
+
+```shell
+(machine) sysbus SetHookBeforePeripheralWrite peripheral "print '%s peripheral has been accessed to write'"
+
+```
+
 ## 参考文档
 
 [renode 指南](https://renode.readthedocs.io/en/latest/introduction/installing.html)
@@ -66,5 +87,3 @@ Clear
 [在 Renode 中使用 Python](https://renode.readthedocs.io/en/latest/basic/using-python.html)
 [Renode 开启 GDB 调试](https://renode.readthedocs.io/en/latest/debugging/gdb.html)
 [使用 GDB 进行调](https://jzow.github.io/discovery/microbit/05-led-roulette/debug-it.html)
-
-/home/one/Documents/code/RustEmbedProject/stm32f103-tutorial/app/turns_user_led/signal_simulation.py

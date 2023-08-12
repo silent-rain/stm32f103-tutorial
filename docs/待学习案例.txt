@@ -1,21 +1,24 @@
 hello.rs
-blinky.rs
 led.rs
+blinky.rs
+blinky_generic.rs
+
 
 i2c-bme280
 adc-dma-circ.rs
 adc-dma-rx.rs
 adc.rs
 adc_temperature.rs
-blinky_generic.rs
+
 blinky_rtc.rs
 blinky_rtcalarm_irq.rs
 blinky_timer_irq.rs
+delay-timer-blinky.rs
+
 can-echo.rs
 can-loopback.rs
 can-rtic.rs
 crc.rs
-delay-timer-blinky.rs
 delay.rs
 dynamic_gpio.rs
 enc28j60-coap.rs.disabled
