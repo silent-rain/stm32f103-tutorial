@@ -6,8 +6,12 @@
 
 - [Hello World](./app/helloworld)
 - [打开用户指示灯](./app/turns_user_led)
+- [计时器闪烁 LED](./app/timer_blinky)
+- [延迟闪烁 LED](./app/delay_blinky)
+- [TIM2 通用定时器延迟闪烁 LED](./app/tim2_timer_delay_blinky)
 - [闪烁 LED](./app/blinky)
 - [闪烁 LED 灯阵列](./app/blinky_led_array)
+- [流水灯](./app/led_flow_light)
 
 ## 代办事项
 

@@ -9,10 +9,13 @@ repository = ""
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [workspace]
 members = [
-    "app/blinky",
     "app/helloworld",
+    "app/timer_blinky",
+    "app/delay_blinky",
     "app/turns_user_led",
+    "app/blinky",
     "app/blinky_led_array",
+    "app/tim2_timer_delay_blinky",
 ]
 
 [dependencies]
