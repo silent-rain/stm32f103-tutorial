@@ -16,6 +16,7 @@ members = [
     "app/blinky",
     "app/blinky_led_array",
     "app/tim2_timer_delay_blinky",
+    "app/led_flow_light",
 ]
 
 [dependencies]
