@@ -1,13 +1,15 @@
 using sysbus
 
 mach create
-machine LoadPlatformDescription @platforms/cpus/stm32f103.repl
+# machine LoadPlatformDescription @platforms/cpus/stm32f103.repl
+machine LoadPlatformDescription @scripts/platforms/cpus/stm32f103.repl
 machine LoadPlatformDescriptionFromString "button: Miscellaneous.Button @ gpioPortC 13 { IRQ -> gpioPortC@13 }"
 
 # $bin?=@https://dl.antmicro.com/projects/renode/zephyr-stm32f103-button.elf-s_276760-1bf32c99bbb3c01d81e13ca68118eaf08b2a815f
-$bin=@target/thumbv7m-none-eabi/debug/turns_user_led
+$bin=@target/thumbv7m-none-eabi/debug/helloworld
 
 showAnalyzer usart2
+
 
 macro reset
 """
@@ -15,6 +17,7 @@ macro reset
 """
 
 runMacro $reset
+
 
 # 开启 GDB 调试
 machine StartGdbServer 3333 true
