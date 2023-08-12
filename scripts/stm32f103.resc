@@ -1,22 +1,40 @@
 using sysbus
 
+# Creating machines
 mach create
+
+# 加载 stm32 配置
 # machine LoadPlatformDescription @platforms/cpus/stm32f103.repl
 machine LoadPlatformDescription @scripts/platforms/cpus/stm32f103.repl
-machine LoadPlatformDescriptionFromString "button: Miscellaneous.Button @ gpioPortC 13 { IRQ -> gpioPortC@13 }"
 
-# $bin?=@https://dl.antmicro.com/projects/renode/zephyr-stm32f103-button.elf-s_276760-1bf32c99bbb3c01d81e13ca68118eaf08b2a815f
-$bin=@target/thumbv7m-none-eabi/debug/helloworld
+# 加载平台描述节点
+# machine LoadPlatformDescriptionFromString "button: Miscellaneous.Button @ gpioPortC 13 { IRQ -> gpioPortC@13 }"
 
+
+# 指定二进制程序
+$bin=@target/thumbv7m-none-eabi/debug/blinky
+
+
+# 分析外设
 showAnalyzer usart2
 
 
+# 定义 reset 宏
 macro reset
 """
     sysbus LoadELF $bin
 """
 
+# 执行 rest 宏
 runMacro $reset
+
+
+set gpioa_script """
+print("value: %s, offset: %s" % (value, offset))
+"""
+
+# 在访问特定外围设备进行写入之前执行 Python 脚本
+sysbus SetHookBeforePeripheralWrite gpioPortA $gpioa_script
 
 
 # 开启 GDB 调试
