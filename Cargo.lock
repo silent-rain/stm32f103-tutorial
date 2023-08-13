@@ -186,6 +186,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "key_control_led"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "panic-halt",
+ "stm32f1xx-hal",
+]
+
+[[package]]
 name = "led_flow_light"
 version = "0.1.0"
 dependencies = [
