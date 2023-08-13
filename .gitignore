@@ -2,3 +2,6 @@
 
 # 仿真仓库代码
 scripts/renode/
+
+# 临时测试代码
+examples/examples

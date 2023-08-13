@@ -30,7 +30,7 @@ cortex-m-rt = "0.7.3"
 # Panic behaviour, see https://crates.io/keywords/panic-impl for alternatives
 panic-halt = "0.2.0"
 # 开发板型号: STM32F103C8T6
-stm32f1xx-hal = {version = "0.10.0", features = ["rt", "stm32f103", "high"]}
+stm32f1xx-hal = {version = "0.10.0", features = ["rt", "stm32f103", "medium"]}
 
 [profile.dev]
 incremental = false
