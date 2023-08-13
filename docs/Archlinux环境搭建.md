@@ -51,6 +51,12 @@ cargo embed --version
 sudo pacman -S arm-none-eabi-gdb minicom
 ```
 
+## Openocd 调试器
+
+```shell
+sudo pacman -S openocd
+```
+
 ## 仿真模拟器
 
 ### renode 模拟器(推荐)

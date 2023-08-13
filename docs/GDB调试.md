@@ -1,5 +1,38 @@
 # GDB 调试
 
+## 指令解释
+
+- target remote：连接到 OpenOCD 的 GDB 服务器
+- file <file>: 加载可执行文件到 GDB 中，指定要调试的程序
+- run(r): 运行程序，可以带参数
+- break main: 在此处设置断点
+- break(b): 设置断点，使程序在指定的源代码行中断
+- watch <表达式>: 监视变量，当变量值发生变化时暂停程序
+- info(i) <选项>: 显示程序状态信息
+- info break: 列出所有当前的断点
+- info locals: 打印所有局部变量
+- backtrace(bt): 显示函数调用栈
+- delete <breakpoint-num>: 删除所需的断点
+- continue(c): 继续执行程序，直到遇到断点
+- step(s): 逐过程单步执行程序，进入函数内部
+- stepi: 单步执行汇编指令
+- next(n): 单步执行程序，不进入函数内部
+- print(p) <x>: 使用 print 命令检查这些堆栈/局部变量
+- print(p) &x: 打印变量 x 的地址
+- list: 查看源码
+- list mian: 指定位置查看
+- layout asm: 命令切换到反汇编视图
+- layout src: 使用 GDB 的文本用户界面 (TUI)
+- tui disable: 离开 TUI 模式
+- Ctrl+C: 如果错误地使用了 next 或 continue 命令并且 GDB 卡住了，通过 Ctrl+C 来取消卡住。
+- disassemble /m: 命令围绕您当前所在的行反汇编程序。
+- monitor reset: 软复位目标设备
+- monitor halt：暂停目标设备
+- monitor resume：继续运行目标设备
+- monitor reset halt：停止目标设备并进行软复位
+- load: 加载可执行文件到目标设备
+- quit(q): 退出 GDB
+
 ## 指定配置启动 GDB
 
 指定当前目录下的.gdbinit 配置文件启动
@@ -95,25 +128,3 @@ $1 = 42
 (gdb) quit
 
 ```
-
-## 指令解释
-
-- break main: 在此处设置断点
-- info break: 列出所有当前的断点
-- delete <breakpoint-num>: 删除所需的断点
-- continue/c: 继续执行程序，直到遇到断点
-- layout src: 使用 GDB 的文本用户界面 (TUI)
-- tui disable: 离开 TUI 模式
-- print x: 使用 print 命令检查这些堆栈/局部变量
-- print &x: 打印变量 x 的地址
-- list: 查看源码
-- list mian: 指定位置查看
-- next: 继续执行程序
-- info locals: 打印所有局部变量
-- layout asm: 命令切换到反汇编视图
-- stepi: 将打印语句和处理器下一步将执行的指令的行号
-- Ctrl+C: 如果您错误地使用了 next 或 continue 命令，并且 GDB 卡住了，您可以通过点击 Ctrl+C 来取消卡住。
-- disassemble /m: 命令围绕您当前所在的行反汇编程序。
-- monitor reset: 重启程序
-- load: 重新加载程序
-- quit: 退出 GDB
