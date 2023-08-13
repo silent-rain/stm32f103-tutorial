@@ -206,6 +206,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "light_sensor_control_buzzer"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "panic-halt",
+ "stm32f1xx-hal",
+]
+
+[[package]]
 name = "nb"
 version = "0.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"

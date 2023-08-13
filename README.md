@@ -14,6 +14,7 @@
 - [LED 流水灯](./app/led_flow_light)
 - [蜂鸣器](./app/buzzer)
 - [按键控制 LED](./app/key_control_led)
+- [光敏传感器控制蜂鸣器](./app/light_sensor_control_buzzer)
 
 ## 相关文档
 

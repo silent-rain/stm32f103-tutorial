@@ -10,15 +10,16 @@ repository = ""
 [workspace]
 members = [
     "app/helloworld",
+    "app/turns_user_led",
     "app/timer_blinky",
     "app/delay_blinky",
-    "app/turns_user_led",
+    "app/tim2_timer_delay_blinky",
     "app/blinky",
     "app/blinky_led_array",
-    "app/tim2_timer_delay_blinky",
     "app/led_flow_light",
     "app/buzzer",
     "app/key_control_led",
+    "app/light_sensor_control_buzzer",
 ]
 
 [dependencies]
