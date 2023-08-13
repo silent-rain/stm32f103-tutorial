@@ -14,20 +14,15 @@
 - [LED 流水灯](./app/led_flow_light)
 - [蜂鸣器](./app/buzzer)
 
-## 代办事项
-
-- [ ] 错误统一处理
-
 ## 相关文档
 
-[Archlinux 环境搭建](./docs/Archlinux环境搭建.md)
-[编译与部署](./docs/编译与部署.md)
-[术语介绍](./docs/术语介绍.md)
-[GDB 调试](./docs/GDB调试.md)
-[Renode 仿真模拟](./docs/Renode仿真模拟.md)
+- [Archlinux 环境搭建](./docs/Archlinux环境搭建.md)
+- [编译与部署](./docs/编译与部署.md)
+- [术语介绍](./docs/术语介绍.md)
+- [GDB 调试](./docs/GDB调试.md)
+- [Renode 仿真模拟](./docs/Renode仿真模拟.md)
 
 ## 参考文档
 
-[官方嵌入式](https://www.rust-lang.org/zh-CN/what/embedded)
-[stm32f1xx-hal](https://github.com/stm32-rs/stm32f1xx-hal)
-[openocd 调试使用指南](https://www.python100.com/html/5F3U4P5L64PA.html)
+- [官方嵌入式](https://www.rust-lang.org/zh-CN/what/embedded)
+- [stm32f1xx-hal](https://github.com/stm32-rs/stm32f1xx-hal)

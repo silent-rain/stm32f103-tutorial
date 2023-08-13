@@ -25,7 +25,7 @@ renode
 ## 启动 STM32 仿真器
 
 ```shell
-start @stm32f103.resc
+start @scripts/stm32f103.resc
 ```
 
 ## Renode 在 GDB 连接后立即启动整个模拟。
