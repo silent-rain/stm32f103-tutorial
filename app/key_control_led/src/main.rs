@@ -17,7 +17,7 @@ use panic_halt as _;
 #[entry]
 fn main() -> ! {
     // 初始化外设
-    let (flash, rcc, gpioa, gpiob, system_timer) = init_peripheral();
+    let (flash, rcc, system_timer, gpioa, gpiob) = init_peripheral();
 
     // 封装具有自定义精度的阻塞延迟函数
     let mut delay = sys_delay(flash, rcc, system_timer);
@@ -45,19 +45,19 @@ fn main() -> ! {
 fn init_peripheral() -> (
     flash::Parts,
     rcc::Rcc,
+    cortex_m::peripheral::SYST,
     gpioa::Parts,
     gpiob::Parts,
-    cortex_m::peripheral::SYST,
 ) {
     // 获取对外设的访问对象
     let cp = cortex_m::Peripherals::take().unwrap();
     let dp = pac::Peripherals::take().unwrap();
-    let gpioa: gpioa::Parts = dp.GPIOA.split();
-    let gpiob: gpiob::Parts = dp.GPIOB.split();
     let flash: flash::Parts = dp.FLASH.constrain();
     let rcc: rcc::Rcc = dp.RCC.constrain();
     let system_timer = cp.SYST;
-    (flash, rcc, gpioa, gpiob, system_timer)
+    let gpioa: gpioa::Parts = dp.GPIOA.split();
+    let gpiob: gpiob::Parts = dp.GPIOB.split();
+    (flash, rcc, system_timer, gpioa, gpiob)
 }
 
 /// 封装具有自定义精度的阻塞延迟函数
