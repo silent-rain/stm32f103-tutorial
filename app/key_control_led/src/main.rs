@@ -16,18 +16,15 @@ use panic_halt as _;
 
 #[entry]
 fn main() -> ! {
-    // 获取对外设的访问对象
-    let cp = cortex_m::Peripherals::take().unwrap();
-    let dp = pac::Peripherals::take().unwrap();
+    // 初始化外设
+    let (flash, rcc, gpioa, gpiob, system_timer) = init_peripheral();
 
     // 封装具有自定义精度的阻塞延迟函数
-    let mut delay = sys_delay(cp, dp.FLASH.constrain(), dp.RCC.constrain());
+    let mut delay = sys_delay(flash, rcc, system_timer);
 
     // LED
-    let gpioa = dp.GPIOA.split();
     let (mut led1, mut led2) = init_led(gpioa);
     // 按键
-    let gpiob: gpio::gpiob::Parts = dp.GPIOB.split();
     let (mut key1, mut key11) = init_key(gpiob);
 
     // 等待计时器触发更新并更改LED的状态
@@ -44,14 +41,36 @@ fn main() -> ! {
     }
 }
 
+/// 初始化外设
+fn init_peripheral() -> (
+    flash::Parts,
+    rcc::Rcc,
+    gpioa::Parts,
+    gpiob::Parts,
+    cortex_m::peripheral::SYST,
+) {
+    // 获取对外设的访问对象
+    let cp = cortex_m::Peripherals::take().unwrap();
+    let dp = pac::Peripherals::take().unwrap();
+    let gpioa: gpioa::Parts = dp.GPIOA.split();
+    let gpiob: gpiob::Parts = dp.GPIOB.split();
+    let flash: flash::Parts = dp.FLASH.constrain();
+    let rcc: rcc::Rcc = dp.RCC.constrain();
+    let system_timer = cp.SYST;
+    (flash, rcc, gpioa, gpiob, system_timer)
+}
+
 /// 封装具有自定义精度的阻塞延迟函数
-fn sys_delay(cp: cortex_m::Peripherals, mut flash: flash::Parts, rcc: rcc::Rcc) -> SysDelay {
+fn sys_delay(
+    mut flash: flash::Parts,
+    rcc: rcc::Rcc,
+    system_timer: cortex_m::peripheral::SYST,
+) -> SysDelay {
     // 冻结系统中所有时钟的配置，并将冻结的频率存储在时钟中
     let clocks = rcc.cfgr.freeze(&mut flash.acr);
 
     // 具有自定义精度的阻塞延迟
-    let delay: SysDelay = cp.SYST.delay(&clocks);
-    delay
+    system_timer.delay(&clocks)
 }
 
 /// LED
