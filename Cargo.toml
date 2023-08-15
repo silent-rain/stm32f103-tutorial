@@ -20,6 +20,7 @@ members = [
     "app/buzzer",
     "app/key_control_led",
     "app/light_sensor_control_buzzer",
+    "app/oled_i2c_show_character",
 ]
 
 [dependencies]
