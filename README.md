@@ -5,7 +5,8 @@
 ## 示例目录
 
 - [Hello World](./app/helloworld)
-- [打开用户指示灯](./app/turns_user_led)
+- [点灯](./app/turns_user_led)
+- [点灯-RTT](./app/turns_user_led_rtt)
 - [计时器闪烁 LED](./app/timer_blinky)
 - [延迟闪烁 LED](./app/delay_blinky)
 - [TIM2 通用定时器延迟闪烁 LED](./app/tim2_timer_delay_blinky)

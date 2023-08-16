@@ -11,6 +11,7 @@ repository = ""
 members = [
     "app/helloworld",
     "app/turns_user_led",
+    "app/turns_user_led_rtt",
     "app/timer_blinky",
     "app/delay_blinky",
     "app/tim2_timer_delay_blinky",
