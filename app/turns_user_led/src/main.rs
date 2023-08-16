@@ -39,7 +39,8 @@ fn main() -> ! {
     led.set_speed(&mut gpioa.crl, IOPinSpeed::Mhz50);
 
     // 设置低电平
-    led.set_low();
+    // led.set_low();
+    led.set_high();
 
     // 无限循环
     loop {}
