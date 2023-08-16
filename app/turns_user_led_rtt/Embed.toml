@@ -1,0 +1,23 @@
+[default.probe]
+# USB vendor ID
+# usb_vid = "1337"
+# USB product ID
+# usb_pid = "1337"
+# Serial number
+# serial = "12345678"
+# The protocol to be used for communicating with the target.
+protocol = "Swd"
+# The speed in kHz of the data link to the target.
+# speed = 1337
+
+[default.general]
+chip = "STM32F103C8"
+
+# [default.reset]
+# halt_afterwards = true
+
+[default.rtt]
+enabled = true
+
+[default.gdb]
+enabled = false
