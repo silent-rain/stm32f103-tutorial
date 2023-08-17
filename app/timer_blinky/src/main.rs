@@ -30,7 +30,6 @@ fn main() -> ! {
 
     // 获取GPIO外围设备
     let mut gpioa = dp.GPIOA.split();
-    let mut gpioc = dp.GPIOC.split();
 
     // 将系统计时器配置为每秒触发一次更新
     let mut timer = Timer::syst(cp.SYST, &clocks).counter_hz();
@@ -38,8 +37,8 @@ fn main() -> ! {
 
     // 创建要闪烁的LED阵列
     let mut leds = [
-        gpioc.pc13.into_push_pull_output(&mut gpioc.crh).erase(),
         gpioa.pa1.into_push_pull_output(&mut gpioa.crl).erase(),
+        gpioa.pa2.into_push_pull_output(&mut gpioa.crl).erase(),
     ];
 
     // 等待计时器触发更新并更改LED的状态

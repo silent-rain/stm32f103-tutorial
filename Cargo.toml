@@ -16,7 +16,6 @@ members = [
     "app/delay_blinky",
     "app/tim2_timer_delay_blinky",
     "app/blinky",
-    "app/blinky_led_array",
     "app/led_flow_light",
     "app/buzzer",
     "app/key_control_led",

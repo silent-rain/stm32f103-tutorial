@@ -2,7 +2,7 @@
 
 这是一个关于 STM32F103 开发板使用案例，记录一些使用 Rust 语言进行开发测试的案例。
 
-该教程将主要根据 `B 站江科大` 的视频教学进行学习 Rust 的嵌入式开发。示例中使用的绝大多数资源皆会使用 `B 站江科大` 视频配套资料中的资源进行展示。
+该教程将主要根据 [B 站江科大](https://www.bilibili.com/video/BV1th411z7sn?p=1&vd_source=c459b4f4f90bc42bb5ddb5baf12e1bc7) 的视频教学进行学习嵌入式开发。示例中将会借用 `B 站江科大` 视频配套资料中的一些资源进行展示。
 
 ## 示例目录
 
@@ -13,12 +13,11 @@
 - [延迟闪烁 LED](./app/delay_blinky)
 - [TIM2 通用定时器延迟闪烁 LED](./app/tim2_timer_delay_blinky)
 - [闪烁 LED](./app/blinky)
-- [闪烁 LED 灯阵列](./app/blinky_led_array)
 - [LED 流水灯](./app/led_flow_light)
 - [蜂鸣器](./app/buzzer)
 - [按键控制 LED](./app/key_control_led)
-- [光敏传感器控制蜂鸣器](./app/light_sensor_control_buzzer)
-- [OLED I2C 通信协议显示字符](./app/oled_i2c_show_character)
+- x[光敏传感器控制蜂鸣器](./app/light_sensor_control_buzzer)
+- x[OLED I2C 通信协议显示字符](./app/oled_i2c_show_character)
 
 ## 相关文档
 
