@@ -25,14 +25,13 @@ fn main() -> ! {
     // 封装具有自定义精度的阻塞延迟函数
     let mut delay = sys_delay(flash, rcc, system_timer);
 
-    // 初始化 OLED 显示屏
-    let (mut scl, mut sda) = init_oled(gpiob);
-
     // 上电延时
     delay.delay_ms(20u16);
 
-    oled::oled_config_init(&mut scl, &mut sda);
+    // 初始化 OLED 显示屏
+    let (mut scl, mut sda) = init_oled(gpiob);
 
+    oled::oled_config_init(&mut scl, &mut sda);
     oled::show_char(&mut scl, &mut sda, 1, 1, 'A');
     oled::show_string(&mut scl, &mut sda, 1, 3, "HelloWorld!");
     oled::show_num(&mut scl, &mut sda, 2, 1, 12345, 5);
@@ -82,16 +81,16 @@ fn sys_delay(
 fn init_oled(
     mut gpiob: gpiob::Parts,
 ) -> (
-    gpio::PB8<gpio::Output<gpio::OpenDrain>>,
-    gpio::PB9<gpio::Output<gpio::OpenDrain>>,
+    gpio::PB8<gpio::Output<gpio::PushPull>>,
+    gpio::PB9<gpio::Output<gpio::PushPull>>,
 ) {
-    let mut scl = gpiob
-        .pb8
-        .into_open_drain_output_with_state(&mut gpiob.crh, gpio::PinState::High);
-    let mut sda = gpiob
-        .pb9
-        .into_open_drain_output_with_state(&mut gpiob.crh, gpio::PinState::High);
+    // let mut scl = gpiob.pb8.into_open_drain_output(&mut gpiob.crh);
+    // let mut sda = gpiob.pb9.into_open_drain_output(&mut gpiob.crh);
+    let mut scl: gpio::Pin<'B', 8, gpio::Output> = gpiob.pb8.into_push_pull_output(&mut gpiob.crh);
+    let mut sda = gpiob.pb9.into_push_pull_output(&mut gpiob.crh);
     scl.set_speed(&mut gpiob.crh, gpio::IOPinSpeed::Mhz50);
     sda.set_speed(&mut gpiob.crh, gpio::IOPinSpeed::Mhz50);
+    scl.set_high();
+    sda.set_high();
     (scl, sda)
 }

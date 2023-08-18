@@ -17,6 +17,10 @@
   - 其他
 - 封装 OLED 字符发送函数
 
+## 接线图
+
+![](../../images/4-1%20OLED显示屏.jpg)
+
 ## 相关文档
 
 - [OLED 屏幕字库的建立](https://blog.csdn.net/weixin_44597885/article/details/129233163)

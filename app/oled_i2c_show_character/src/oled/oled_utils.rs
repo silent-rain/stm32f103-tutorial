@@ -5,8 +5,8 @@ use crate::oled::font::OLED_FONT;
 use stm32f1xx_hal::gpio;
 
 // 引脚类型别名配置
-type OledWScl = gpio::PB8<gpio::Output<gpio::OpenDrain>>;
-type OledWSda = gpio::PB9<gpio::Output<gpio::OpenDrain>>;
+type OledWScl = gpio::PB8<gpio::Output<gpio::PushPull>>;
+type OledWSda = gpio::PB9<gpio::Output<gpio::PushPull>>;
 
 /// I2C 开始
 pub fn i2c_start(scl: &mut OledWScl, sda: &mut OledWSda) {
@@ -24,13 +24,13 @@ pub fn i2c_stop(scl: &mut OledWScl, sda: &mut OledWSda) {
 }
 
 /// I2C发送一个字节
-/// byte: 要发送的一个字节
-fn i2c_send_byte(scl: &mut OledWScl, sda: &mut OledWSda, byte: u8) {
+/// cbyte: 要发送的一个字节
+fn i2c_send_byte(scl: &mut OledWScl, sda: &mut OledWSda, cbyte: u8) {
     for i in 0..8u8 {
-        if byte & (0x80 >> i) == 1 {
-            sda.set_high()
-        } else {
+        if cbyte & (0x80 >> i) == 0 {
             sda.set_low();
+        } else {
+            sda.set_high();
         }
         scl.set_high();
         scl.set_low();
@@ -63,9 +63,10 @@ fn write_data(scl: &mut OledWScl, sda: &mut OledWSda, data: u8) {
 /// y: 以左上角为原点, 向下方向的坐标, 范围: 0~7
 /// x: 以左上角为原点, 向右方向的坐标, 范围: 0~127
 fn set_cursor(scl: &mut OledWScl, sda: &mut OledWSda, y: u8, x: u8) {
-    write_command(scl, sda, 0xB0 | y); //设置y位置
-    write_command(scl, sda, 0x10 | ((x & 0xF0) >> 4)); //设置x位置高4位
-    write_command(scl, sda, x & 0x0F); //设置x位置低4位
+    write_command(scl, sda, 0xB0 | y); // 设置y位置
+    write_command(scl, sda, 0x10 | ((x & 0xF0) >> 4)); // 设置x位置高4位
+    #[allow(clippy::identity_op)]
+    write_command(scl, sda, 0x00 | (x & 0x0F)); // 设置x位置低4位
 }
 
 /// OLED清屏
