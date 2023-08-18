@@ -81,13 +81,11 @@ fn sys_delay(
 fn init_oled(
     mut gpiob: gpiob::Parts,
 ) -> (
-    gpio::PB8<gpio::Output<gpio::PushPull>>,
-    gpio::PB9<gpio::Output<gpio::PushPull>>,
+    gpio::PB8<gpio::Output<gpio::OpenDrain>>,
+    gpio::PB9<gpio::Output<gpio::OpenDrain>>,
 ) {
-    // let mut scl = gpiob.pb8.into_open_drain_output(&mut gpiob.crh);
-    // let mut sda = gpiob.pb9.into_open_drain_output(&mut gpiob.crh);
-    let mut scl: gpio::Pin<'B', 8, gpio::Output> = gpiob.pb8.into_push_pull_output(&mut gpiob.crh);
-    let mut sda = gpiob.pb9.into_push_pull_output(&mut gpiob.crh);
+    let mut scl = gpiob.pb8.into_open_drain_output(&mut gpiob.crh);
+    let mut sda = gpiob.pb9.into_open_drain_output(&mut gpiob.crh);
     scl.set_speed(&mut gpiob.crh, gpio::IOPinSpeed::Mhz50);
     sda.set_speed(&mut gpiob.crh, gpio::IOPinSpeed::Mhz50);
     scl.set_high();

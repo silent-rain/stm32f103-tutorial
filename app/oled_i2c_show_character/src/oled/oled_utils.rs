@@ -5,8 +5,8 @@ use crate::oled::font::OLED_FONT;
 use stm32f1xx_hal::gpio;
 
 // 引脚类型别名配置
-type OledWScl = gpio::PB8<gpio::Output<gpio::PushPull>>;
-type OledWSda = gpio::PB9<gpio::Output<gpio::PushPull>>;
+type OledWScl = gpio::PB8<gpio::Output<gpio::OpenDrain>>;
+type OledWSda = gpio::PB9<gpio::Output<gpio::OpenDrain>>;
 
 /// I2C 开始
 pub fn i2c_start(scl: &mut OledWScl, sda: &mut OledWSda) {

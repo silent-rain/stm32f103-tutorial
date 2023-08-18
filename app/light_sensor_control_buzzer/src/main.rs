@@ -52,7 +52,7 @@ fn main() -> ! {
             buzzer_off(&mut buzzer);
         }
         // 检测间隔延时
-        delay.delay_ms(20_u16);
+        delay.delay_ms(2000_u16);
     }
 }
 
