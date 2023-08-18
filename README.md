@@ -16,7 +16,7 @@
 - [LED 流水灯](./app/led_flow_light)
 - [蜂鸣器](./app/buzzer)
 - [按键控制 LED](./app/key_control_led)
-- x[光敏传感器控制蜂鸣器](./app/light_sensor_control_buzzer)
+- [光敏传感器控制蜂鸣器](./app/light_sensor_control_buzzer)
 - [OLED I2C 通信协议显示字符](./app/oled_i2c_show_character)
 
 ## 相关文档

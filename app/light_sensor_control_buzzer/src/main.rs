@@ -35,6 +35,9 @@ fn main() -> ! {
 
     let mut gpiob = dp.GPIOB.split();
 
+    // 上电延时
+    delay.delay_ms(20u16);
+
     // 蜂鸣器
     // 将 pin 引脚配置为推挽式输出
     let mut buzzer = gpiob.pb12.into_push_pull_output(&mut gpiob.crh);
@@ -43,16 +46,16 @@ fn main() -> ! {
 
     // 光敏传感器
     // 将 pin 引脚配置为上拉输入
-    let light_sensor = gpiob.pb13.into_push_pull_output(&mut gpiob.crh);
+    let light_sensor = gpiob.pb13.into_pull_up_input(&mut gpiob.crh);
 
     loop {
-        if light_sensor.is_set_low() {
+        if light_sensor.is_high() {
             buzzer_on(&mut buzzer);
         } else {
             buzzer_off(&mut buzzer);
         }
         // 检测间隔延时
-        delay.delay_ms(2000_u16);
+        delay.delay_ms(200_u16);
     }
 }
 
