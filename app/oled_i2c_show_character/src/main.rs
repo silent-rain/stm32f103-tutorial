@@ -31,7 +31,9 @@ fn main() -> ! {
     // 初始化 OLED 显示屏
     let (mut scl, mut sda) = init_oled(gpiob);
 
-    oled::oled_config_init(&mut scl, &mut sda);
+    // 初始化 OLED 配置
+    oled::init_oled_config(&mut scl, &mut sda);
+
     oled::show_char(&mut scl, &mut sda, 1, 1, 'A');
     oled::show_string(&mut scl, &mut sda, 1, 3, "HelloWorld!");
     oled::show_num(&mut scl, &mut sda, 2, 1, 12345, 5);

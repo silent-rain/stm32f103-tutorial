@@ -226,7 +226,7 @@ pub fn show_bin_num(
     }
 }
 
-/// 初始化 OLED 配置
+/// OLED配置初始化
 /// 注意需要提前进行端口初始化
 /// 注意上电延时
 pub fn init_oled_config(scl: &mut OledWScl, sda: &mut OledWSda) {

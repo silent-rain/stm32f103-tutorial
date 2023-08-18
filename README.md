@@ -18,6 +18,7 @@
 - [按键控制 LED](./app/key_control_led)
 - [光敏传感器控制蜂鸣器](./app/light_sensor_control_buzzer)
 - [OLED I2C 通信协议显示字符](./app/oled_i2c_show_character)
+- [对射式红外传感器计次](./app/opposing_infrared_sensor_count)
 
 ## 相关文档
 

@@ -21,6 +21,7 @@ members = [
     "app/key_control_led",
     "app/light_sensor_control_buzzer",
     "app/oled_i2c_show_character",
+    "app/opposing_infrared_sensor_count",
 ]
 
 [dependencies]
