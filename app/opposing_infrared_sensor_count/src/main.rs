@@ -33,7 +33,7 @@ use crate::hardware::oled;
 static mut INFRARED_SENSOR: MaybeUninit<gpiob::PB14<Input<PullUp>>> = MaybeUninit::uninit();
 
 // 计数器
-static mut COUNT_SENSOR_COUNT: u32 = 0;
+static mut SENSOR_COUNT: u32 = 0;
 
 #[entry]
 fn main() -> ! {
@@ -85,7 +85,7 @@ fn EXTI15_10() {
 
     if infrared_sensor.check_interrupt() {
         unsafe {
-            COUNT_SENSOR_COUNT += 1;
+            SENSOR_COUNT += 1;
         }
 
         // if we don't clear this bit, the ISR would trigger indefinitely
@@ -95,7 +95,7 @@ fn EXTI15_10() {
 
 /// 获取传感器计数
 fn get_sensor_count() -> u32 {
-    unsafe { COUNT_SENSOR_COUNT }
+    unsafe { SENSOR_COUNT }
 }
 
 /// 初始化外设
