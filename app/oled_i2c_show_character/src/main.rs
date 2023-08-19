@@ -5,7 +5,8 @@
 #![no_std]
 #![no_main]
 
-mod oled;
+mod hardware;
+use hardware::oled;
 
 use cortex_m::prelude::_embedded_hal_blocking_delay_DelayMs;
 use cortex_m_rt::entry;
