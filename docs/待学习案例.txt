@@ -4,6 +4,7 @@ blinky.rs
 blinky_generic.rs
 delay.rs
 delay-timer-blinky.rs
+exti.rs
 
 
 i2c-bme280
@@ -23,7 +24,6 @@ crc.rs
 dynamic_gpio.rs
 enc28j60-coap.rs.disabled
 enc28j60.rs.disabled
-exti.rs
 exti_rtic.rs
 gpio_input.rs
 itm.rs

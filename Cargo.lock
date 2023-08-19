@@ -185,6 +185,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "key_control_led_exti"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "cortex-m-semihosting",
+ "panic-rtt-target",
+ "rtt-target",
+ "stm32f1xx-hal",
+]
+
+[[package]]
 name = "led_flow_light"
 version = "0.1.0"
 dependencies = [
@@ -296,6 +308,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "50f3b39ccfb720540debaa0164757101c08ecb8d326b15358ce76a62c7e85965"
 dependencies = [
  "proc-macro2",
+]
+
+[[package]]
+name = "rotary_encoder_count"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "cortex-m-semihosting",
+ "panic-rtt-target",
+ "rtt-target",
+ "stm32f1xx-hal",
 ]
 
 [[package]]

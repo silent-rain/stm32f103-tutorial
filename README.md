@@ -20,6 +20,8 @@
 - [OLED I2C 通信协议显示字符](./app/oled_i2c_show_character)
 - [对射式红外传感器计次](./app/opposing_infrared_sensor_count)
 - [对射式红外传感器计次 2](./app/opposing_infrared_sensor_count2)
+- [按键中断电灯-EXTI](./app/key_control_led_exti)
+- [旋转编码器计次](./app/rotary_encoder_count)
 
 ## 相关文档
 
