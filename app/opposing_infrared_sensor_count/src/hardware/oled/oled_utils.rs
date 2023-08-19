@@ -1,6 +1,7 @@
 //! OLED 通用工具函数封装
+#![allow(unused)]
 
-use crate::oled::font::OLED_FONT;
+use super::font::OLED_FONT;
 
 use stm32f1xx_hal::gpio;
 
@@ -230,6 +231,10 @@ pub fn show_bin_num(
 /// 注意需要提前进行端口初始化
 /// 注意上电延时
 pub fn init_oled_config(scl: &mut OledWScl, sda: &mut OledWSda) {
+    // OLED 状态初始化
+    scl.set_high();
+    sda.set_high();
+
     write_command(scl, sda, 0xAE); //关闭显示
 
     write_command(scl, sda, 0xD5); //设置显示时钟分频比/振荡器频率

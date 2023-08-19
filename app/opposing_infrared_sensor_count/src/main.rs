@@ -4,7 +4,7 @@
 #![no_std]
 #![no_main]
 
-mod oled;
+mod hardware;
 
 use core::mem::MaybeUninit;
 
@@ -22,6 +22,8 @@ use stm32f1xx_hal::prelude::_stm32_hal_afio_AfioExt;
 use stm32f1xx_hal::rcc::{self, RccExt};
 use stm32f1xx_hal::timer::{SysDelay, SysTimerExt};
 use stm32f1xx_hal::{afio, pac};
+
+use crate::hardware::oled;
 
 /// 对射式红外传感器
 /// 这个属于ISR所有。
@@ -66,7 +68,6 @@ fn main() -> ! {
     sda.set_speed(&mut gpiob.crh, gpio::IOPinSpeed::Mhz50);
     scl.set_high();
     sda.set_high();
-    // let (mut scl, mut sda) = init_oled(&mut gpiob);
 
     // 初始化 OLED 配置
     rprintln!("load oled...");
@@ -140,26 +141,3 @@ fn sys_delay(
     // 具有自定义精度的阻塞延迟
     system_timer.delay(&clocks)
 }
-
-/*
-/// 对射式红外传感器
-fn init_infrared_sensor(
-    gpiob: &mut gpiob::Parts,
-    afio: &mut stm32f1xx_hal::afio::Parts,
-    exti: &mut pac::EXTI,
-) {
-}
-
-/// 初始化 OLED 显示屏
-/// 端口初始化
-/// 将引脚配置为作为开漏输出模式
-/// 输入模式中速度是没有用的, 无需配置
-// fn init_oled(
-//     gpiob: &mut gpiob::Parts,
-// ) -> (
-//     gpio::PB8<gpio::Output<gpio::OpenDrain>>,
-//     gpio::PB9<gpio::Output<gpio::OpenDrain>>,
-// ) {
-//     (scl, sda)
-// }
-*/
