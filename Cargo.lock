@@ -451,6 +451,30 @@ dependencies = [
 ]
 
 [[package]]
+name = "timer_external_clock"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "cortex-m-semihosting",
+ "panic-rtt-target",
+ "rtt-target",
+ "stm32f1xx-hal",
+]
+
+[[package]]
+name = "timer_interrupt"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "cortex-m-semihosting",
+ "panic-rtt-target",
+ "rtt-target",
+ "stm32f1xx-hal",
+]
+
+[[package]]
 name = "turns_user_led"
 version = "0.1.0"
 dependencies = [

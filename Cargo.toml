@@ -25,6 +25,8 @@ members = [
     "app/opposing_infrared_sensor_count2",
     "app/key_control_led_exti",
     "app/rotary_encoder_count",
+    "app/timer_interrupt",
+    "app/timer_external_clock",
 ]
 
 [dependencies]

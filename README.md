@@ -22,6 +22,8 @@
 - [对射式红外传感器计次 2](./app/opposing_infrared_sensor_count2)
 - [按键中断电灯-EXTI](./app/key_control_led_exti)
 - [旋转编码器计次](./app/rotary_encoder_count)
+- [定时器中断](./app/timer_interrupt)
+- x[定时器外部时钟](./app/timer_external_clock)
 
 ## 相关文档
 
