@@ -3,6 +3,22 @@
 # runner = 'arm-none-eabi-gdb'
 rustflags = ["-C", "link-arg=-Tlink.x"]
 
+[target.'cfg(all(target_arch = "arm", target_os = "none"))']
+# TODO(2) replace `$CHIP` with your chip's name (see `probe-run --list-chips` output)
+runner = "probe-run --chip STM32F103C8"
+rustflags = [
+    "-C",
+    "linker=flip-link",
+    "-C",
+    "link-arg=-Tlink.x",
+    "-C",
+    "link-arg=-Tdefmt.x",
+    # This is needed if your flash or ram addresses are not aligned to 0x10000 in memory.x
+    # See https://github.com/rust-embedded/cortex-m-quickstart/pull/95
+    "-C",
+    "link-arg=--nmagic",
+]
+
 
 [build]
 target = "thumbv7m-none-eabi"

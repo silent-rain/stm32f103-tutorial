@@ -7,6 +7,7 @@
 ## 示例目录
 
 - [Hello World](./app/helloworld)
+- [测试套件](./app/testsuite)
 - [点灯](./app/turns_user_led)
 - [点灯-RTT](./app/turns_user_led_rtt)
 - [计时器闪烁 LED](./app/timer_blinky)
@@ -22,7 +23,9 @@
 - [对射式红外传感器计次 2](./app/opposing_infrared_sensor_count2)
 - [按键中断电灯-EXTI](./app/key_control_led_exti)
 - [旋转编码器计次](./app/rotary_encoder_count)
+- [系统定时器中断](./app/sys_timer_interrupt)
 - [定时器中断](./app/timer_interrupt)
+- [定时器中断2](./app/timer_interrupt2)
 - x[定时器外部时钟](./app/timer_external_clock)
 
 ## 相关文档
@@ -37,3 +40,5 @@
 
 - [官方嵌入式](https://www.rust-lang.org/zh-CN/what/embedded)
 - [stm32f1xx-hal](https://github.com/stm32-rs/stm32f1xx-hal)
+- [STM32F103c8 数据表](https://www.st.com/resource/en/datasheet/cd00161566.pdf)
+- [嵌入经济学](https://docs.rust-embedded.org/embedonomicon/)

@@ -10,6 +10,7 @@ repository = ""
 [workspace]
 members = [
     "app/helloworld",
+    "app/testsuite",
     "app/turns_user_led",
     "app/turns_user_led_rtt",
     "app/timer_blinky",
@@ -25,7 +26,9 @@ members = [
     "app/opposing_infrared_sensor_count2",
     "app/key_control_led_exti",
     "app/rotary_encoder_count",
+    "app/sys_timer_interrupt",
     "app/timer_interrupt",
+    "app/timer_interrupt2",
     "app/timer_external_clock",
 ]
 
@@ -39,11 +42,21 @@ panic-halt = "0.2.0"
 # 开发板型号: STM32F103C8T6
 stm32f1xx-hal = {version = "0.10.0", features = ["rt", "stm32f103", "medium"]}
 
-[profile.dev]
-incremental = false
-codegen-units = 1
 
 [profile.release]
 codegen-units = 1
 debug = true
 lto = true
+
+[profile.dev]
+incremental = false
+codegen-units = 1
+
+# cargo test
+[profile.test]
+codegen-units = 1
+debug = 2
+debug-assertions = true # <-
+incremental = false
+opt-level = 3           # <-
+overflow-checks = true  # <-
