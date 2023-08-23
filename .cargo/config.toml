@@ -14,8 +14,9 @@ rustflags = [
     # See https://github.com/rust-embedded/cortex-m-quickstart/pull/95
     "-C",
     "link-arg=--nmagic",
-    "-C",
-    "link-arg=-Tdefmt.x",
+    # defmt 单元测试
+    # "-C",
+    # "link-arg=-Tdefmt.x",
 ]
 
 
