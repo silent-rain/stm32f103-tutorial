@@ -1,22 +1,21 @@
 [target.thumbv7m-none-eabi]
+# QEUM
 # runner = "qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb -nographic -semihosting-config enable=on,target=native -kernel"
+# GDB
 # runner = 'arm-none-eabi-gdb'
-rustflags = ["-C", "link-arg=-Tlink.x"]
-
-[target.'cfg(all(target_arch = "arm", target_os = "none"))']
-# TODO(2) replace `$CHIP` with your chip's name (see `probe-run --list-chips` output)
+# 真机测试
 runner = "probe-run --chip STM32F103C8"
 rustflags = [
     "-C",
     "linker=flip-link",
     "-C",
     "link-arg=-Tlink.x",
-    "-C",
-    "link-arg=-Tdefmt.x",
     # This is needed if your flash or ram addresses are not aligned to 0x10000 in memory.x
     # See https://github.com/rust-embedded/cortex-m-quickstart/pull/95
     "-C",
     "link-arg=--nmagic",
+    "-C",
+    "link-arg=-Tdefmt.x",
 ]
 
 

@@ -208,9 +208,9 @@ dependencies = [
 
 [[package]]
 name = "embedded-hal"
-version = "1.0.0-alpha.11"
+version = "1.0.0-rc.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f7724ebabcadfeb15920571dd727bc8ccde8586e52f2890bdb8182fdf42c3ff2"
+checksum = "2894bc2f0457b8ca3d6b8ab8aad64d9337583672494013457f86c5a9146c0e22"
 
 [[package]]
 name = "fugit"
@@ -409,9 +409,9 @@ dependencies = [
 
 [[package]]
 name = "quote"
-version = "1.0.32"
+version = "1.0.33"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "50f3b39ccfb720540debaa0164757101c08ecb8d326b15358ce76a62c7e85965"
+checksum = "5267fca4496028628a95160fc423a33e8b2e6af8a5302579e322e4b520293cae"
 dependencies = [
  "proc-macro2",
 ]
@@ -497,9 +497,12 @@ version = "0.1.0"
 dependencies = [
  "cortex-m",
  "cortex-m-rt",
- "embedded-hal 1.0.0-alpha.11",
- "nb 1.1.0",
- "panic-halt",
+ "defmt",
+ "defmt-rtt",
+ "defmt-test",
+ "embedded-hal 1.0.0-rc.1",
+ "panic-probe",
+ "panic-rtt-target",
  "stm32f1xx-hal",
 ]
 
@@ -563,13 +566,11 @@ version = "0.1.0"
 dependencies = [
  "cortex-m",
  "cortex-m-rt",
- "cortex-m-semihosting",
  "defmt",
  "defmt-rtt",
  "defmt-test",
  "panic-probe",
  "panic-rtt-target",
- "rtt-target",
  "stm32f1xx-hal",
 ]
 

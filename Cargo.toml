@@ -7,6 +7,11 @@ license = "LICENSE"
 repository = ""
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+harness = false
+
+
 [workspace]
 members = [
     "app/helloworld",
@@ -33,14 +38,20 @@ members = [
 ]
 
 [dependencies]
-embedded-hal = "1.0.0-alpha.11"
-nb = "1"
+embedded-hal = "1.0.0-rc.1"
 cortex-m = "0.7.7"
 cortex-m-rt = "0.7.3"
 # Panic behaviour, see https://crates.io/keywords/panic-impl for alternatives
-panic-halt = "0.2.0"
+# panic-halt = "0.2.0"
+panic-rtt-target = {version = "0.1.2", features = ["cortex-m"]}
 # 开发板型号: STM32F103C8T6
 stm32f1xx-hal = {version = "0.10.0", features = ["rt", "stm32f103", "medium"]}
+defmt = "0.3"
+defmt-rtt = "0.4"
+panic-probe = {version = "0.3", features = ["print-defmt"]}
+
+[dev-dependencies]
+defmt-test = "0.3"
 
 
 [profile.release]

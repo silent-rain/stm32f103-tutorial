@@ -27,7 +27,10 @@ cargo install cargo-generate
 
 ```shell
 cargo test --lib
+
 cargo test --target thumbv7m-none-eabi -p testsuite
+
+cargo test --target thumbv7m-none-eabi -p testsuite probe-run -- --chip STM32F103C8
 ```
 
 - 集成测试
