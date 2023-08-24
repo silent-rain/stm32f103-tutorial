@@ -27,6 +27,7 @@
 - [定时器中断](./app/timer_interrupt)
 - [定时器中断2](./app/timer_interrupt2)
 - x[定时器外部时钟](./app/timer_external_clock)
+- [PWM 驱动呼吸灯](./app/pwm_led)
 
 ## 相关文档
 

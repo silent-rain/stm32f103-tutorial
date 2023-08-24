@@ -1,0 +1,16 @@
+[package]
+name = "pwm_led2"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+cortex-m = "0.7.7"
+cortex-m-rt = "0.7.3"
+stm32f1xx-hal = {version = "0.10.0", features = ["rt", "stm32f103", "medium"]}
+cortex-m-semihosting = "0.5.0"
+# Panic behaviour, see https://crates.io/keywords/panic-impl for alternatives
+# panic-halt = "0.2.0"
+rtt-target = {version = "0.3.1", features = ["cortex-m"]}
+panic-rtt-target = {version = "0.1.2", features = ["cortex-m"]}

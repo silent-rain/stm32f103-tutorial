@@ -35,6 +35,8 @@ members = [
     "app/timer_interrupt",
     "app/timer_interrupt2",
     "app/timer_external_clock",
+    "app/pwm_led",
+    "app/pwm_led2",
 ]
 
 [dependencies]
