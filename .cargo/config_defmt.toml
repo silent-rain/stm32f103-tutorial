@@ -19,9 +19,3 @@ rustflags = [
 
 [build]
 target = "thumbv7m-none-eabi"
-
-
-[alias]
-rb = "run --bin"
-rp = "run --package"
-rrb = "run --release --bin"
