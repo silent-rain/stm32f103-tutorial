@@ -17,6 +17,7 @@ members = [
     "app/helloworld",
     "app/panics",
     "app/testsuite",
+    "app/testsuite_replace_embed",
     "app/turns_user_led",
     "app/turns_user_led_rtt",
     "app/timer_blinky",
