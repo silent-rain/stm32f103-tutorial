@@ -4,6 +4,8 @@
 
 该教程将主要根据 [B 站江科大](https://www.bilibili.com/video/BV1th411z7sn?p=1&vd_source=c459b4f4f90bc42bb5ddb5baf12e1bc7) 的视频教学进行学习嵌入式开发。示例中将会借用 `B 站江科大` 视频配套资料中的一些资源进行展示。
 
+同时也会借用 `stm32f1xx-hal` 开发板库中的示例，进行整合在一起学习。
+
 ## 示例目录
 
 - [Hello World](./app/helloworld)
