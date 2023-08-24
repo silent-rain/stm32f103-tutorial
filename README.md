@@ -7,6 +7,7 @@
 ## 示例目录
 
 - [Hello World](./app/helloworld)
+- [自定义异常 Panic](./app/panics)
 - [测试套件](./app/testsuite)
 - [点灯](./app/turns_user_led)
 - [点灯-RTT](./app/turns_user_led_rtt)

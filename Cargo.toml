@@ -15,6 +15,7 @@ harness = false
 [workspace]
 members = [
     "app/helloworld",
+    "app/panics",
     "app/testsuite",
     "app/turns_user_led",
     "app/turns_user_led_rtt",

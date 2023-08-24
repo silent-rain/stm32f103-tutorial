@@ -1,0 +1,11 @@
+[package]
+name = "panics"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[dependencies]
+cortex-m-rt = "0.7.3"
+panic-semihosting = "0.6.0"
+cortex-m-semihosting = "0.5.0"
+stm32f1xx-hal = {version = "0.10.0", features = ["rt", "stm32f103", "medium"]}
