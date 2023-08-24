@@ -25,9 +25,10 @@
 - [旋转编码器计次](./app/rotary_encoder_count)
 - [系统定时器中断](./app/sys_timer_interrupt)
 - [定时器中断](./app/timer_interrupt)
-- [定时器中断2](./app/timer_interrupt2)
+- [定时器中断 2](./app/timer_interrupt2)
 - x[定时器外部时钟](./app/timer_external_clock)
 - [PWM 驱动呼吸灯](./app/pwm_led)
+- [PWM 驱动呼吸灯-端口重映射](./app/pwm_led_remap)
 
 ## 相关文档
 
