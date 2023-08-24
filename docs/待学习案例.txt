@@ -5,6 +5,8 @@ blinky_generic.rs
 delay.rs
 delay-timer-blinky.rs
 exti.rs
+pwm.rs
+pwm_custom.rs
 
 
 i2c-bme280
@@ -12,11 +14,9 @@ adc-dma-circ.rs
 adc-dma-rx.rs
 adc.rs
 adc_temperature.rs
-
 blinky_rtc.rs
 blinky_rtcalarm_irq.rs
 blinky_timer_irq.rs
-
 can-echo.rs
 can-loopback.rs
 can-rtic.rs
@@ -33,8 +33,6 @@ mpu9250.rs.disabled
 multi_mode_gpio.rs
 nojtag.rs
 panics.rs
-pwm.rs
-pwm_custom.rs
 pwm_input.rs
 qei.rs
 rtc.rs

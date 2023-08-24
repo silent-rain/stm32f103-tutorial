@@ -38,6 +38,7 @@ members = [
     "app/pwm_led",
     "app/pwm_led2",
     "app/pwm_led_remap",
+    "app/pwm_custom",
 ]
 
 [dependencies]

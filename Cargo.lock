@@ -408,6 +408,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "pwm_custom"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "cortex-m-semihosting",
+ "panic-rtt-target",
+ "rtt-target",
+ "stm32f1xx-hal",
+]
+
+[[package]]
 name = "pwm_led"
 version = "0.1.0"
 dependencies = [
