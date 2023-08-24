@@ -40,7 +40,10 @@
 - [术语介绍](./docs/术语介绍.md)
 - [GDB 调试](./docs/GDB调试.md)
 - [Renode 仿真模拟](./docs/Renode仿真模拟.md)
+- [Linux st-link 配置](./docs/Linux%20st-link配置.md)
 - [Defmt 单元测试](./docs/Defmt%20单元测试.md)
+- [Openocd 使用指南](./docs/Openocd使用指南.md)
+- [Q&A](./docs/Q&A.md)
 
 ## 参考文档
 
