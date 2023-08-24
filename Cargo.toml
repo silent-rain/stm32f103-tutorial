@@ -38,6 +38,7 @@ members = [
     "app/timer_external_clock",
     "app/pwm_led",
     "app/pwm_led2",
+    "app/disable_jtag_ports",
     "app/pwm_led_remap",
     "app/pwm_custom",
 ]

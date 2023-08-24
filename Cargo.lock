@@ -188,6 +188,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "disable_jtag_ports"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "panic-halt",
+ "stm32f1xx-hal",
+]
+
+[[package]]
 name = "embedded-dma"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
