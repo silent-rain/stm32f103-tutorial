@@ -40,6 +40,7 @@
 - [术语介绍](./docs/术语介绍.md)
 - [GDB 调试](./docs/GDB调试.md)
 - [Renode 仿真模拟](./docs/Renode仿真模拟.md)
+- [Defmt 单元测试](./docs/Defmt 单元测试.md)
 
 ## 参考文档
 
