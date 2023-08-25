@@ -2,8 +2,6 @@
 #![no_std]
 #![no_main]
 
-use core::cell::RefCell;
-
 mod hardware;
 use hardware::oled;
 use hardware::peripheral::Peripheral;
@@ -11,14 +9,12 @@ use hardware::peripheral::Peripheral;
 use panic_rtt_target as _;
 use rtt_target::{rprintln, rtt_init_print};
 
-use cortex_m::interrupt::Mutex;
 use cortex_m::peripheral::syst::SystClkSource;
 use cortex_m::peripheral::NVIC;
 use cortex_m_rt::{entry, exception};
 use stm32f1xx_hal::pac::interrupt;
 use stm32f1xx_hal::prelude::_fugit_RateExtU32;
 use stm32f1xx_hal::timer::{SysCounterHz, SysEvent, Timer};
-static G_TIM: Mutex<RefCell<Option<SysCounterHz>>> = Mutex::new(RefCell::new(None));
 
 // 计数器
 static mut NUM: u32 = 0;
@@ -37,7 +33,7 @@ fn main() -> ! {
         exti: _,
         dbg: _,
         mut nvic,
-        mut gpioa,
+        gpioa: _,
         mut gpiob,
     } = Peripheral::new();
 
@@ -53,8 +49,6 @@ fn main() -> ! {
         // .pclk1(36.MHz())
         .freeze(&mut flash.acr);
 
-    let _pa0 = gpioa.pa0.into_pull_up_input(&mut gpioa.crl);
-
     // configures the system timer to trigger a SysTick exception every second
     syst.set_clock_source(SystClkSource::External);
     // this is configured for the LM3S6965 which has a default CPU clock of 12 MHz
@@ -66,9 +60,6 @@ fn main() -> ! {
     let mut timer: SysCounterHz = Timer::syst_external(syst, &clocks).counter_hz();
     timer.start(1.Hz()).unwrap();
     timer.listen(SysEvent::Update);
-
-    // 将计时器移动到全局存储中
-    cortex_m::interrupt::free(|cs| G_TIM.borrow(cs).replace(Some(timer)));
 
     unsafe {
         // Enable interruptions
