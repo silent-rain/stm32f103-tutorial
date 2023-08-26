@@ -30,7 +30,7 @@
 - [系统定时器中断](./app/sys_timer_interrupt)
 - [定时器中断](./app/timer_interrupt)
 - [定时器中断 2](./app/timer_interrupt2)
-- x[定时器外部时钟](./app/timer_external_clock)
+- [定时器外部时钟](./app/timer_external_clock)
 - [PWM 驱动呼吸灯](./app/pwm_led)
 - [禁用 JTAG 端口](./app/disable_jtag_ports)
 - [自定义引脚组合的 PWM 输出](./app/pwm_custom)
