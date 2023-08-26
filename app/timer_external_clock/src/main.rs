@@ -58,7 +58,7 @@ fn main() -> ! {
 
     let mut cnt_timer = Timer::new(tim2, &clocks).counter_hz();
     // 使用用户定义的预分频器和自动重新加载寄存器以倒计时模式重新启动计时器
-    cnt_timer.start_raw(1, 1);
+    cnt_timer.start_raw(0, 10);
 
     let tim2 = cnt_timer.release().release();
 
@@ -149,7 +149,7 @@ fn TIM2() {
                 unsafe {
                     NUM += 1;
                 }
-                println!("TIM212...");
+                println!("TIM2...");
             }
         }
     });
