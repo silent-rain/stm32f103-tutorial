@@ -35,6 +35,7 @@
 - [禁用 JTAG 端口](./app/disable_jtag_ports)
 - [自定义引脚组合的 PWM 输出](./app/pwm_custom)
 - [PWM 驱动呼吸灯-端口重映射](./app/pwm_led_remap)
+- [PWM 驱动舵机](./app/pwm_driven_servo)
 
 ## 相关文档
 

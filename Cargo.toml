@@ -42,6 +42,7 @@ members = [
     "app/disable_jtag_ports",
     "app/pwm_led_remap",
     "app/pwm_custom",
+    "app/pwm_driven_servo",
 ]
 
 [dependencies]
