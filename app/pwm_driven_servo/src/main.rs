@@ -68,13 +68,9 @@ fn main() -> ! {
 
     // Adjust period
     // 总周期为20ms max_duty=53333
-    // 1.5ms 舵机输出角度0度 max_duty=12012
-    // 2ms 舵机输出角度45度 max_duty=16000
     pwm.set_period(ms(20).into_rate());
 
     // Return to the original frequency
-    // pwm.set_period(120.kHz()); // max_duty=66
-    // pwm.set_period(100.kHz()); // max_duty=80
     // pwm.set_period(50.Hz()); // max_duty=53333
 
     let max_duty = pwm.get_max_duty();
