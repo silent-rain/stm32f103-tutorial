@@ -36,6 +36,7 @@
 - [自定义引脚组合的 PWM 输出](./app/pwm_custom)
 - [PWM 驱动呼吸灯-端口重映射](./app/pwm_led_remap)
 - [PWM 驱动舵机](./app/pwm_driven_servo)
+- [PWM 驱动直流电机](./app/pwm_driven_motor)
 
 ## 相关文档
 

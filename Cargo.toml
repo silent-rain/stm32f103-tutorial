@@ -43,6 +43,7 @@ members = [
     "app/pwm_led_remap",
     "app/pwm_custom",
     "app/pwm_driven_servo",
+    "app/pwm_driven_motor",
 ]
 
 [dependencies]
