@@ -44,6 +44,7 @@ members = [
     "app/pwm_custom",
     "app/pwm_driven_servo",
     "app/pwm_driven_motor",
+    "app/pwm_input_capture_freq_duty_cycle",
 ]
 
 [dependencies]

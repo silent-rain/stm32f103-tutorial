@@ -37,6 +37,7 @@
 - [PWM 驱动呼吸灯-端口重映射](./app/pwm_led_remap)
 - [PWM 驱动舵机](./app/pwm_driven_servo)
 - [PWM 驱动直流电机](./app/pwm_driven_motor)
+- [输入捕获模式测频率占空比](./app/pwm_input_capture_freq_duty_cycle)
 
 ## 相关文档
 

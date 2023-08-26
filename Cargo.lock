@@ -464,6 +464,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "pwm_input_capture_freq_duty_cycle"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "panic-probe",
+ "stm32f1xx-hal",
+]
+
+[[package]]
 name = "pwm_led"
 version = "0.1.0"
 dependencies = [
