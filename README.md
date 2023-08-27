@@ -24,16 +24,16 @@
 
 ### 通用 GPIO
 
-- [点灯](./app/turns_user_led)
-- [计时器闪烁 LED](./app/timer_blinky)
-- [延迟闪烁 LED](./app/delay_blinky)
-- [TIM2 通用定时器延迟闪烁 LED](./app/tim2_timer_delay_blinky)
-- [闪烁 LED](./app/blinky)
-- [LED 流水灯](./app/led_flow_light)
-- [蜂鸣器](./app/buzzer)
-- [按键控制 LED](./app/key_control_led)
-- [光敏传感器控制蜂鸣器](./app/light_sensor_control_buzzer)
-- [OLED I2C 通信协议显示字符](./app/oled_i2c_show_character)
+- [点灯](./app/general_gpio/turns_user_led)
+- [计时器闪烁 LED](./app/general_gpio/timer_blinky)
+- [延迟闪烁 LED](./app/general_gpio/delay_blinky)
+- [TIM2 通用定时器延迟闪烁 LED](./app/general_gpio/tim2_timer_delay_blinky)
+- [闪烁 LED](./app/general_gpio/blinky)
+- [LED 流水灯](./app/general_gpio/led_flow_light)
+- [蜂鸣器](./app/general_gpio/buzzer)
+- [按键控制 LED](./app/general_gpio/key_control_led)
+- [光敏传感器控制蜂鸣器](./app/general_gpio/light_sensor_control_buzzer)
+- [OLED I2C 通信协议显示字符](./app/general_gpio/oled_i2c_show_character)
 
 ### 中断
 
