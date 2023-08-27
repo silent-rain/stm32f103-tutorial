@@ -5,19 +5,17 @@
 mod hardware;
 use hardware::peripheral::Peripheral;
 
-use panic_rtt_target as _;
-use rtt_target::{rprintln, rtt_init_print};
+use defmt_rtt as _;
+use panic_probe as _;
 
 use cortex_m_rt::entry;
+use defmt::println;
 use stm32f1xx_hal::prelude::_fugit_ExtU32;
 use stm32f1xx_hal::prelude::_fugit_RateExtU32;
-use stm32f1xx_hal::timer::Tim2PartialRemap1;
-use stm32f1xx_hal::timer::{Channel, PwmExt};
+use stm32f1xx_hal::timer::{Channel, PwmExt, Tim2NoRemap};
 
 #[entry]
 fn main() -> ! {
-    rtt_init_print!();
-
     // 初始化外设
     let Peripheral {
         mut flash,
@@ -28,7 +26,7 @@ fn main() -> ! {
         exti: _,
         nvic: _,
         mut gpioa,
-        gpiob,
+        gpiob: _,
     } = Peripheral::new();
 
     // 冻结系统中所有时钟的配置，并将冻结的频率存储在时钟中
@@ -43,16 +41,16 @@ fn main() -> ! {
     // 封装具有自定义精度的阻塞延迟函数
     let mut delay = Peripheral::sys_delay(&mut flash, &clocks, syst);
 
-    // 禁用JTAG以释放pa15、pb3和pb4供正常使用
-    let (pa15, _pb3, _pb4) = afio.mapr.disable_jtag(gpioa.pa15, gpiob.pb3, gpiob.pb4);
-
     // TIM2
     // 复用推挽输出
-    let c1 = pa15.into_alternate_push_pull(&mut gpioa.crh);
+    let c1 = gpioa.pa0.into_alternate_push_pull(&mut gpioa.crl);
     let pins = c1;
 
-    rprintln!("load pwm...");
-    let mut pwm = tim2.pwm_hz::<Tim2PartialRemap1, _, _>(pins, &mut afio.mapr, 1.kHz(), &clocks);
+    println!("load pwm...");
+    //let mut pwm =
+    //    Timer::new(tim2, &clocks).pwm_hz::<Tim2NoRemap, _, _>(pins, &mut afio.mapr, 1.kHz());
+    // or
+    let mut pwm = tim2.pwm_hz::<Tim2NoRemap, _, _>(pins, &mut afio.mapr, 1.kHz(), &clocks);
 
     // Enable clock on each of the channels
     pwm.enable(Channel::C1);
@@ -61,7 +59,7 @@ fn main() -> ! {
     // pwm.set_period(ms(500).into_rate());
 
     // Return to the original frequency
-    pwm.set_period(200.kHz());
+    pwm.set_period(100.kHz());
 
     loop {
         for i in 0..=100 {

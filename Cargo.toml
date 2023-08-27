@@ -46,13 +46,13 @@ members = [
     # 端口重映射
     "app/port_remap/disable_jtag_ports",
     # PWM
-    "app/pwm_led",
-    "app/pwm_led2",
-    "app/pwm_led_remap",
-    "app/pwm_custom",
-    "app/pwm_driven_servo",
-    "app/pwm_driven_motor",
-    "app/pwm_input_capture_freq_duty_cycle",
+    "app/pwm/pwm_led",
+    "app/pwm/pwm_led2",
+    "app/pwm/pwm_led_remap",
+    "app/pwm/pwm_custom",
+    "app/pwm/pwm_driven_servo",
+    "app/pwm/pwm_driven_motor",
+    "app/pwm/pwm_input_capture_freq_duty_cycle",
 ]
 
 [dependencies]

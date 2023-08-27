@@ -466,9 +466,9 @@ version = "0.1.0"
 dependencies = [
  "cortex-m",
  "cortex-m-rt",
- "cortex-m-semihosting",
- "panic-rtt-target",
- "rtt-target 0.3.1",
+ "defmt",
+ "defmt-rtt",
+ "panic-probe",
  "stm32f1xx-hal",
 ]
 
@@ -514,9 +514,9 @@ version = "0.1.0"
 dependencies = [
  "cortex-m",
  "cortex-m-rt",
- "cortex-m-semihosting",
- "panic-rtt-target",
- "rtt-target 0.3.1",
+ "defmt",
+ "defmt-rtt",
+ "panic-probe",
  "stm32f1xx-hal",
 ]
 
@@ -526,9 +526,9 @@ version = "0.1.0"
 dependencies = [
  "cortex-m",
  "cortex-m-rt",
- "cortex-m-semihosting",
- "panic-rtt-target",
- "rtt-target 0.3.1",
+ "defmt",
+ "defmt-rtt",
+ "panic-probe",
  "stm32f1xx-hal",
 ]
 
@@ -538,9 +538,9 @@ version = "0.1.0"
 dependencies = [
  "cortex-m",
  "cortex-m-rt",
- "cortex-m-semihosting",
- "panic-rtt-target",
- "rtt-target 0.3.1",
+ "defmt",
+ "defmt-rtt",
+ "panic-probe",
  "stm32f1xx-hal",
 ]
 
@@ -571,7 +571,6 @@ version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "065d6058bb1204f51a562a67209e1817cf714759d5cf845aa45c75fa7b0b9d9b"
 dependencies = [
- "cortex-m",
  "ufmt-write",
 ]
 

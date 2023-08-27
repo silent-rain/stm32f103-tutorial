@@ -1,5 +1,5 @@
 [package]
-name = "pwm_input_capture_freq_duty_cycle"
+name = "pwm_led2"
 version = "0.1.0"
 edition = "2021"
 

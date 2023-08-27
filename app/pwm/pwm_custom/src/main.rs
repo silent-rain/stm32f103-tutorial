@@ -6,17 +6,16 @@ mod hardware;
 use cortex_m::asm;
 use hardware::peripheral::Peripheral;
 
-use panic_rtt_target as _;
-use rtt_target::{rprintln, rtt_init_print};
+use defmt_rtt as _;
+use panic_probe as _;
 
 use cortex_m_rt::entry;
+use defmt::println;
 use stm32f1xx_hal::prelude::_fugit_RateExtU32;
 use stm32f1xx_hal::timer::Timer;
 
 #[entry]
 fn main() -> ! {
-    rtt_init_print!();
-
     // 初始化外设
     let Peripheral {
         mut flash,
@@ -47,7 +46,7 @@ fn main() -> ! {
     let p1 = gpiob.pb5.into_alternate_push_pull(&mut gpiob.crl);
     let pins = (p0, p1);
 
-    rprintln!("load pwm...");
+    println!("load pwm...");
 
     let pwm = Timer::new(tim3, &clocks).pwm_hz(pins, &mut afio.mapr, 1.kHz());
 

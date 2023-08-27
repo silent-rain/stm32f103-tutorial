@@ -6,12 +6,12 @@ mod hardware;
 use hardware::oled;
 use hardware::peripheral::Peripheral;
 
-use defmt::println;
 use defmt_rtt as _;
 use panic_probe as _;
 
 use cortex_m::prelude::_embedded_hal_blocking_delay_DelayMs;
 use cortex_m_rt::entry;
+use defmt::println;
 use stm32f1xx_hal::gpio::{self, Alternate, IOPinSpeed, OutputSpeed};
 use stm32f1xx_hal::pac::TIM2;
 use stm32f1xx_hal::prelude::_fugit_RateExtU32;

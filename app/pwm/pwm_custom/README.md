@@ -8,6 +8,12 @@
 
 这里例子来自依赖库的官方案例。
 
+## 执行指令
+
+```shell
+cargo rp pwm_custom
+```
+
 ## 学习目标
 
 - 了解 Channel 用法
