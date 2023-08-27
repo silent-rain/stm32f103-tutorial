@@ -545,6 +545,42 @@ dependencies = [
 ]
 
 [[package]]
+name = "pwm_rotary_encoder_count"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "panic-probe",
+ "stm32f1xx-hal",
+]
+
+[[package]]
+name = "pwm_rotary_encoder_speed"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "panic-probe",
+ "stm32f1xx-hal",
+]
+
+[[package]]
+name = "pwm_rotary_encoder_timer_speed"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "panic-probe",
+ "stm32f1xx-hal",
+]
+
+[[package]]
 name = "quote"
 version = "1.0.33"
 source = "registry+https://github.com/rust-lang/crates.io-index"

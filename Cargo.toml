@@ -53,6 +53,9 @@ members = [
     "app/pwm/pwm_driven_servo",
     "app/pwm/pwm_driven_motor",
     "app/pwm/pwm_input_capture_freq_duty_cycle",
+    "app/pwm/pwm_rotary_encoder_count",
+    "app/pwm/pwm_rotary_encoder_speed",
+    "app/pwm/pwm_rotary_encoder_timer_speed",
 ]
 
 [dependencies]
