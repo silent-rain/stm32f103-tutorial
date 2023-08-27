@@ -699,6 +699,31 @@ dependencies = [
 ]
 
 [[package]]
+name = "syst_delay"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "panic-probe",
+ "stm32f1xx-hal",
+]
+
+[[package]]
+name = "syst_timer_delay"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "nb 1.1.0",
+ "panic-probe",
+ "stm32f1xx-hal",
+]
+
+[[package]]
 name = "thiserror"
 version = "1.0.47"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -719,18 +744,19 @@ dependencies = [
 ]
 
 [[package]]
-name = "tim2_timer_delay_blinky"
+name = "tim2_delay"
 version = "0.1.0"
 dependencies = [
  "cortex-m",
  "cortex-m-rt",
- "nb 1.1.0",
- "panic-halt",
+ "defmt",
+ "defmt-rtt",
+ "panic-probe",
  "stm32f1xx-hal",
 ]
 
 [[package]]
-name = "timer_blinky"
+name = "tim2_timer_delay_blinky"
 version = "0.1.0"
 dependencies = [
  "cortex-m",
@@ -782,16 +808,6 @@ version = "0.1.0"
 dependencies = [
  "cortex-m-rt",
  "panic-halt",
- "stm32f1xx-hal",
-]
-
-[[package]]
-name = "turns_user_led_rtt"
-version = "0.1.0"
-dependencies = [
- "cortex-m-rt",
- "panic-rtt-target",
- "rtt-target 0.3.1",
  "stm32f1xx-hal",
 ]
 

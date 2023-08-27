@@ -16,10 +16,15 @@
 - [烧录工具 probe-run](./app/flash_tool_defmt)
 - [单元测试套件](./app/unit_testsuite)
 
+### 延迟
+
+- [系统计时器延迟](./app/syst_timer_delay)
+- [系统定时器延迟](./app/syst_delay)
+- [TIM2 定时器延迟](./app/tim2_delay)
+
 ### 通用 GPIO
 
 - [点灯](./app/turns_user_led)
-- [点灯-RTT](./app/turns_user_led_rtt)
 - [计时器闪烁 LED](./app/timer_blinky)
 - [延迟闪烁 LED](./app/delay_blinky)
 - [TIM2 通用定时器延迟闪烁 LED](./app/tim2_timer_delay_blinky)
@@ -29,6 +34,9 @@
 - [按键控制 LED](./app/key_control_led)
 - [光敏传感器控制蜂鸣器](./app/light_sensor_control_buzzer)
 - [OLED I2C 通信协议显示字符](./app/oled_i2c_show_character)
+
+### 中断
+
 - [对射式红外传感器计次](./app/opposing_infrared_sensor_count)
 - [对射式红外传感器计次 2](./app/opposing_infrared_sensor_count2)
 - [按键中断电灯-EXTI](./app/key_control_led_exti)

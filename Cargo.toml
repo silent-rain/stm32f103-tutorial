@@ -20,9 +20,12 @@ members = [
     "app/flash_tool_embed",
     "app/flash_tool_defmt",
     "app/unit_testsuite",
+    # 延迟
+    "app/syst_timer_delay",
+    "app/syst_delay",
+    "app/tim2_delay",
+    # 通用 GPIO
     "app/turns_user_led",
-    "app/turns_user_led_rtt",
-    "app/timer_blinky",
     "app/delay_blinky",
     "app/tim2_timer_delay_blinky",
     "app/blinky",
