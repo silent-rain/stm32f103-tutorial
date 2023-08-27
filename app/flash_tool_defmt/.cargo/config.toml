@@ -1,0 +1,27 @@
+[target.thumbv7m-none-eabi]
+# 真机测试
+# replace `$CHIP` with your chip's name (see `probe-run --list-chips` output)
+runner = "probe-run --chip STM32F103C8"
+rustflags = [
+    "-C",
+    "linker=flip-link",
+    "-C",
+    "link-arg=-Tlink.x",
+    # This is needed if your flash or ram addresses are not aligned to 0x10000 in memory.x
+    # See https://github.com/rust-embedded/cortex-m-quickstart/pull/95
+    "-C",
+    "link-arg=--nmagic",
+    # defmt 单元测试
+    "-C",
+    "link-arg=-Tdefmt.x",
+]
+
+
+[build]
+target = "thumbv7m-none-eabi"
+
+
+[alias]
+rb = "run --bin"
+rp = "run --package"
+rrb = "run --release --bin"
