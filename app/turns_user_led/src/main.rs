@@ -10,8 +10,11 @@
 #![no_main]
 
 // 用于处理错误情况；
-use panic_halt as _;
+use defmt_rtt as _;
+use panic_probe as _;
 
+// 日志打印
+use defmt::println;
 // 用于标记程序入口；
 use cortex_m_rt::entry;
 // 可用于输出和相关AlternateMode引脚的回转速率
@@ -38,6 +41,7 @@ fn main() -> ! {
     // 然后在接下来的代码中，我们将使用该引脚来控制 LED 的状态。
     led.set_speed(&mut gpioa.crl, IOPinSpeed::Mhz50);
 
+    println!("open led...");
     // 设置低电平
     // led.set_low();
     led.set_high();

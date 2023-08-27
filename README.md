@@ -10,17 +10,17 @@
 
 ### 基础示例
 
-- [Hello World](./app/helloworld)
-- [自定义异常 Panic](./app/panics)
-- [烧录工具 Embed](./app/flash_tool_embed)
-- [烧录工具 probe-run](./app/flash_tool_defmt)
-- [单元测试套件](./app/unit_testsuite)
+- [Hello World](./app/basic/helloworld)
+- [自定义异常 Panic](./app/basic/panics)
+- [烧录工具 Embed](./app/basic/flash_tool_embed)
+- [烧录工具 probe-run](./app/basic/flash_tool_defmt)
+- [单元测试套件](./app/basic/unit_testsuite)
 
 ### 延迟
 
-- [系统计时器延迟](./app/syst_timer_delay)
-- [系统定时器延迟](./app/syst_delay)
-- [TIM2 定时器延迟](./app/tim2_delay)
+- [系统计时器延迟](./app/delay/syst_timer_delay)
+- [系统定时器延迟](./app/delay/syst_delay)
+- [TIM2 定时器延迟](./app/delay/tim2_delay)
 
 ### 通用 GPIO
 

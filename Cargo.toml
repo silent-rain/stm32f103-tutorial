@@ -15,15 +15,15 @@ harness = false
 [workspace]
 members = [
     # 基础示例
-    "app/helloworld",
-    "app/panics",
-    "app/flash_tool_embed",
-    "app/flash_tool_defmt",
-    "app/unit_testsuite",
+    "app/basic/helloworld",
+    "app/basic/panics",
+    "app/basic/flash_tool_embed",
+    "app/basic/flash_tool_defmt",
+    "app/basic/unit_testsuite",
     # 延迟
-    "app/syst_timer_delay",
-    "app/syst_delay",
-    "app/tim2_delay",
+    "app/delay/syst_timer_delay",
+    "app/delay/syst_delay",
+    "app/delay/tim2_delay",
     # 通用 GPIO
     "app/turns_user_led",
     "app/delay_blinky",
