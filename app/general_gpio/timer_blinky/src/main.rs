@@ -4,6 +4,9 @@
 #![no_std]
 #![no_main]
 
+use defmt_rtt as _;
+use panic_probe as _;
+
 use cortex_m_rt::entry;
 use nb::block;
 use stm32f1xx_hal::pac;
@@ -12,8 +15,6 @@ use stm32f1xx_hal::prelude::_stm32_hal_flash_FlashExt;
 use stm32f1xx_hal::prelude::_stm32_hal_gpio_GpioExt;
 use stm32f1xx_hal::rcc::RccExt;
 use stm32f1xx_hal::timer::Timer;
-
-use panic_halt as _;
 
 #[entry]
 fn main() -> ! {

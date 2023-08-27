@@ -43,9 +43,11 @@ members = [
     "app/timer_interrupt",
     "app/timer_interrupt2",
     "app/timer_external_clock",
+    # 禁用调试端口
+    "app/disable_jtag_ports",
+    # PWM
     "app/pwm_led",
     "app/pwm_led2",
-    "app/disable_jtag_ports",
     "app/pwm_led_remap",
     "app/pwm_custom",
     "app/pwm_driven_servo",
@@ -57,9 +59,6 @@ members = [
 embedded-hal = "1.0.0-rc.1"
 cortex-m = "0.7.7"
 cortex-m-rt = "0.7.3"
-# Panic behaviour, see https://crates.io/keywords/panic-impl for alternatives
-# panic-halt = "0.2.0"
-panic-rtt-target = {version = "0.1.2", features = ["cortex-m"]}
 # 开发板型号: STM32F103C8T6
 stm32f1xx-hal = {version = "0.10.0", features = ["rt", "stm32f103", "medium"]}
 defmt = "0.3"

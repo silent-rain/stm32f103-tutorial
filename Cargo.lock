@@ -35,8 +35,10 @@ version = "0.1.0"
 dependencies = [
  "cortex-m",
  "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
  "nb 1.1.0",
- "panic-halt",
+ "panic-probe",
  "stm32f1xx-hal",
 ]
 
@@ -46,8 +48,10 @@ version = "0.1.0"
 dependencies = [
  "cortex-m",
  "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
  "nb 1.1.0",
- "panic-halt",
+ "panic-probe",
  "stm32f1xx-hal",
 ]
 
@@ -182,8 +186,10 @@ version = "0.1.0"
 dependencies = [
  "cortex-m",
  "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
  "nb 1.1.0",
- "panic-halt",
+ "panic-probe",
  "stm32f1xx-hal",
 ]
 
@@ -286,7 +292,9 @@ version = "0.1.0"
 dependencies = [
  "cortex-m",
  "cortex-m-rt",
- "panic-halt",
+ "defmt",
+ "defmt-rtt",
+ "panic-probe",
  "stm32f1xx-hal",
 ]
 
@@ -308,7 +316,9 @@ version = "0.1.0"
 dependencies = [
  "cortex-m",
  "cortex-m-rt",
- "panic-halt",
+ "defmt",
+ "defmt-rtt",
+ "panic-probe",
  "stm32f1xx-hal",
 ]
 
@@ -318,7 +328,9 @@ version = "0.1.0"
 dependencies = [
  "cortex-m",
  "cortex-m-rt",
- "panic-halt",
+ "defmt",
+ "defmt-rtt",
+ "panic-probe",
  "stm32f1xx-hal",
 ]
 
@@ -343,7 +355,9 @@ version = "0.1.0"
 dependencies = [
  "cortex-m",
  "cortex-m-rt",
- "panic-halt",
+ "defmt",
+ "defmt-rtt",
+ "panic-probe",
  "stm32f1xx-hal",
 ]
 
@@ -639,7 +653,6 @@ dependencies = [
  "defmt-test",
  "embedded-hal 1.0.0-rc.1",
  "panic-probe",
- "panic-rtt-target",
  "stm32f1xx-hal",
 ]
 
@@ -760,8 +773,10 @@ version = "0.1.0"
 dependencies = [
  "cortex-m",
  "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
  "nb 1.1.0",
- "panic-halt",
+ "panic-probe",
  "stm32f1xx-hal",
 ]
 

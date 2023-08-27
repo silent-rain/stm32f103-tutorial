@@ -45,8 +45,14 @@
 - [定时器中断](./app/timer_interrupt)
 - [定时器中断 2](./app/timer_interrupt2)
 - [定时器外部时钟](./app/timer_external_clock)
-- [PWM 驱动呼吸灯](./app/pwm_led)
+
+### 禁用调试端口
+
 - [禁用 JTAG 端口](./app/disable_jtag_ports)
+
+### PWM
+
+- [PWM 驱动呼吸灯](./app/pwm_led)
 - [自定义引脚组合的 PWM 输出](./app/pwm_custom)
 - [PWM 驱动呼吸灯-端口重映射](./app/pwm_led_remap)
 - [PWM 驱动舵机](./app/pwm_driven_servo)

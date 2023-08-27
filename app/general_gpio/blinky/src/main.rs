@@ -11,7 +11,8 @@
 #![no_main]
 
 // 用于处理错误情况；
-use panic_halt as _;
+use defmt_rtt as _;
+use panic_probe as _;
 
 // 将非阻塞表达式转换为阻塞操作；
 use nb::block;
