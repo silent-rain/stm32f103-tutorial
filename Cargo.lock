@@ -223,6 +223,30 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2894bc2f0457b8ca3d6b8ab8aad64d9337583672494013457f86c5a9146c0e22"
 
 [[package]]
+name = "flash_tool_defmt"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "defmt-test",
+ "panic-probe",
+ "stm32f1xx-hal",
+]
+
+[[package]]
+name = "flash_tool_embed"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "panic-rtt-target",
+ "rtt-target 0.4.0",
+ "stm32f1xx-hal",
+]
+
+[[package]]
 name = "fugit"
 version = "0.3.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -274,7 +298,7 @@ dependencies = [
  "cortex-m-rt",
  "cortex-m-semihosting",
  "panic-rtt-target",
- "rtt-target",
+ "rtt-target 0.3.1",
  "stm32f1xx-hal",
 ]
 
@@ -332,7 +356,7 @@ dependencies = [
  "cortex-m-rt",
  "cortex-m-semihosting",
  "panic-rtt-target",
- "rtt-target",
+ "rtt-target 0.3.1",
  "stm32f1xx-hal",
 ]
 
@@ -344,7 +368,7 @@ dependencies = [
  "cortex-m-rt",
  "cortex-m-semihosting",
  "panic-rtt-target",
- "rtt-target",
+ "rtt-target 0.3.1",
  "stm32f1xx-hal",
 ]
 
@@ -371,7 +395,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0d6ab67bc881453e4c90f958c657c1303670ea87bc1a16e87fd71a40f656dce9"
 dependencies = [
  "cortex-m",
- "rtt-target",
+ "rtt-target 0.3.1",
 ]
 
 [[package]]
@@ -435,7 +459,7 @@ dependencies = [
  "cortex-m-rt",
  "cortex-m-semihosting",
  "panic-rtt-target",
- "rtt-target",
+ "rtt-target 0.3.1",
  "stm32f1xx-hal",
 ]
 
@@ -483,7 +507,7 @@ dependencies = [
  "cortex-m-rt",
  "cortex-m-semihosting",
  "panic-rtt-target",
- "rtt-target",
+ "rtt-target 0.3.1",
  "stm32f1xx-hal",
 ]
 
@@ -495,7 +519,7 @@ dependencies = [
  "cortex-m-rt",
  "cortex-m-semihosting",
  "panic-rtt-target",
- "rtt-target",
+ "rtt-target 0.3.1",
  "stm32f1xx-hal",
 ]
 
@@ -507,7 +531,7 @@ dependencies = [
  "cortex-m-rt",
  "cortex-m-semihosting",
  "panic-rtt-target",
- "rtt-target",
+ "rtt-target 0.3.1",
  "stm32f1xx-hal",
 ]
 
@@ -528,7 +552,7 @@ dependencies = [
  "cortex-m-rt",
  "cortex-m-semihosting",
  "panic-rtt-target",
- "rtt-target",
+ "rtt-target 0.3.1",
  "stm32f1xx-hal",
 ]
 
@@ -539,6 +563,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "065d6058bb1204f51a562a67209e1817cf714759d5cf845aa45c75fa7b0b9d9b"
 dependencies = [
  "cortex-m",
+ "ufmt-write",
+]
+
+[[package]]
+name = "rtt-target"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3afa12c77ba1b9bf560e4039a9b9a08bb9cde0e9e6923955eeb917dd8d5cf303"
+dependencies = [
+ "critical-section",
  "ufmt-write",
 ]
 
@@ -660,34 +694,7 @@ dependencies = [
  "cortex-m-rt",
  "cortex-m-semihosting",
  "panic-rtt-target",
- "rtt-target",
- "stm32f1xx-hal",
-]
-
-[[package]]
-name = "testsuite"
-version = "0.1.0"
-dependencies = [
- "cortex-m",
- "cortex-m-rt",
- "defmt",
- "defmt-rtt",
- "defmt-test",
- "panic-probe",
- "panic-rtt-target",
- "stm32f1xx-hal",
-]
-
-[[package]]
-name = "testsuite_replace_embed"
-version = "0.1.0"
-dependencies = [
- "cortex-m",
- "cortex-m-rt",
- "defmt",
- "defmt-rtt",
- "defmt-test",
- "panic-probe",
+ "rtt-target 0.3.1",
  "stm32f1xx-hal",
 ]
 
@@ -753,7 +760,7 @@ dependencies = [
  "cortex-m-rt",
  "cortex-m-semihosting",
  "panic-rtt-target",
- "rtt-target",
+ "rtt-target 0.3.1",
  "stm32f1xx-hal",
 ]
 
@@ -765,7 +772,7 @@ dependencies = [
  "cortex-m-rt",
  "cortex-m-semihosting",
  "panic-rtt-target",
- "rtt-target",
+ "rtt-target 0.3.1",
  "stm32f1xx-hal",
 ]
 
@@ -784,7 +791,7 @@ version = "0.1.0"
 dependencies = [
  "cortex-m-rt",
  "panic-rtt-target",
- "rtt-target",
+ "rtt-target 0.3.1",
  "stm32f1xx-hal",
 ]
 
@@ -799,6 +806,19 @@ name = "unicode-ident"
 version = "1.0.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "301abaae475aa91687eb82514b328ab47a211a533026cb25fc3e519b86adfc3c"
+
+[[package]]
+name = "unit_testsuite"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "defmt-test",
+ "panic-probe",
+ "stm32f1xx-hal",
+]
 
 [[package]]
 name = "usb-device"

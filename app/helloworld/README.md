@@ -17,6 +17,7 @@
 - Renode 仿真模拟器的使用
   - Renode CLI 启动
   - stm32 仿真器启动
+- QEUM 仿真器的使用
 - GDB 调试
   - GDB 手动启动
   - GDB 自动化脚本启动

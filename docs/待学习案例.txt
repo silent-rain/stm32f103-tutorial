@@ -10,6 +10,11 @@ pwm_custom.rs
 panics.rs
 gpio_input.rs
 nojtag.rs
+pwm_input.rs
+
+
+
+multi_mode_gpio.rs
 
 
 i2c-bme280
@@ -32,8 +37,6 @@ itm.rs
 mfrc522.rs
 motor.rs.disabled
 mpu9250.rs.disabled
-multi_mode_gpio.rs
-pwm_input.rs
 qei.rs
 rtc.rs
 serial-dma-circ.rs

@@ -6,6 +6,12 @@
 
 如果需要打印信息到终端注意配置 `Embed.toml` 文件。
 
+## 执行指令
+
+```shell
+cargo embed --target thumbv7m-none-eabi -p flash_tool_embed
+```
+
 ## 学习目标
 
 - 了解 Embed 配置

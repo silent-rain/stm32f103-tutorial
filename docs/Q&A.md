@@ -12,7 +12,7 @@
           flip-link: the native linker failed to link the program normally; please check your project configuration and linker scripts
 ```
 
-## 解决方案
+### 解决方案
 
 在 .cargo/config.toml 文件中包含了两个目标都生效了, 导致 `memory.x` 被读取了两次。
 

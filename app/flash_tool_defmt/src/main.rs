@@ -1,5 +1,3 @@
-//! Prints "Hello, world" on the OpenOCD console
-
 // 允许有空的循环结构；
 #![allow(clippy::empty_loop)]
 // 禁止使用 Rust 的 unsafe 代码；

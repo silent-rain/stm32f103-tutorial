@@ -12,7 +12,7 @@ machine LoadPlatformDescription @scripts/platforms/cpus/stm32f103.repl
 
 
 # 指定二进制程序
-$bin=@target/thumbv7m-none-eabi/debug/blinky
+$bin=@target/thumbv7m-none-eabi/debug/flash_tool_embed
 
 
 # 分析外设

@@ -8,10 +8,14 @@
 
 ## 示例目录
 
+### 基础示例
+
 - [Hello World](./app/helloworld)
 - [自定义异常 Panic](./app/panics)
-- [测试套件](./app/testsuite)
-- [Defmt 替换 Embed](./app/testsuite_replace_embed)
+- [烧录工具 Embed](./app/flash_tool_embed)
+- [烧录工具 probe-run](./app/flash_tool_defmt)
+- [单元测试套件](./app/unit_testsuite)
+
 - [点灯](./app/turns_user_led)
 - [点灯-RTT](./app/turns_user_led_rtt)
 - [计时器闪烁 LED](./app/timer_blinky)
