@@ -2,6 +2,12 @@
 
 这是一个光敏传感器控制蜂鸣器的示例。
 
+## 执行指令
+
+```shell
+cargo rp light_sensor_control_buzzer
+```
+
 ## 学习目标
 
 - 配置光敏传感器

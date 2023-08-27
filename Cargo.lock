@@ -343,7 +343,6 @@ version = "0.1.0"
 dependencies = [
  "cortex-m",
  "cortex-m-rt",
- "cortex-m-semihosting",
  "panic-halt",
  "stm32f1xx-hal",
 ]

@@ -2,6 +2,12 @@
 
 这是一个 LED 流水灯的示例。
 
+## 执行指令
+
+```shell
+cargo rp led_flow_light
+```
+
 ## 学习目标
 
 - 闪烁多个 LED 灯

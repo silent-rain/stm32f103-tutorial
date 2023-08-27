@@ -2,6 +2,12 @@
 
 这是一个使用 I2C 通信协议在 OLED (有机发光二极管) 显示屏显示字符的示例。
 
+## 执行指令
+
+```shell
+cargo rp oled_i2c_show_character
+```
+
 ## 学习目标
 
 - 了解 OLED 显示屏

@@ -2,6 +2,12 @@
 
 这是一个按键控制 LED 灯的示例。
 
+## 执行指令
+
+```shell
+cargo rp key_control_led
+```
+
 ## 学习目标
 
 - 配置按键
