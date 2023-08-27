@@ -46,9 +46,9 @@
 - [定时器中断 2](./app/interrupt/timer_interrupt2)
 - [定时器外部时钟](./app/interrupt/timer_external_clock)
 
-### 禁用调试端口
+### 端口重映射
 
-- [禁用 JTAG 端口](./app/disable_jtag_ports)
+- [禁用 JTAG 端口](./app/port_remap/disable_jtag_ports)
 
 ### PWM
 
