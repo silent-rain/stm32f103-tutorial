@@ -8,13 +8,13 @@ mod hardware;
 use hardware::oled;
 use hardware::peripheral::Peripheral;
 
-use defmt::println;
 use defmt_rtt as _;
 use panic_probe as _;
 
 use cortex_m::interrupt::Mutex;
 use cortex_m::peripheral::NVIC;
 use cortex_m_rt::entry;
+use defmt::println;
 use stm32f1xx_hal::device::TIM2;
 use stm32f1xx_hal::pac::interrupt;
 use stm32f1xx_hal::timer::Event;

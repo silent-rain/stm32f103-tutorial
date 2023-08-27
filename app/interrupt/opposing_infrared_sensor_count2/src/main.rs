@@ -8,13 +8,13 @@ use hardware::peripheral::Peripheral;
 
 use core::mem::MaybeUninit;
 
-// 用于处理错误情况
-use panic_rtt_target as _;
-use rtt_target::{rprintln, rtt_init_print};
+use defmt_rtt as _;
+use panic_probe as _;
 
 use cortex_m::peripheral::NVIC;
 use cortex_m::prelude::_embedded_hal_blocking_delay_DelayMs;
 use cortex_m_rt::entry;
+use defmt::println;
 use stm32f1xx_hal::gpio::{self, gpiob, Edge, ExtiPin, Input, PullUp};
 use stm32f1xx_hal::pac::{self, interrupt};
 
@@ -30,8 +30,6 @@ static mut SENSOR_COUNT: u32 = 0;
 
 #[entry]
 fn main() -> ! {
-    rtt_init_print!();
-
     // 初始化外设
     let Peripheral {
         flash,
@@ -61,7 +59,7 @@ fn main() -> ! {
     }
 
     // 初始化 OLED 显示屏
-    rprintln!("load oled...");
+    println!("load oled...");
     let (mut scl, mut sda) = oled::init_oled(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
 
     oled::show_string(&mut scl, &mut sda, 1, 1, "Count:");

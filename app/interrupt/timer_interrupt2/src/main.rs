@@ -8,8 +8,9 @@ mod hardware;
 use hardware::oled;
 use hardware::peripheral::Peripheral;
 
-use panic_rtt_target as _;
-use rtt_target::{rprintln, rtt_init_print};
+use defmt::println;
+use defmt_rtt as _;
+use panic_probe as _;
 
 use cortex_m::interrupt::Mutex;
 use cortex_m::peripheral::NVIC;
@@ -27,8 +28,6 @@ static mut ARR: u32 = 0;
 
 #[entry]
 fn main() -> ! {
-    rtt_init_print!();
-
     // 初始化外设
     let Peripheral {
         mut flash,
@@ -77,7 +76,7 @@ fn main() -> ! {
     cortex_m::interrupt::free(|cs| G_TIM.borrow(cs).replace(Some(timer)));
 
     // 初始化 OLED 显示屏
-    rprintln!("load oled...");
+    println!("load oled...");
     let (mut scl, mut sda) = oled::init_oled(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
 
     oled::show_string(&mut scl, &mut sda, 1, 1, "Num:");
