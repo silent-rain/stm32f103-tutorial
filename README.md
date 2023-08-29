@@ -62,6 +62,11 @@
 - [旋转编码器接口延时测速](./app/pwm/pwm_rotary_encoder_speed)
 - [旋转编码器接口定时器测速](./app/pwm/pwm_rotary_encoder_timer_speed)
 
+### ADC
+
+- [AD 单通道](./app/adc/ad_single_channel)
+- [AD 多通道](./app/adc/ad_multichannel)
+
 ## 相关文档
 
 - [Archlinux 环境搭建](./docs/Archlinux环境搭建.md)

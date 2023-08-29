@@ -56,7 +56,11 @@ members = [
     "app/pwm/pwm_rotary_encoder_count",
     "app/pwm/pwm_rotary_encoder_speed",
     "app/pwm/pwm_rotary_encoder_timer_speed",
+    # ADC
+    "app/adc/ad_single_channel",
+    "app/adc/ad_multichannel",
 ]
+
 
 [dependencies]
 embedded-hal = "1.0.0-rc.1"

@@ -11,6 +11,7 @@ panics.rs
 gpio_input.rs
 nojtag.rs
 pwm_input.rs
+qei.rs
 
 
 
@@ -37,7 +38,6 @@ itm.rs
 mfrc522.rs
 motor.rs.disabled
 mpu9250.rs.disabled
-qei.rs
 rtc.rs
 serial-dma-circ.rs
 serial-dma-peek.rs
