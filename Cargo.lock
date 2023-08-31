@@ -230,6 +230,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "dma_data_transfer"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "embedded-dma",
+ "panic-probe",
+ "stm32f1xx-hal",
+]
+
+[[package]]
 name = "embedded-dma"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -448,6 +461,18 @@ dependencies = [
  "cortex-m-rt",
  "cortex-m-semihosting",
  "panic-semihosting",
+ "stm32f1xx-hal",
+]
+
+[[package]]
+name = "print_memory_address"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "panic-probe",
  "stm32f1xx-hal",
 ]
 

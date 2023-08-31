@@ -59,6 +59,9 @@ members = [
     # ADC
     "app/adc/ad_single_channel",
     "app/adc/ad_multichannel",
+    # DMA
+    "app/dma/print_memory_address",
+    "app/dma/dma_data_transfer",
 ]
 
 
