@@ -71,10 +71,10 @@
 
 - [打印内存地址](./app/dma/print_memory_address)
 - [DMA 数据转运](./app/dma/dma_data_transfer)
-- 31
-  36:00
-  49:00
-  51
+- [DMA 数据连续转运](./app/dma/dma_data_continuous_transfer)
+- [DMA+AD 多通道](./app/dma/scan_dma_and_ad_multichannel)
+- [DMA+AD 多通道循环读取](./app/dma/scan_dma_and_ad_multichannel_loop)
+- [DMA+AD 多通道分批读取](./app/dma/scan_dma_and_ad_multichannel_peek)
 
 ## 相关文档
 

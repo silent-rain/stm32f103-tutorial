@@ -12,7 +12,8 @@ gpio_input.rs
 nojtag.rs
 pwm_input.rs
 qei.rs
-
+adc-dma-rx.rs
+adc.rs
 
 
 multi_mode_gpio.rs
@@ -20,8 +21,6 @@ multi_mode_gpio.rs
 
 i2c-bme280
 adc-dma-circ.rs
-adc-dma-rx.rs
-adc.rs
 adc_temperature.rs
 blinky_rtc.rs
 blinky_rtcalarm_irq.rs

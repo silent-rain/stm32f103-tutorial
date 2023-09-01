@@ -3,13 +3,13 @@
 #![no_main]
 
 mod hardware;
+use cortex_m::prelude::_embedded_hal_blocking_delay_DelayMs;
 use hardware::oled;
 use hardware::peripheral::Peripheral;
 
 use defmt_rtt as _;
 use panic_probe as _;
 
-use cortex_m::asm::wfi;
 use cortex_m_rt::entry;
 use defmt::println;
 use stm32f1xx_hal::flash;
@@ -42,18 +42,14 @@ fn main() -> ! {
     let clocks = rcc.cfgr.adcclk(72.MHz()).freeze(&mut flash.acr);
 
     // 封装具有自定义精度的阻塞延迟函数
-    let mut _delay = Peripheral::sys_delay(&mut flash, &clocks, syst);
+    let mut delay = Peripheral::sys_delay(&mut flash, &clocks, syst);
 
     // 初始化 OLED 显示屏
     println!("load oled...");
     let (mut scl, mut sda) = oled::init_oled(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
 
-    // 存储器到存储器转运
-    // 定义u8类型的数组
-    let data_a: [u8; 4] = [1, 2, 3, 4];
-
-    // Flash 到 SRAM 转运, 使用 const
-    // const data_a: [u8; 4] = [1, 2, 3, 4];
+    // 定义可变u8类型的数组
+    let mut data_a: [u8; 4] = [1, 2, 3, 4];
 
     // 定义u8类型的数组
     let data_b: [u8; 4] = [0, 0, 0, 0];
@@ -71,7 +67,7 @@ fn main() -> ! {
     dma_ch1.set_transfer_length(data_b.len() * 1);
 
     // 数据传输方向
-    dma_ch1.ch().cr.modify(|_, w| w.dir().from_peripheral());
+    // dma_ch1.ch().cr.modify(|_, w| w.dir().from_peripheral());
 
     dma_ch1.ch().cr.modify(|_, w| {
         w.mem2mem()
@@ -89,26 +85,48 @@ fn main() -> ! {
     });
 
     // 启动DMA传输
-    dma_ch1.start();
+    // dma_ch1.start();
 
-    oled::show_hex_num(&mut scl, &mut sda, 1, 1, data_a[0].into(), 2);
-    oled::show_hex_num(&mut scl, &mut sda, 1, 4, data_a[1].into(), 2);
-    oled::show_hex_num(&mut scl, &mut sda, 1, 7, data_a[2].into(), 2);
-    oled::show_hex_num(&mut scl, &mut sda, 1, 10, data_a[3].into(), 2);
-    oled::show_hex_num(&mut scl, &mut sda, 2, 1, data_b[0].into(), 2);
-    oled::show_hex_num(&mut scl, &mut sda, 2, 4, data_b[1].into(), 2);
-    oled::show_hex_num(&mut scl, &mut sda, 2, 7, data_b[2].into(), 2);
-    oled::show_hex_num(&mut scl, &mut sda, 2, 10, data_b[3].into(), 2);
-
-    oled::show_hex_num(&mut scl, &mut sda, 3, 1, data_a[0].into(), 2);
-    oled::show_hex_num(&mut scl, &mut sda, 3, 4, data_a[1].into(), 2);
-    oled::show_hex_num(&mut scl, &mut sda, 3, 7, data_a[2].into(), 2);
-    oled::show_hex_num(&mut scl, &mut sda, 3, 10, data_a[3].into(), 2);
-    oled::show_hex_num(&mut scl, &mut sda, 4, 1, data_b[0].into(), 2);
-    oled::show_hex_num(&mut scl, &mut sda, 4, 4, data_b[1].into(), 2);
-    oled::show_hex_num(&mut scl, &mut sda, 4, 7, data_b[2].into(), 2);
-    oled::show_hex_num(&mut scl, &mut sda, 4, 10, data_b[3].into(), 2);
     loop {
-        wfi();
+        for _ in 0..10 {
+            oled::show_hex_num(&mut scl, &mut sda, 1, 1, data_a[0].into(), 2);
+            oled::show_hex_num(&mut scl, &mut sda, 1, 4, data_a[1].into(), 2);
+            oled::show_hex_num(&mut scl, &mut sda, 1, 7, data_a[2].into(), 2);
+            oled::show_hex_num(&mut scl, &mut sda, 1, 10, data_a[3].into(), 2);
+            oled::show_hex_num(&mut scl, &mut sda, 2, 1, data_b[0].into(), 2);
+            oled::show_hex_num(&mut scl, &mut sda, 2, 4, data_b[1].into(), 2);
+            oled::show_hex_num(&mut scl, &mut sda, 2, 7, data_b[2].into(), 2);
+            oled::show_hex_num(&mut scl, &mut sda, 2, 10, data_b[3].into(), 2);
+
+            dma_ch1.set_peripheral_address(data_a.as_ptr() as u32, true);
+            dma_ch1.set_memory_address(data_b.as_ptr() as u32, true);
+            #[allow(clippy::identity_op)]
+            dma_ch1.set_transfer_length(data_b.len() * 1);
+            dma_ch1
+                .ch()
+                .cr
+                .modify(|_, w| w.mem2mem().enabled().pl().medium().dir().from_peripheral());
+
+            dma_ch1.start();
+            // 完成转运后更新数组
+            if !dma_ch1.in_progress() {
+                dma_ch1.stop();
+                data_a[0] += 1;
+                data_a[1] += 1;
+                data_a[2] += 1;
+                data_a[3] += 1;
+            }
+
+            oled::show_hex_num(&mut scl, &mut sda, 3, 1, data_a[0].into(), 2);
+            oled::show_hex_num(&mut scl, &mut sda, 3, 4, data_a[1].into(), 2);
+            oled::show_hex_num(&mut scl, &mut sda, 3, 7, data_a[2].into(), 2);
+            oled::show_hex_num(&mut scl, &mut sda, 3, 10, data_a[3].into(), 2);
+            oled::show_hex_num(&mut scl, &mut sda, 4, 1, data_b[0].into(), 2);
+            oled::show_hex_num(&mut scl, &mut sda, 4, 4, data_b[1].into(), 2);
+            oled::show_hex_num(&mut scl, &mut sda, 4, 7, data_b[2].into(), 2);
+            oled::show_hex_num(&mut scl, &mut sda, 4, 10, data_b[3].into(), 2);
+
+            delay.delay_ms(1000_u32);
+        }
     }
 }

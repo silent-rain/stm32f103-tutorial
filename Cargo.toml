@@ -62,6 +62,10 @@ members = [
     # DMA
     "app/dma/print_memory_address",
     "app/dma/dma_data_transfer",
+    "app/dma/dma_data_continuous_transfer",
+    "app/dma/scan_dma_and_ad_multichannel",
+    "app/dma/scan_dma_and_ad_multichannel_loop",
+    "app/dma/scan_dma_and_ad_multichannel_peek",
 ]
 
 

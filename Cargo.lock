@@ -230,6 +230,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "dma_data_continuous_transfer"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "embedded-dma",
+ "panic-probe",
+ "stm32f1xx-hal",
+]
+
+[[package]]
 name = "dma_data_transfer"
 version = "0.1.0"
 dependencies = [
@@ -676,6 +689,45 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "138e3e0acb6c9fb258b19b67cb8abd63c00679d2851805ea151465464fe9030a"
 dependencies = [
  "semver",
+]
+
+[[package]]
+name = "scan_dma_and_ad_multichannel"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "embedded-dma",
+ "panic-probe",
+ "stm32f1xx-hal",
+]
+
+[[package]]
+name = "scan_dma_and_ad_multichannel_loop"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "embedded-dma",
+ "panic-probe",
+ "stm32f1xx-hal",
+]
+
+[[package]]
+name = "scan_dma_and_ad_multichannel_peek"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "embedded-dma",
+ "panic-probe",
+ "stm32f1xx-hal",
 ]
 
 [[package]]
