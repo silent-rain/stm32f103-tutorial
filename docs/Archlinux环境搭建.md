@@ -48,7 +48,19 @@ cargo embed --version
 有 ARM 仿真支持的 QEMU 用于调试 ARM Cortex-M 程序的 GDB 命令
 
 ```shell
-sudo pacman -S arm-none-eabi-gdb minicom
+sudo pacman -S arm-none-eabi-gdb
+```
+
+## 终端串口工具
+
+```shell
+sudo pacman -S minicom
+```
+
+## 图形化串口工具（可选）
+
+```shell
+yay -S aur/cutecom
 ```
 
 ## Openocd 调试器
