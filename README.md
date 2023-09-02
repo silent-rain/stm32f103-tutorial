@@ -67,7 +67,7 @@
 - [AD 单通道](./app/adc/ad_single_channel)
 - [AD 多通道](./app/adc/ad_multichannel)
 
-## DMA
+### DMA
 
 - [打印内存地址](./app/dma/print_memory_address)
 - [DMA 数据转运](./app/dma/dma_data_transfer)
@@ -98,3 +98,5 @@
 - [stm32f1xx-hal](https://github.com/stm32-rs/stm32f1xx-hal)
 - [STM32F103c8 数据表](https://www.st.com/resource/en/datasheet/cd00161566.pdf)
 - [嵌入经济学](https://docs.rust-embedded.org/embedonomicon/)
+- [Linux 系统下使用 cutecom 进行串口通信（一）](https://zhuanlan.zhihu.com/p/371813518)
+- [Linux 下 minicom 串口助手的使用](https://www.cnblogs.com/xingboy/p/16538932.html)
