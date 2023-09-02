@@ -5,7 +5,6 @@
 #![no_std]
 #![no_main]
 
-mod hardware;
 use hardware::oled;
 
 use defmt_rtt as _;

@@ -66,6 +66,8 @@ members = [
     "app/dma/scan_dma_and_ad_multichannel",
     "app/dma/scan_dma_and_ad_multichannel_loop",
     "app/dma/scan_dma_and_ad_multichannel_peek",
+    # 常用外设工具库
+    "core/hardware",
 ]
 
 

@@ -2,9 +2,7 @@
 #![no_std]
 #![no_main]
 
-mod hardware;
 use hardware::oled;
-use hardware::peripheral::Peripheral;
 
 use defmt_rtt as _;
 use panic_probe as _;
@@ -27,6 +25,7 @@ use stm32f1xx_hal::prelude::_stm32_hal_flash_FlashExt;
 use stm32f1xx_hal::prelude::_stm32_hal_gpio_GpioExt;
 use stm32f1xx_hal::rcc;
 use stm32f1xx_hal::rcc::RccExt;
+use stm32f1xx_hal::timer::SysTimerExt;
 
 #[entry]
 fn main() -> ! {
@@ -38,7 +37,7 @@ fn main() -> ! {
     let mut flash: flash::Parts = dp.FLASH.constrain();
     let rcc: rcc::Rcc = dp.RCC.constrain();
     let adc1 = dp.ADC1;
-    let syst = cp.SYST;
+    let syst: pac::SYST = cp.SYST;
 
     let mut gpioa: gpioa::Parts = dp.GPIOA.split();
     let mut gpiob: gpiob::Parts = dp.GPIOB.split();
@@ -65,8 +64,8 @@ fn main() -> ! {
     let clocks = rcc.cfgr.adcclk(72.MHz()).freeze(&mut flash.acr);
     println!("adc freq: {:?}", clocks.adcclk().to_MHz());
 
-    // 封装具有自定义精度的阻塞延迟函数
-    let mut delay = Peripheral::sys_delay(&mut flash, &clocks, syst);
+    // 具有自定义精度的阻塞延迟函数
+    let mut delay = syst.delay(&clocks);
 
     // 初始化 OLED 显示屏
     println!("load oled...");

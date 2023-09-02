@@ -10,6 +10,7 @@ dependencies = [
  "cortex-m-rt",
  "defmt",
  "defmt-rtt",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]
@@ -22,6 +23,7 @@ dependencies = [
  "cortex-m-rt",
  "defmt",
  "defmt-rtt",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]
@@ -238,6 +240,7 @@ dependencies = [
  "defmt",
  "defmt-rtt",
  "embedded-dma",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]
@@ -251,6 +254,7 @@ dependencies = [
  "defmt",
  "defmt-rtt",
  "embedded-dma",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]
@@ -330,6 +334,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1d758ba1b47b00caf47f24925c0074ecb20d6dfcffe7f6d53395c0465674841a"
 
 [[package]]
+name = "hardware"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "defmt-test",
+ "panic-probe",
+ "stm32f1xx-hal",
+]
+
+[[package]]
 name = "helloworld"
 version = "0.1.0"
 dependencies = [
@@ -358,6 +375,7 @@ dependencies = [
  "cortex-m-rt",
  "defmt",
  "defmt-rtt",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]
@@ -409,6 +427,7 @@ dependencies = [
  "cortex-m-rt",
  "defmt",
  "defmt-rtt",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]
@@ -421,6 +440,7 @@ dependencies = [
  "cortex-m-rt",
  "defmt",
  "defmt-rtt",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]
@@ -433,6 +453,7 @@ dependencies = [
  "cortex-m-rt",
  "defmt",
  "defmt-rtt",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]
@@ -485,6 +506,7 @@ dependencies = [
  "cortex-m-rt",
  "defmt",
  "defmt-rtt",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]
@@ -530,6 +552,7 @@ dependencies = [
  "cortex-m-rt",
  "defmt",
  "defmt-rtt",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]
@@ -542,6 +565,7 @@ dependencies = [
  "cortex-m-rt",
  "defmt",
  "defmt-rtt",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]
@@ -554,6 +578,7 @@ dependencies = [
  "cortex-m-rt",
  "defmt",
  "defmt-rtt",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]
@@ -566,6 +591,7 @@ dependencies = [
  "cortex-m-rt",
  "defmt",
  "defmt-rtt",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]
@@ -578,6 +604,7 @@ dependencies = [
  "cortex-m-rt",
  "defmt",
  "defmt-rtt",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]
@@ -590,6 +617,7 @@ dependencies = [
  "cortex-m-rt",
  "defmt",
  "defmt-rtt",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]
@@ -602,6 +630,7 @@ dependencies = [
  "cortex-m-rt",
  "defmt",
  "defmt-rtt",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]
@@ -614,6 +643,7 @@ dependencies = [
  "cortex-m-rt",
  "defmt",
  "defmt-rtt",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]
@@ -626,6 +656,7 @@ dependencies = [
  "cortex-m-rt",
  "defmt",
  "defmt-rtt",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]
@@ -638,6 +669,7 @@ dependencies = [
  "cortex-m-rt",
  "defmt",
  "defmt-rtt",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]
@@ -659,6 +691,7 @@ dependencies = [
  "cortex-m-rt",
  "defmt",
  "defmt-rtt",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]
@@ -700,6 +733,7 @@ dependencies = [
  "defmt",
  "defmt-rtt",
  "embedded-dma",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]
@@ -713,6 +747,7 @@ dependencies = [
  "defmt",
  "defmt-rtt",
  "embedded-dma",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]
@@ -726,6 +761,7 @@ dependencies = [
  "defmt",
  "defmt-rtt",
  "embedded-dma",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]
@@ -838,6 +874,7 @@ dependencies = [
  "cortex-m-rt",
  "defmt",
  "defmt-rtt",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]
@@ -920,6 +957,7 @@ dependencies = [
  "cortex-m-rt",
  "defmt",
  "defmt-rtt",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]
@@ -932,6 +970,7 @@ dependencies = [
  "cortex-m-rt",
  "defmt",
  "defmt-rtt",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]
@@ -944,6 +983,7 @@ dependencies = [
  "cortex-m-rt",
  "defmt",
  "defmt-rtt",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]

@@ -4,10 +4,9 @@
 
 use core::cell::RefCell;
 
-mod hardware;
 use hardware::oled;
-use hardware::peripheral::Peripheral;
 
+use defmt::println;
 use defmt_rtt as _;
 use panic_probe as _;
 
@@ -15,18 +14,23 @@ use cortex_m::interrupt::Mutex;
 use cortex_m::peripheral::NVIC;
 use cortex_m::prelude::_embedded_hal_Qei;
 use cortex_m_rt::entry;
-use defmt::println;
 use stm32f1xx_hal::gpio::Input;
 use stm32f1xx_hal::gpio::Pin;
 use stm32f1xx_hal::gpio::PullUp;
+use stm32f1xx_hal::pac;
 use stm32f1xx_hal::pac::interrupt;
 use stm32f1xx_hal::pac::TIM2;
 use stm32f1xx_hal::pac::TIM3;
 use stm32f1xx_hal::prelude::_fugit_ExtU32;
+use stm32f1xx_hal::prelude::_stm32_hal_afio_AfioExt;
+use stm32f1xx_hal::prelude::_stm32_hal_flash_FlashExt;
+use stm32f1xx_hal::prelude::_stm32_hal_gpio_GpioExt;
 use stm32f1xx_hal::qei::Qei;
 use stm32f1xx_hal::qei::QeiOptions;
+use stm32f1xx_hal::rcc::RccExt;
 use stm32f1xx_hal::timer::CounterMs;
 use stm32f1xx_hal::timer::Event;
+use stm32f1xx_hal::timer::SysTimerExt;
 use stm32f1xx_hal::timer::Tim3NoRemap;
 use stm32f1xx_hal::timer::Timer;
 use stm32f1xx_hal::timer::TimerExt;
@@ -41,20 +45,20 @@ static G_QEI: Mutex<RefCell<Option<TQei>>> = Mutex::new(RefCell::new(None));
 
 #[entry]
 fn main() -> ! {
-    // 初始化外设
-    let Peripheral {
-        mut flash,
-        rcc,
-        tim2,
-        tim3,
-        dbg: _,
-        syst,
-        mut afio,
-        exti: _,
-        mut nvic,
-        mut gpioa,
-        mut gpiob,
-    } = Peripheral::new();
+    // 获取对外设的访问对象
+    let cp = cortex_m::Peripherals::take().unwrap();
+    let dp = pac::Peripherals::take().unwrap();
+
+    let mut flash = dp.FLASH.constrain();
+    let rcc = dp.RCC.constrain();
+    let syst = cp.SYST;
+    let mut afio = dp.AFIO.constrain();
+    let mut nvic = cp.NVIC;
+    let tim2 = dp.TIM2;
+    let tim3 = dp.TIM3;
+
+    let mut gpioa = dp.GPIOA.split();
+    let mut gpiob = dp.GPIOB.split();
 
     // 冻结系统中所有时钟的配置，并将冻结的频率存储在时钟中
     let clocks = rcc
@@ -66,8 +70,8 @@ fn main() -> ! {
         // .hclk(72.MHz())
         .freeze(&mut flash.acr);
 
-    // 封装具有自定义精度的阻塞延迟函数
-    let _delay = Peripheral::sys_delay(&mut flash, &clocks, syst);
+    // 具有自定义精度的阻塞延迟函数
+    let mut _delay = syst.delay(&clocks);
 
     // 初始化 OLED 显示屏
     println!("load oled...");

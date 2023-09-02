@@ -1,20 +1,19 @@
 //! OLED I2C 通信协议显示字符
-
 #![allow(clippy::empty_loop)]
 #![no_std]
 #![no_main]
 
-mod hardware;
-
 use core::mem::MaybeUninit;
 
+use hardware::oled;
+
+use defmt::println;
 use defmt_rtt as _;
 use panic_probe as _;
 
 use cortex_m::peripheral::NVIC;
 use cortex_m::prelude::_embedded_hal_blocking_delay_DelayMs;
 use cortex_m_rt::entry;
-use defmt::println;
 use stm32f1xx_hal::flash::{self, FlashExt};
 use stm32f1xx_hal::gpio::{self, gpioa, gpiob, Edge, ExtiPin, GpioExt, Input, OutputSpeed, PullUp};
 use stm32f1xx_hal::pac::interrupt;
@@ -22,8 +21,6 @@ use stm32f1xx_hal::prelude::_stm32_hal_afio_AfioExt;
 use stm32f1xx_hal::rcc::{self, RccExt};
 use stm32f1xx_hal::timer::{SysDelay, SysTimerExt};
 use stm32f1xx_hal::{afio, pac};
-
-use crate::hardware::oled;
 
 /// 对射式红外传感器
 /// 这个属于ISR所有。

@@ -76,7 +76,9 @@
 - [DMA+AD 多通道循环读取](./app/dma/scan_dma_and_ad_multichannel_loop)
 - [DMA+AD 多通道分批读取](./app/dma/scan_dma_and_ad_multichannel_peek)
 
+### 常用外设工具库封装
 
+- [硬件工具库](./core/hardware)
 
 ## 相关文档
 

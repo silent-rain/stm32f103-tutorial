@@ -2,16 +2,13 @@
 #![no_std]
 #![no_main]
 
-use cortex_m::asm::wfi;
-use cortex_m::prelude::_embedded_hal_blocking_delay_DelayMs;
+use defmt::println;
 use defmt_rtt as _;
 use panic_probe as _;
 
-mod hardware;
-use hardware::peripheral::Peripheral;
-
+use cortex_m::asm::wfi;
+use cortex_m::prelude::_embedded_hal_blocking_delay_DelayMs;
 use cortex_m_rt::entry;
-use defmt::println;
 use stm32f1xx_hal::adc;
 use stm32f1xx_hal::adc::Adc;
 use stm32f1xx_hal::adc::SetChannels;
@@ -36,6 +33,7 @@ use stm32f1xx_hal::prelude::_stm32_hal_gpio_GpioExt;
 use stm32f1xx_hal::rcc;
 use stm32f1xx_hal::rcc::RccExt;
 use stm32f1xx_hal::timer::SysDelay;
+use stm32f1xx_hal::timer::SysTimerExt;
 
 static mut AD_VALUE: [[u16; 8]; 2] = [[0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0]];
 
@@ -80,8 +78,8 @@ fn main() -> ! {
     // 使用支持的预分频器值2/4/6/8来近似用户指定的值。
     let clocks = rcc.cfgr.adcclk(72.MHz()).freeze(&mut flash.acr);
 
-    // 封装具有自定义精度的阻塞延迟函数
-    let mut delay: SysDelay = Peripheral::sys_delay(&mut flash, &clocks, syst);
+    // 具有自定义精度的阻塞延迟函数
+    let mut delay = syst.delay(&clocks);
 
     // 初始化 ADC
     let adc1 = dp.ADC1;

@@ -2,21 +2,24 @@
 #![no_std]
 #![no_main]
 
-mod hardware;
-use hardware::oled;
-use hardware::peripheral::Peripheral;
-
 use core::mem::MaybeUninit;
 
+use hardware::oled;
+
+use defmt::println;
 use defmt_rtt as _;
 use panic_probe as _;
 
 use cortex_m::peripheral::NVIC;
 use cortex_m::prelude::_embedded_hal_blocking_delay_DelayMs;
 use cortex_m_rt::entry;
-use defmt::println;
 use stm32f1xx_hal::gpio::{self, gpiob, Edge, ExtiPin, Input, PullUp};
 use stm32f1xx_hal::pac::{self, interrupt};
+use stm32f1xx_hal::prelude::{
+    _stm32_hal_afio_AfioExt, _stm32_hal_flash_FlashExt, _stm32_hal_gpio_GpioExt,
+};
+use stm32f1xx_hal::rcc::RccExt;
+use stm32f1xx_hal::timer::SysTimerExt;
 
 /// 对射式红外传感器
 /// 这个属于ISR所有。
@@ -30,20 +33,24 @@ static mut SENSOR_COUNT: u32 = 0;
 
 #[entry]
 fn main() -> ! {
-    // 初始化外设
-    let Peripheral {
-        flash,
-        rcc,
-        syst,
-        mut afio,
-        mut exti,
-        mut nvic,
-        gpioa: _,
-        mut gpiob,
-    } = Peripheral::new();
+    // 获取对外设的访问对象
+    let cp = cortex_m::Peripherals::take().unwrap();
+    let dp = pac::Peripherals::take().unwrap();
 
-    // 封装具有自定义精度的阻塞延迟函数
-    let mut delay = Peripheral::sys_delay(flash, rcc, syst);
+    let mut flash = dp.FLASH.constrain();
+    let rcc = dp.RCC.constrain();
+    let syst = cp.SYST;
+    let mut afio = dp.AFIO.constrain();
+    let mut exti = dp.EXTI;
+    let mut nvic = cp.NVIC;
+
+    let mut gpiob = dp.GPIOB.split();
+
+    // 冻结系统中所有时钟的配置，并将冻结的频率存储在时钟中
+    let clocks = rcc.cfgr.freeze(&mut flash.acr);
+
+    // 具有自定义精度的阻塞延迟函数
+    let mut delay = syst.delay(&clocks);
 
     // 上电延时
     delay.delay_ms(20u16);

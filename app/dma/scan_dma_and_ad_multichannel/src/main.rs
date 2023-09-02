@@ -2,17 +2,15 @@
 #![no_std]
 #![no_main]
 
-use cortex_m::asm::wfi;
-use cortex_m::singleton;
+use hardware::oled;
+
+use defmt::println;
 use defmt_rtt as _;
 use panic_probe as _;
 
-mod hardware;
-use hardware::oled;
-use hardware::peripheral::Peripheral;
-
+use cortex_m::asm::wfi;
+use cortex_m::singleton;
 use cortex_m_rt::entry;
-use defmt::println;
 use stm32f1xx_hal::adc;
 use stm32f1xx_hal::adc::Adc;
 use stm32f1xx_hal::adc::SetChannels;
@@ -35,6 +33,7 @@ use stm32f1xx_hal::prelude::_stm32_hal_flash_FlashExt;
 use stm32f1xx_hal::prelude::_stm32_hal_gpio_GpioExt;
 use stm32f1xx_hal::rcc;
 use stm32f1xx_hal::rcc::RccExt;
+use stm32f1xx_hal::timer::SysTimerExt;
 
 pub struct AdcPins(PA0<Analog>, PA1<Analog>, PA2<Analog>, PA3<Analog>);
 
@@ -78,8 +77,8 @@ fn main() -> ! {
     // 使用支持的预分频器值2/4/6/8来近似用户指定的值。
     let clocks = rcc.cfgr.adcclk(72.MHz()).freeze(&mut flash.acr);
 
-    // 封装具有自定义精度的阻塞延迟函数
-    let mut _delay = Peripheral::sys_delay(&mut flash, &clocks, syst);
+    // 具有自定义精度的阻塞延迟函数
+    let mut _delay = syst.delay(&clocks);
 
     // 初始化 OLED 显示屏
     println!("load oled...");

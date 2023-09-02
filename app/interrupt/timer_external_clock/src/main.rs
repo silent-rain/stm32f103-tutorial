@@ -4,19 +4,21 @@
 
 use core::cell::RefCell;
 
-mod hardware;
 use hardware::oled;
-use hardware::peripheral::Peripheral;
 
+use defmt::println;
 use defmt_rtt as _;
 use panic_probe as _;
 
 use cortex_m::interrupt::Mutex;
 use cortex_m::peripheral::NVIC;
 use cortex_m_rt::entry;
-use defmt::println;
 use stm32f1xx_hal::device::TIM2;
+use stm32f1xx_hal::pac;
 use stm32f1xx_hal::pac::interrupt;
+use stm32f1xx_hal::prelude::_stm32_hal_flash_FlashExt;
+use stm32f1xx_hal::prelude::_stm32_hal_gpio_GpioExt;
+use stm32f1xx_hal::rcc::RccExt;
 use stm32f1xx_hal::timer::Event;
 use stm32f1xx_hal::timer::Timer;
 
@@ -27,19 +29,17 @@ static G_TIM: Mutex<RefCell<Option<TIM2>>> = Mutex::new(RefCell::new(None));
 
 #[entry]
 fn main() -> ! {
-    // 初始化外设
-    let Peripheral {
-        mut flash,
-        rcc,
-        tim2,
-        syst: _,
-        afio: _,
-        exti: _,
-        dbg: _,
-        mut nvic,
-        mut gpioa,
-        mut gpiob,
-    } = Peripheral::new();
+    // 获取对外设的访问对象
+    let cp = cortex_m::Peripherals::take().unwrap();
+    let dp = pac::Peripherals::take().unwrap();
+
+    let mut flash = dp.FLASH.constrain();
+    let rcc = dp.RCC.constrain();
+    let mut nvic = cp.NVIC;
+    let tim2 = dp.TIM2;
+
+    let mut gpioa = dp.GPIOA.split();
+    let mut gpiob = dp.GPIOB.split();
 
     // 冻结系统中所有时钟的配置，并将冻结的频率存储在时钟中
     let clocks = rcc

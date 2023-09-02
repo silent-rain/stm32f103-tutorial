@@ -2,14 +2,13 @@
 #![no_std]
 #![no_main]
 
-mod hardware;
 use hardware::oled;
 
+use defmt::println;
 use defmt_rtt as _;
 use panic_probe as _;
 
 use cortex_m_rt::entry;
-use defmt::println;
 use stm32f1xx_hal::flash;
 use stm32f1xx_hal::gpio::gpiob;
 use stm32f1xx_hal::pac;
