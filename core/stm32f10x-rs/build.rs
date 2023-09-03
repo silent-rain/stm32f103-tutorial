@@ -26,7 +26,6 @@ fn main() {
     let gen_defines = [
         "-DUSE_STDPERIPH_DRIVER",
         "-DSTM32F10X_MD",
-        "-DRCC_APB2Periph_GPIOA",
     ];
 
     cc::Build::new()
@@ -44,8 +43,6 @@ fn main() {
     let bindings = bindgen::Builder::default()
         .header("stm32f10x/Conf/stm32f10x_conf.h")
         .header("stm32f10x/Start/stm32f10x.h")
-        // .header("stm32f10x/Library/stm32f10x_rcc.h")
-        // .header("stm32f10x/Library/stm32f10x_gpio.h")
         .header("stm32f10x/System/delay.h")
         // 常量
         // .constified_enum("RCC_APB2Periph")
