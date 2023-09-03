@@ -23,10 +23,7 @@ fn main() {
         "-Istm32f10x/System",
         "-Istm32f10x/Conf",
     ];
-    let gen_defines = [
-        "-DUSE_STDPERIPH_DRIVER",
-        "-DSTM32F10X_MD",
-    ];
+    let gen_defines = ["-DUSE_STDPERIPH_DRIVER", "-DSTM32F10X_MD"];
 
     cc::Build::new()
         .includes(&includes)

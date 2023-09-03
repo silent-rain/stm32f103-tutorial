@@ -4,10 +4,15 @@ version = "0.1.0"
 edition = "2021"
 
 [lib]
+name = "stm32f10x_rs"
+path = "src/lib.rs"
 harness = false
+crate-type = ["staticlib", "cdylib", "rlib"]
+
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
+panic-probe = {version = "0.3.1", features = ["print-defmt"]}
 
 [build-dependencies]
 bindgen = "0.66.1"
