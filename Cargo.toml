@@ -34,6 +34,7 @@ members = [
     "app/general_gpio/key_control_led",
     "app/general_gpio/light_sensor_control_buzzer",
     "app/general_gpio/oled_i2c_show_character",
+    "app/general_gpio/ffi-blinky",
     # 中断
     "app/interrupt/opposing_infrared_sensor_count",
     "app/interrupt/opposing_infrared_sensor_count2",
@@ -70,6 +71,7 @@ members = [
     "core/hardware",
     "core/ffi-hello",
     "core/bindgen-hello",
+    "core/stm32f10x-rs",
 ]
 
 

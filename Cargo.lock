@@ -380,6 +380,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2894bc2f0457b8ca3d6b8ab8aad64d9337583672494013457f86c5a9146c0e22"
 
 [[package]]
+name = "ffi-blinky"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "panic-probe",
+ "stm32f10x-rs",
+ "stm32f1xx-hal",
+]
+
+[[package]]
 name = "ffi-hello"
 version = "0.1.0"
 dependencies = [
@@ -1058,6 +1071,15 @@ dependencies = [
  "embedded-hal 1.0.0-rc.1",
  "panic-probe",
  "stm32f1xx-hal",
+]
+
+[[package]]
+name = "stm32f10x-rs"
+version = "0.1.0"
+dependencies = [
+ "bindgen",
+ "cc",
+ "glob",
 ]
 
 [[package]]
