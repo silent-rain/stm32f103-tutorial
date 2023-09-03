@@ -43,6 +43,12 @@ cargo install cargo-embed
 cargo embed --version
 ```
 
+## 安装 ARM GCC 编译环境
+
+```shell
+sudo pacman -S arm-none-eabi-gcc arm-none-eabi-newlib
+```
+
 ## 有 ARM 支持的 GDB
 
 有 ARM 仿真支持的 QEMU 用于调试 ARM Cortex-M 程序的 GDB 命令

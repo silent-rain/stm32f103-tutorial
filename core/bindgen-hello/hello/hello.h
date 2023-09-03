@@ -1,0 +1,2 @@
+int Hello();
+int Max();
