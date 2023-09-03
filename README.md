@@ -34,7 +34,7 @@
 - [按键控制 LED](./app/general_gpio/key_control_led)
 - [光敏传感器控制蜂鸣器](./app/general_gpio/light_sensor_control_buzzer)
 - [OLED I2C 通信协议显示字符](./app/general_gpio/oled_i2c_show_character)
-- [FFI 绑定版的闪烁 LED - 失败的尝试](./app/general_gpio/ffi-blinky)
+- [FFI 绑定版的闪烁 LED](./app/general_gpio/ffi-blinky)
 
 ### 中断
 

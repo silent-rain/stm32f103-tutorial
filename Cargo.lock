@@ -1080,6 +1080,7 @@ dependencies = [
  "bindgen",
  "cc",
  "glob",
+ "panic-probe",
 ]
 
 [[package]]

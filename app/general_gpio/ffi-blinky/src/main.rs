@@ -1,8 +1,6 @@
 #![no_std]
 #![no_main]
 
-use core::ffi::c_uint;
-
 use defmt::println;
 use defmt_rtt as _;
 use panic_probe as _;
@@ -28,16 +26,17 @@ const RCC_APB2Periph_GPIOA: u32 = 0x00000004;
 // #define APB2PERIPH_BASE       (PERIPH_BASE + 0x10000)
 // #define GPIOA_BASE            (APB2PERIPH_BASE + 0x0800)
 // #define GPIOA               ((GPIO_TypeDef *) GPIOA_BASE)
-const PERIPH_BASE: c_uint = 0x40000000;
-const APB2PERIPH_BASE: *mut c_uint = (PERIPH_BASE + 0x10000) as *mut c_uint;
-const GPIOA_BASE: *mut u32 = APB2PERIPH_BASE.wrapping_add(0x0800);
-const GPIOA: *mut GPIO_TypeDef = GPIOA_BASE as *mut GPIO_TypeDef;
+const PERIPH_BASE: u32 = 0x40000000; // 1073741824 -> 0x40000000
+const APB2PERIPH_BASE: u32 = PERIPH_BASE + 0x10000; // 1073807360 -> 0x40010000
+const GPIOA_BASE: u32 = APB2PERIPH_BASE + 0x0800; // 1073809408 -> 0x40010800
+const GPIOA: *mut GPIO_TypeDef = (GPIOA_BASE as *mut u32).cast(); // 1073809408 -> 0x40010800
 
 #[entry]
 fn main() -> ! {
     unsafe {
-        println!("GPIOA_BASE {:?}", GPIOA_BASE);
-        println!("GPIOA {:?}", &GPIOA as *const _ as u32);
+        println!("APB2PERIPH_BASE {:?}", APB2PERIPH_BASE); // 1073807360 -> 0x40010000
+        println!("GPIOA_BASE {:?}", GPIOA_BASE); // 1073809408 -> 0x40010800
+        println!("GPIOA {:?}", GPIOA as *const _ as u32); // 1073809408 -> 0x8002ef4
 
         println!("RCC_APB2PeriphClockCmd");
         RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, FunctionalState::ENABLE);
@@ -52,15 +51,17 @@ fn main() -> ! {
 
         println!("loop");
         loop {
-            println!("d...");
+            println!("GPIO_ResetBits");
             GPIO_ResetBits(GPIOA, GPIO_Pin_0);
             Delay_ms(500);
+            println!("GPIO_SetBits");
             GPIO_SetBits(GPIOA, GPIO_Pin_0);
             Delay_ms(500);
 
-            println!("dd...");
+            println!("GPIO_WriteBit Bit_RESET");
             GPIO_WriteBit(GPIOA, GPIO_Pin_0, BitAction::Bit_RESET);
             Delay_ms(500);
+            println!("GPIO_WriteBit Bit_SET");
             GPIO_WriteBit(GPIOA, GPIO_Pin_0, BitAction::Bit_SET);
             Delay_ms(500);
         }

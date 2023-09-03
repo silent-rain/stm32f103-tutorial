@@ -2,7 +2,11 @@
 
 这是一个 FFI 绑定版的闪烁 LED 的示例。
 
-注意: 这是一次失败的尝试。
+注意:
+
+- 这里成功点亮 LED, 但是没有闪烁。
+- 同时延时视乎存在异常。
+- 毫秒与微秒错位了。
 
 ## 执行指令
 
@@ -11,6 +15,10 @@ cargo rp ffi-blinky
 
 cargo run --target thumbv7m-none-eabi -p ffi-blinky probe-run -- --chip STM32F103C8 trace
 ```
+
+cargo build --target thumbv7m-none-eabi -p ffi-blinky
+
+probe-run --chip STM32F103C8 target/thumbv7m-none-eabi/debug/ffi-blinky
 
 ## 学习目标
 
