@@ -79,6 +79,13 @@
 
 ### USART
 
+- [串行接口配置](./app/usart/serial-config)
+- [串行接口发送与接收](./app/usart/serial-tx-and-rx)
+- [串行接口重新配置](./app/usart/serial-reconfigure)
+- [串行接口写入格式化字符串](./app/usart/serial-fmt)
+- [串行接口连续发送与接收](./app/usart/serial-continuous-tx-and-rx)
+- [串行接口中断](./app/usart/serial-interrupt-idle)
+
 ### 常用外设工具库封装
 
 - [硬件工具库](./core/hardware)
@@ -94,6 +101,7 @@
 - [Linux st-link 配置](./docs/Linux%20st-link配置.md)
 - [Defmt 单元测试](./docs/Defmt%20单元测试.md)
 - [Openocd 使用指南](./docs/Openocd使用指南.md)
+- [Minicom 使用文档](./docs/Minicom使用文档.md)
 - [Q&A](./docs/Q&A.md)
 
 ## 参考文档

@@ -17,6 +17,9 @@ adc.rs
 adc-dma-circ.rs
 adc_temperature.rs
 serial_config.rs
+serial.rs
+serial_reconfigure.rs
+serial-fmt.rs
 
 
 multi_mode_gpio.rs
@@ -43,11 +46,8 @@ serial-dma-circ.rs
 serial-dma-peek.rs
 serial-dma-rx.rs
 serial-dma-tx.rs
-serial-fmt.rs
 serial-interrupt-idle.rs
-serial.rs
 serial_9bits.rs
-serial_reconfigure.rs
 spi-dma.rs
 spi-slave.rs
 spi.rs

@@ -67,6 +67,13 @@ members = [
     "app/dma/scan_dma_and_ad_multichannel",
     "app/dma/scan_dma_and_ad_multichannel_loop",
     "app/dma/scan_dma_and_ad_multichannel_peek",
+    # USART
+    "app/usart/serial-config",
+    "app/usart/serial-tx-and-rx",
+    "app/usart/serial-reconfigure",
+    "app/usart/serial-fmt",
+    "app/usart/serial-continuous-tx-and-rx",
+    "app/usart/serial-interrupt-idle",
     # 常用外设工具库
     "core/hardware",
     "core/ffi-hello",

@@ -2,4 +2,5 @@
 #![no_std]
 
 pub mod oled;
+pub mod serial;
 pub mod syst;
