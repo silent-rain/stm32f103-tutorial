@@ -14,14 +14,15 @@ pwm_input.rs
 qei.rs
 adc-dma-rx.rs
 adc.rs
+adc-dma-circ.rs
+adc_temperature.rs
+serial_config.rs
 
 
 multi_mode_gpio.rs
 
 
 i2c-bme280
-adc-dma-circ.rs
-adc_temperature.rs
 blinky_rtc.rs
 blinky_rtcalarm_irq.rs
 blinky_timer_irq.rs
@@ -46,7 +47,6 @@ serial-fmt.rs
 serial-interrupt-idle.rs
 serial.rs
 serial_9bits.rs
-serial_config.rs
 serial_reconfigure.rs
 spi-dma.rs
 spi-slave.rs
