@@ -14,4 +14,4 @@ cargo rp scan_dma_and_ad_multichannel_loop
 
 ## 接线图
 
-![](../../images/../../images/8-2%20DMA+AD多通道.jpg)
+![](../../../images/wiring_diagram/8-2%20DMA+AD多通道.jpg)

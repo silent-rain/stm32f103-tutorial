@@ -14,4 +14,4 @@ cargo rp ad_multichannel
 
 ## 接线图
 
-![](../../images/../../images/7-2%20AD多通道.jpg)
+![](../../../images/wiring_diagram/7-2%20AD多通道.jpg)

@@ -28,4 +28,4 @@ probe-run --chip STM32F103C8 target/thumbv7m-none-eabi/debug/ffi-blinky
 
 ## 接线图
 
-![](../../images/../../images/3-1%20LED闪烁.jpg)
+![](../../../images/wiring_diagram/3-1%20LED闪烁.jpg)

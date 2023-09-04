@@ -16,4 +16,4 @@ cargo rp blinky
 
 ## 接线图
 
-![](../../images/../../images/3-1%20LED闪烁.jpg)
+![](../../../images/wiring_diagram/3-1%20LED闪烁.jpg)

@@ -14,4 +14,4 @@ cargo rp pwm_rotary_encoder_speed
 
 ## 接线图
 
-![](../../images/../../images/6-8%20编码器接口测速.jpg)
+![](../../../images/wiring_diagram/6-8%20编码器接口测速.jpg)

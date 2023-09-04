@@ -16,4 +16,4 @@ cargo rp ad_single_channel
 
 ## 接线图
 
-![](../../images/../../images/7-1%20AD单通道.jpg)
+![](../../../images/wiring_diagram/7-1%20AD单通道.jpg)
