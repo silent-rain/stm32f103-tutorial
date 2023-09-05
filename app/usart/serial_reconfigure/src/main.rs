@@ -2,7 +2,6 @@
 #![no_std]
 #![no_main]
 
-use cortex_m::prelude::_embedded_hal_blocking_delay_DelayMs;
 use defmt::println;
 use defmt_rtt as _;
 use panic_probe as _;
@@ -10,6 +9,7 @@ use panic_probe as _;
 use nb::block;
 
 use cortex_m::asm::wfi;
+use cortex_m::prelude::_embedded_hal_blocking_delay_DelayMs;
 use cortex_m_rt::entry;
 use stm32f1xx_hal::pac;
 use stm32f1xx_hal::prelude::_stm32_hal_afio_AfioExt;
