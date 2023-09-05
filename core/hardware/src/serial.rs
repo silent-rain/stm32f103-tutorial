@@ -1,6 +1,7 @@
 //!串行接口常用工具集
 
 use core::u32;
+use heapless::String;
 
 use nb::block;
 use stm32f1xx_hal::serial;
@@ -73,4 +74,22 @@ where
             widx += 1;
         }
     }
+}
+
+/// 接收字符串
+/// 最大长度: 4096
+pub fn receive_string<USART>(rx: &mut serial::Rx<USART>) -> String<4096>
+where
+    USART: serial::Instance,
+{
+    let mut s: String<4096> = String::new();
+
+    loop {
+        let w = block!(rx.read()).unwrap();
+        if w == b'\n' {
+            break;
+        }
+        s.push(w as char).unwrap();
+    }
+    s
 }

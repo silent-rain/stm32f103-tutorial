@@ -17,6 +17,7 @@ panic-probe = {version = "0.3.1", features = ["print-defmt"]}
 nb = "1.1.0"
 unwrap-infallible = "0.1.5"
 numtoa = "0.2.4"
+heapless = "0.7.16"
 
 
 [dev-dependencies]
