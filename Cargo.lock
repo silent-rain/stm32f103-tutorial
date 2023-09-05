@@ -76,7 +76,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "bindgen-hello"
+name = "bindgen_hello"
 version = "0.1.0"
 dependencies = [
  "bindgen",
@@ -388,12 +388,12 @@ dependencies = [
  "defmt",
  "defmt-rtt",
  "panic-probe",
- "stm32f10x-rs",
+ "stm32f10x_rs",
  "stm32f1xx-hal",
 ]
 
 [[package]]
-name = "ffi-hello"
+name = "ffi_hello"
 version = "0.1.0"
 dependencies = [
  "bindgen",
@@ -1034,7 +1034,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "388a1df253eca08550bef6c72392cfe7c30914bf41df5269b68cbd6ff8f570a3"
 
 [[package]]
-name = "serial-config"
+name = "serial_config"
 version = "0.1.0"
 dependencies = [
  "cortex-m",
@@ -1050,7 +1050,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "serial-continuous-tx-and-rx"
+name = "serial_continuous_tx_and_rx"
 version = "0.1.0"
 dependencies = [
  "cortex-m",
@@ -1066,7 +1066,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "serial-fmt"
+name = "serial_fmt"
 version = "0.1.0"
 dependencies = [
  "cortex-m",
@@ -1082,7 +1082,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "serial-interrupt-idle"
+name = "serial_interrupt_idle"
 version = "0.1.0"
 dependencies = [
  "cortex-m",
@@ -1098,7 +1098,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "serial-reconfigure"
+name = "serial_reconfigure"
 version = "0.1.0"
 dependencies = [
  "cortex-m",
@@ -1114,7 +1114,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "serial-tx-and-rx"
+name = "serial_tx_and_rx"
 version = "0.1.0"
 dependencies = [
  "cortex-m",
@@ -1179,7 +1179,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "stm32f10x-rs"
+name = "stm32f10x_rs"
 version = "0.1.0"
 dependencies = [
  "bindgen",

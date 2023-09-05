@@ -13,17 +13,17 @@ sudo pacman -S arm-none-eabi-gcc arm-none-eabi-newlib
 绑定是动态生成。
 
 ```shell
-cargo build --target thumbv7m-none-eabi --package bindgen-hello
+cargo build --target thumbv7m-none-eabi --package bindgen_hello
 ```
 
 ## lib 测试
 
 ```shell
-cargo test --target thumbv7m-none-eabi -p bindgen-hello
+cargo test --target thumbv7m-none-eabi -p bindgen_hello
 ```
 
 ## 指定测试
 
 ```shell
-cargo test --target thumbv7m-none-eabi --package bindgen-hello --test hello_demo
+cargo test --target thumbv7m-none-eabi --package bindgen_hello --test hello_demo
 ```

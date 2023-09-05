@@ -68,17 +68,17 @@ members = [
     "app/dma/scan_dma_and_ad_multichannel_loop",
     "app/dma/scan_dma_and_ad_multichannel_peek",
     # USART
-    "app/usart/serial-config",
-    "app/usart/serial-tx-and-rx",
-    "app/usart/serial-reconfigure",
-    "app/usart/serial-fmt",
-    "app/usart/serial-continuous-tx-and-rx",
-    "app/usart/serial-interrupt-idle",
+    "app/usart/serial_config",
+    "app/usart/serial_tx_and_rx",
+    "app/usart/serial_reconfigure",
+    "app/usart/serial_fmt",
+    "app/usart/serial_continuous_tx_and_rx",
+    "app/usart/serial_interrupt_idle",
     # 常用外设工具库
     "core/hardware",
-    "core/ffi-hello",
-    "core/bindgen-hello",
-    "core/stm32f10x-rs",
+    "core/ffi_hello",
+    "core/bindgen_hello",
+    "core/stm32f10x_rs",
 ]
 
 

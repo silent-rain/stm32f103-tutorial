@@ -35,7 +35,7 @@ fn main() {
         // .target("thumbv7m-none-eabi")
         .cargo_metadata(true)
         // 运行编译器，生成output文件
-        .compile("stm32f10x-rs");
+        .compile("stm32f10x_rs");
 
     let bindings = bindgen::Builder::default()
         .header("stm32f10x/Conf/stm32f10x_conf.h")

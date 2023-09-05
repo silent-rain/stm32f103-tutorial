@@ -1,9 +1,11 @@
-# 串行接口配置
+# 串行接口重新配置
+
+这是一个串行接口重新配置的示例。在运行过程中重新配置波特率。
 
 ## 执行指令
 
 ```shell
-cargo rp serial-config
+cargo rp serial_reconfigure
 ```
 
 ## 学习目标

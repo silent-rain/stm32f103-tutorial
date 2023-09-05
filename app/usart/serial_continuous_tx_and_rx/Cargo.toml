@@ -1,5 +1,5 @@
 [package]
-name = "serial-interrupt-idle"
+name = "serial_continuous_tx_and_rx"
 version = "0.1.0"
 edition = "2021"
 
@@ -15,6 +15,7 @@ panic-probe = {version = "0.3.1", features = ["print-defmt"]}
 embedded-dma = "0.2.0"
 nb = "1.1.0"
 unwrap-infallible = "0.1.5"
+
 
 [dependencies.hardware]
 path = "../../../core/hardware"

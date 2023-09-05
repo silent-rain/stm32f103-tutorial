@@ -15,11 +15,11 @@
 绑定是动态生成。
 
 ```shell
-cargo build --target thumbv7m-none-eabi --package stm32f10x-rs
+cargo build --target thumbv7m-none-eabi --package stm32f10x_rs
 ```
 
 ## 测试
 
 ```shell
-cargo test --target thumbv7m-none-eabi -p stm32f10x-rs
+cargo test --target thumbv7m-none-eabi -p stm32f10x_rs
 ```

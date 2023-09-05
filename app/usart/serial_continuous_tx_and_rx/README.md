@@ -5,7 +5,7 @@
 ## 执行指令
 
 ```shell
-cargo rp serial-continuous-tx-and-rx
+cargo rp serial_continuous_tx_and_rx
 ```
 
 ## 学习目标

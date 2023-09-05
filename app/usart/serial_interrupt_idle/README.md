@@ -3,7 +3,7 @@
 ## 执行指令
 
 ```shell
-cargo rp serial-interrupt-idle
+cargo rp serial_interrupt_idle
 ```
 
 ## 学习目标

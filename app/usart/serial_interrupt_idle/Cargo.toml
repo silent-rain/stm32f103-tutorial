@@ -1,5 +1,5 @@
 [package]
-name = "serial-config"
+name = "serial_interrupt_idle"
 version = "0.1.0"
 edition = "2021"
 

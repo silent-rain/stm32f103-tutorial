@@ -13,11 +13,11 @@ sudo pacman -S arm-none-eabi-gcc arm-none-eabi-newlib
 绑定是动态生成。
 
 ```shell
-cargo build --package ffi-hello
+cargo build --package ffi_hello
 ```
 
 ## 测试
 
 ```shell
-cargo test --target thumbv7m-none-eabi -p ffi-hello
+cargo test --target thumbv7m-none-eabi -p ffi_hello
 ```

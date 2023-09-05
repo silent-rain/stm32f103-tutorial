@@ -1,5 +1,5 @@
 [package]
-name = "serial-continuous-tx-and-rx"
+name = "serial_tx_and_rx"
 version = "0.1.0"
 edition = "2021"
 

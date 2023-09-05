@@ -79,17 +79,19 @@
 
 ### USART
 
-- [串行接口配置](./app/usart/serial-config)
-- [串行接口发送与接收](./app/usart/serial-tx-and-rx)
-- [串行接口重新配置](./app/usart/serial-reconfigure)
-- [串行接口写入格式化字符串](./app/usart/serial-fmt)
-- [串行接口连续发送与接收](./app/usart/serial-continuous-tx-and-rx)
-- [串行接口中断](./app/usart/serial-interrupt-idle)
+- [串行接口配置](./app/usart/serial_config)
+- [串行接口发送与接收](./app/usart/serial_tx_and_rx)
+- [串行接口重新配置](./app/usart/serial_reconfigure)
+- [串行接口写入格式化字符串](./app/usart/serial_fmt)
+- [串行接口连续发送与接收](./app/usart/serial_continuous_tx_and_rx)
+- [串行接口中断](./app/usart/serial_interrupt_idle)
 
 ### 常用外设工具库封装
 
 - [硬件工具库](./core/hardware)
-- [FFI Hello](./core/ffi-hello)
+- [FFI Hello](./core/ffi_hello)
+- [Bindgen Hello](./core/bindgen_hello)
+- [Stm32f10x Rust 绑定](./core/stm32f10x_rs)
 
 ## 相关文档
 
