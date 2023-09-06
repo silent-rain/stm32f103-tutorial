@@ -43,8 +43,8 @@
 - [按键中断电灯-EXTI](./app/interrupt/key_control_led_exti)
 - [旋转编码器计次](./app/interrupt/rotary_encoder_count)
 - [系统定时器中断](./app/interrupt/sys_timer_interrupt)
-- [定时器中断](./app/interrupt/timer_interrupt)
-- [定时器中断 2](./app/interrupt/timer_interrupt2)
+- [定时器中断计数-秒](./app/interrupt/timer_interrupt_count_by_seces)
+- [定时器中断计数-赫兹](./app/interrupt/timer_interrupt_count_by_hz)
 - [定时器外部时钟](./app/interrupt/timer_external_clock)
 
 ### 端口重映射

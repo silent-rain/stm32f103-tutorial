@@ -41,8 +41,8 @@ members = [
     "app/interrupt/key_control_led_exti",
     "app/interrupt/rotary_encoder_count",
     "app/interrupt/sys_timer_interrupt",
-    "app/interrupt/timer_interrupt",
-    "app/interrupt/timer_interrupt2",
+    "app/interrupt/timer_interrupt_count_by_seces",
+    "app/interrupt/timer_interrupt_count_by_hz",
     "app/interrupt/timer_external_clock",
     # 端口重映射
     "app/port_remap/disable_jtag_ports",

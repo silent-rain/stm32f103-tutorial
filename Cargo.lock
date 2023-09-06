@@ -1444,7 +1444,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "timer_interrupt"
+name = "timer_interrupt_count_by_hz"
 version = "0.1.0"
 dependencies = [
  "cortex-m",
@@ -1457,7 +1457,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "timer_interrupt2"
+name = "timer_interrupt_count_by_seces"
 version = "0.1.0"
 dependencies = [
  "cortex-m",
