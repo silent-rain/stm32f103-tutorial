@@ -78,7 +78,6 @@ fn main() -> ! {
     .split();
 
     rx.listen();
-    rx.listen_idle();
 
     cortex_m::interrupt::free(|cs| {
         G_TX.borrow(cs).replace(Some(tx));
@@ -169,7 +168,6 @@ enum RxState {
 }
 
 // 发送数据包 FF090A0B0CFE
-// FF 01 02 03 04 FE
 static mut SERIAL_TX_PACKET: [u8; 4] = [0; 4];
 // 接收位置索引
 static mut P_RX_PACKET: usize = 0;
@@ -208,28 +206,28 @@ unsafe fn USART1() {
     cortex_m::interrupt::free(|cs| {
         if let Some(rx) = G_RX.borrow(cs).borrow_mut().as_mut() {
             if rx.is_rx_not_empty() {
-                match nb::block!(rx.read()) {
-                    Ok(data) if SERIAL_RX_STATE == RxState::Wait && data == 0xFF => {
-                        SERIAL_RX_STATE = RxState::Receive;
-                        P_RX_PACKET = 0;
+                let rx_data = nb::block!(rx.read()).unwrap();
+                match SERIAL_RX_STATE {
+                    RxState::Wait => {
+                        if rx_data == 0xFF {
+                            SERIAL_RX_STATE = RxState::Receive;
+                            P_RX_PACKET = 0;
+                        }
                     }
-                    Ok(data) if SERIAL_RX_STATE == RxState::Receive => {
-                        SERIAL_RX_PACKET[P_RX_PACKET] = data;
+                    RxState::Receive => {
+                        SERIAL_RX_PACKET[P_RX_PACKET] = rx_data;
                         P_RX_PACKET += 1;
                         if P_RX_PACKET >= 4 {
                             SERIAL_RX_STATE = RxState::Finish;
                         }
                     }
-                    Ok(data) if SERIAL_RX_STATE == RxState::Finish && data == 0xFE => {
-                        SERIAL_RX_STATE = RxState::Wait;
-                        SERIAL_RX_FLAG = RxFlag::End;
+                    RxState::Finish => {
+                        if rx_data == 0xFE {
+                            SERIAL_RX_STATE = RxState::Wait;
+                            SERIAL_RX_FLAG = RxFlag::End;
+                        }
                     }
-                    Ok(_data) => {} // 其他溢出数据
-                    Err(_e) => {
-                        panic!("{:#?}", _e)
-                    } // 读取异常，不处理
                 }
-
                 rx.clear_idle_interrupt();
             }
         }

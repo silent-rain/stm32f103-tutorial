@@ -59,6 +59,8 @@ fn main() -> ! {
     let mut led = gpioa.pa0.into_push_pull_output(&mut gpioa.crl);
     // 设置其输出速度（50 MHz）。
     led.set_speed(&mut gpioa.crl, gpio::IOPinSpeed::Mhz50);
+    // 默认关闭LED
+    led.set_high();
 
     // USART1
     let tx = gpioa.pa9.into_alternate_push_pull(&mut gpioa.crh);
@@ -98,12 +100,12 @@ fn main() -> ! {
             oled::show_string(&mut scl, &mut sda, 4, 1, "                ");
             oled::show_string(&mut scl, &mut sda, 4, 1, "                ");
 
-            if get_rx_packet().as_str().contains("LED_ON") {
+            if get_rx_packet().as_str().trim_end_matches('\0') == "LED_ON" {
                 led.set_low();
                 send_packet("LED_ON_OK\r\n");
                 oled::show_string(&mut scl, &mut sda, 2, 1, "                ");
                 oled::show_string(&mut scl, &mut sda, 2, 1, "LED_ON_OK");
-            } else if get_rx_packet().as_str().contains("LED_OFF") {
+            } else if get_rx_packet().as_str().trim_end_matches('\0') == "LED_OFF" {
                 led.set_high();
                 send_packet("LED_OFF_OK\r\n");
                 oled::show_string(&mut scl, &mut sda, 2, 1, "                ");
@@ -185,32 +187,29 @@ unsafe fn USART1() {
     cortex_m::interrupt::free(|cs| {
         if let Some(rx) = G_RX.borrow(cs).borrow_mut().as_mut() {
             if rx.is_rx_not_empty() {
-                match nb::block!(rx.read()) {
-                    Ok(data)
-                        if SERIAL_RX_STATE == RxState::Wait
-                            && data == b'@'
-                            && SERIAL_RX_FLAG == RxFlag::Start =>
-                    {
-                        SERIAL_RX_STATE = RxState::Receive;
-                        P_RX_PACKET = 0;
+                let rx_data = nb::block!(rx.read()).unwrap();
+                match SERIAL_RX_STATE {
+                    RxState::Wait => {
+                        if rx_data == b'@' && SERIAL_RX_FLAG == RxFlag::Start {
+                            SERIAL_RX_STATE = RxState::Receive;
+                            P_RX_PACKET = 0;
+                        }
                     }
-                    Ok(data) if SERIAL_RX_STATE == RxState::Receive => {
-                        if data == b'\r' {
+                    RxState::Receive => {
+                        if rx_data == b'\r' {
                             SERIAL_RX_STATE = RxState::Finish;
                         } else {
-                            SERIAL_RX_PACKET[P_RX_PACKET] = data;
+                            SERIAL_RX_PACKET[P_RX_PACKET] = rx_data;
                             P_RX_PACKET += 1;
                         }
                     }
-                    Ok(data) if SERIAL_RX_STATE == RxState::Finish && data == b'\n' => {
-                        SERIAL_RX_STATE = RxState::Wait;
-                        SERIAL_RX_PACKET[P_RX_PACKET] = b'\0';
-                        SERIAL_RX_FLAG = RxFlag::End;
+                    RxState::Finish => {
+                        if rx_data == b'\n' {
+                            SERIAL_RX_STATE = RxState::Wait;
+                            SERIAL_RX_PACKET[P_RX_PACKET] = b'\0';
+                            SERIAL_RX_FLAG = RxFlag::End;
+                        }
                     }
-                    Ok(_data) => {} // 其他溢出数据
-                    Err(_e) => {
-                        panic!("{:#?}", _e)
-                    } // 读取异常，不处理
                 }
                 rx.clear_idle_interrupt();
             }
