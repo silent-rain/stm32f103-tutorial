@@ -370,6 +370,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "dynamic_gpio"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "embedded-hal 0.2.7",
+ "nb 1.1.0",
+ "panic-probe",
+ "stm32f1xx-hal",
+]
+
+[[package]]
 name = "either"
 version = "1.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -637,6 +651,19 @@ name = "minimal-lexical"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "68354c5c6bd36d73ff3feceb05efa59b6acb7626617f4962be322a825e61f79a"
+
+[[package]]
+name = "multi_mode_gpio"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "nb 1.1.0",
+ "panic-probe",
+ "stm32f1xx-hal",
+]
 
 [[package]]
 name = "nb"

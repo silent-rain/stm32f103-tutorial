@@ -29,6 +29,8 @@ members = [
     "app/general_gpio/delay_blinky",
     "app/general_gpio/tim2_timer_delay_blinky",
     "app/general_gpio/blinky",
+    "app/general_gpio/multi_mode_gpio",
+    "app/general_gpio/dynamic_gpio",
     "app/general_gpio/led_flow_light",
     "app/general_gpio/buzzer",
     "app/general_gpio/key_control_led",

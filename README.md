@@ -25,10 +25,13 @@
 ### 通用 GPIO
 
 - [点灯](./app/general_gpio/turns_user_led)
+- [闪烁 LED](./app/general_gpio/blinky)
+- [运行中更改 GPIO 模式](./app/general_gpio/multi_mode_gpio)
+- [动态设置 GPIO 模式](./app/general_gpio/dynamic_gpio)
+- [闪烁 LED](./app/general_gpio/blinky)
 - [计时器闪烁 LED](./app/general_gpio/timer_blinky)
 - [延迟闪烁 LED](./app/general_gpio/delay_blinky)
 - [TIM2 通用定时器延迟闪烁 LED](./app/general_gpio/tim2_timer_delay_blinky)
-- [闪烁 LED](./app/general_gpio/blinky)
 - [LED 流水灯](./app/general_gpio/led_flow_light)
 - [蜂鸣器](./app/general_gpio/buzzer)
 - [按键控制 LED](./app/general_gpio/key_control_led)

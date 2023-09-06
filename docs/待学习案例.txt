@@ -20,9 +20,14 @@ serial_config.rs
 serial.rs
 serial_reconfigure.rs
 serial-fmt.rs
-
-
+serial-interrupt-idle.rs
+serial_9bits.rs
 multi_mode_gpio.rs
+dynamic_gpio.rs
+
+
+timer-interrupt-rtic.rs
+exti_rtic.rs
 
 
 i2c-bme280
@@ -33,10 +38,8 @@ can-echo.rs
 can-loopback.rs
 can-rtic.rs
 crc.rs
-dynamic_gpio.rs
 enc28j60-coap.rs.disabled
 enc28j60.rs.disabled
-exti_rtic.rs
 itm.rs
 mfrc522.rs
 motor.rs.disabled
@@ -46,12 +49,9 @@ serial-dma-circ.rs
 serial-dma-peek.rs
 serial-dma-rx.rs
 serial-dma-tx.rs
-serial-interrupt-idle.rs
-serial_9bits.rs
 spi-dma.rs
 spi-slave.rs
 spi.rs
-timer-interrupt-rtic.rs
 usb_serial.rs
 usb_serial_interrupt.rs
 usb_serial_rtic.rs
