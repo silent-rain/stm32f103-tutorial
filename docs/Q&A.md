@@ -148,3 +148,46 @@ rustflags = [
 
 
 ```
+
+## 烧录错误
+
+- embed 烧录错误
+
+```shell
+ Error failed attaching to target
+
+             Caused by:
+                 0: An ARM specific error occured.
+                 1: The debug probe encountered an error.
+                 2: An error specific to a probe type occurred
+                 3: Command failed with status SwdApFault
+```
+
+- 错误 1
+
+```shell
+ Error failed attaching to target
+
+             Caused by:
+                 0: An ARM specific error occured.
+                 1: The debug probe encountered an error.
+                 2: An error specific to a probe type occurred
+                 3: Command failed with status SwdApFault
+```
+
+- probe-run 烧录错误
+
+```shell
+Error: An ARM specific error occurred.
+
+Caused by:
+    0: The debug probe encountered an error.
+    1: An error specific to a probe type occurred
+    2: Command failed with status SwdDpWait
+```
+
+### 修复方式
+
+- 切换到 embed 的方式进行烧录；
+- 按住重置键，迅速烧录；
+- 如失败，多测试几次；

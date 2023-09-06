@@ -91,6 +91,12 @@
 - [串行接口收发 HEX 数据包](./app/usart/serial_hex_packet)
 - [串行接口收发文本数据包](./app/usart/serial_text_packet)
 
+### RITC
+
+- [任务调度-RTIC](./app/rtic/spawn_task_rtic)
+- [EXTI 中断-RTIC](./app/rtic/exti_rtic)
+- [TIM 定时器中断-RTIC](./app/rtic/timer_interrupt_rtic)
+
 ### 常用外设工具库封装
 
 - [硬件工具库](./core/hardware)
@@ -119,3 +125,4 @@
 - [嵌入经济学](https://docs.rust-embedded.org/embedonomicon/)
 - [Linux 系统下使用 cutecom 进行串口通信（一）](https://zhuanlan.zhihu.com/p/371813518)
 - [Linux 下 minicom 串口助手的使用](https://www.cnblogs.com/xingboy/p/16538932.html)
+- [实时中断驱动的并发](https://rtic.rs/2/book/en/)

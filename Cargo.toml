@@ -78,6 +78,10 @@ members = [
     "app/usart/serial_interrupt_idle",
     "app/usart/serial_hex_packet",
     "app/usart/serial_text_packet",
+    # RTIC
+    "app/rtic/spawn_task_rtic",
+    "app/rtic/exti_rtic",
+    "app/rtic/timer_interrupt_rtic",
     # 常用外设工具库
     "core/hardware",
     "core/ffi_hello",
