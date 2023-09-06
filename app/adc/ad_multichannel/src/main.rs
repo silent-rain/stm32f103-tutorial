@@ -4,19 +4,21 @@
 
 use hardware::oled;
 
+use defmt::println;
 use defmt_rtt as _;
 use panic_probe as _;
 
 use cortex_m::prelude::_embedded_hal_adc_OneShot;
 use cortex_m::prelude::_embedded_hal_blocking_delay_DelayMs;
 use cortex_m_rt::entry;
-use defmt::println;
 use stm32f1xx_hal::adc;
 use stm32f1xx_hal::adc::Adc;
 use stm32f1xx_hal::adc::SampleTime;
 use stm32f1xx_hal::flash;
+use stm32f1xx_hal::gpio;
 use stm32f1xx_hal::gpio::gpioa;
 use stm32f1xx_hal::gpio::gpiob;
+use stm32f1xx_hal::gpio::OutputSpeed;
 use stm32f1xx_hal::pac;
 use stm32f1xx_hal::pac::adc1;
 use stm32f1xx_hal::prelude::_fugit_RateExtU32;
@@ -69,7 +71,7 @@ fn main() -> ! {
 
     // 初始化 OLED 显示屏
     println!("load oled...");
-    let (mut scl, mut sda) = oled::init_oled(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let (mut scl, mut sda) = init_oled(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
 
     // 电位器
     let mut ch0 = gpioa.pa0.into_analog(&mut gpioa.crl);
@@ -124,4 +126,24 @@ fn main() -> ! {
 
         delay.delay_ms(100_u32);
     }
+}
+
+/// 初始化 OLED 显示屏
+pub fn init_oled(
+    pb8: gpio::Pin<'B', 8>,
+    pb9: gpio::Pin<'B', 9>,
+    crh: &mut gpio::Cr<'B', true>,
+) -> (
+    gpio::PB8<gpio::Output<gpio::OpenDrain>>,
+    gpio::PB9<gpio::Output<gpio::OpenDrain>>,
+) {
+    // 将引脚配置为作为开漏输出模式
+    let mut scl = pb8.into_open_drain_output(crh);
+    let mut sda = pb9.into_open_drain_output(crh);
+    scl.set_speed(crh, gpio::IOPinSpeed::Mhz50);
+    sda.set_speed(crh, gpio::IOPinSpeed::Mhz50);
+
+    // 始化 OLED 配置
+    hardware::oled::init_oled_config(&mut scl, &mut sda);
+    (scl, sda)
 }

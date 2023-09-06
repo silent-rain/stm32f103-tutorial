@@ -493,6 +493,7 @@ dependencies = [
  "defmt",
  "defmt-rtt",
  "defmt-test",
+ "embedded-hal 0.2.7",
  "heapless",
  "nb 1.1.0",
  "numtoa",

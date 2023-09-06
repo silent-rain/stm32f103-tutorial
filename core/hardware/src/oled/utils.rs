@@ -3,14 +3,15 @@
 
 use super::font::OLED_FONT;
 
+use embedded_hal::digital::v2::OutputPin;
 use stm32f1xx_hal::gpio::{self, OutputSpeed};
 
-// 引脚类型别名配置
-type OledWScl = gpio::PB8<gpio::Output<gpio::OpenDrain>>;
-type OledWSda = gpio::PB9<gpio::Output<gpio::OpenDrain>>;
-
 /// I2C 开始
-pub fn i2c_start(scl: &mut OledWScl, sda: &mut OledWSda) {
+pub fn i2c_start<Scl, Sda>(scl: &mut Scl, sda: &mut Sda)
+where
+    Scl: OutputPin,
+    Sda: OutputPin,
+{
     sda.set_high();
     scl.set_high();
     sda.set_low();
@@ -18,7 +19,11 @@ pub fn i2c_start(scl: &mut OledWScl, sda: &mut OledWSda) {
 }
 
 /// I2C 停止
-pub fn i2c_stop(scl: &mut OledWScl, sda: &mut OledWSda) {
+pub fn i2c_stop<Scl, Sda>(scl: &mut Scl, sda: &mut Sda)
+where
+    Scl: OutputPin,
+    Sda: OutputPin,
+{
     sda.set_low();
     scl.set_high();
     sda.set_high();
@@ -26,7 +31,11 @@ pub fn i2c_stop(scl: &mut OledWScl, sda: &mut OledWSda) {
 
 /// I2C发送一个字节
 /// cbyte: 要发送的一个字节
-fn i2c_send_byte(scl: &mut OledWScl, sda: &mut OledWSda, cbyte: u8) {
+fn i2c_send_byte<Scl, Sda>(scl: &mut Scl, sda: &mut Sda, cbyte: u8)
+where
+    Scl: OutputPin,
+    Sda: OutputPin,
+{
     for i in 0..8u8 {
         if cbyte & (0x80 >> i) == 0 {
             sda.set_low();
@@ -42,7 +51,11 @@ fn i2c_send_byte(scl: &mut OledWScl, sda: &mut OledWSda, cbyte: u8) {
 
 /// OLED写命令
 /// command: 要写入的命令
-fn write_command(scl: &mut OledWScl, sda: &mut OledWSda, command: u8) {
+fn write_command<Scl, Sda>(scl: &mut Scl, sda: &mut Sda, command: u8)
+where
+    Scl: OutputPin,
+    Sda: OutputPin,
+{
     i2c_start(scl, sda);
     i2c_send_byte(scl, sda, 0x78); // 从机地址
     i2c_send_byte(scl, sda, 0x00); // 写命令
@@ -52,7 +65,11 @@ fn write_command(scl: &mut OledWScl, sda: &mut OledWSda, command: u8) {
 
 /// OLED写数据
 /// data: 要写入的数据
-fn write_data(scl: &mut OledWScl, sda: &mut OledWSda, data: u8) {
+fn write_data<Scl, Sda>(scl: &mut Scl, sda: &mut Sda, data: u8)
+where
+    Scl: OutputPin,
+    Sda: OutputPin,
+{
     i2c_start(scl, sda);
     i2c_send_byte(scl, sda, 0x78); // 从机地址
     i2c_send_byte(scl, sda, 0x40); // 写数据
@@ -63,7 +80,11 @@ fn write_data(scl: &mut OledWScl, sda: &mut OledWSda, data: u8) {
 /// OLED设置光标位置
 /// y: 以左上角为原点, 向下方向的坐标, 范围: 0~7
 /// x: 以左上角为原点, 向右方向的坐标, 范围: 0~127
-fn set_cursor(scl: &mut OledWScl, sda: &mut OledWSda, y: u8, x: u8) {
+fn set_cursor<Scl, Sda>(scl: &mut Scl, sda: &mut Sda, y: u8, x: u8)
+where
+    Scl: OutputPin,
+    Sda: OutputPin,
+{
     write_command(scl, sda, 0xB0 | y); // 设置y位置
     write_command(scl, sda, 0x10 | ((x & 0xF0) >> 4)); // 设置x位置高4位
     #[allow(clippy::identity_op)]
@@ -71,7 +92,11 @@ fn set_cursor(scl: &mut OledWScl, sda: &mut OledWSda, y: u8, x: u8) {
 }
 
 /// OLED清屏
-pub fn clear(scl: &mut OledWScl, sda: &mut OledWSda) {
+pub fn clear<Scl, Sda>(scl: &mut Scl, sda: &mut Sda)
+where
+    Scl: OutputPin,
+    Sda: OutputPin,
+{
     for j in 0..8u8 {
         set_cursor(scl, sda, j, 0);
         for _i in 0..128u8 {
@@ -84,7 +109,11 @@ pub fn clear(scl: &mut OledWScl, sda: &mut OledWSda) {
 /// line: 行位置，范围：1~4
 /// column: 列位置，范围：1~16
 /// cchar: 要显示的一个字符，范围：ASCII可见字符
-pub fn show_char(scl: &mut OledWScl, sda: &mut OledWSda, line: u8, column: u8, cchar: char) {
+pub fn show_char<Scl, Sda>(scl: &mut Scl, sda: &mut Sda, line: u8, column: u8, cchar: char)
+where
+    Scl: OutputPin,
+    Sda: OutputPin,
+{
     // 设置光标位置在上半部分
     set_cursor(scl, sda, (line - 1) * 2, (column - 1) * 8);
     for i in 0..8usize {
@@ -109,7 +138,11 @@ pub fn show_char(scl: &mut OledWScl, sda: &mut OledWSda, line: u8, column: u8, c
 /// line: 起始行位置，范围：1~4
 /// column: 起始列位置，范围：1~16
 /// string: 要显示的字符串，范围：ASCII可见字符
-pub fn show_string(scl: &mut OledWScl, sda: &mut OledWSda, line: u8, column: u8, string: &str) {
+pub fn show_string<Scl, Sda>(scl: &mut Scl, sda: &mut Sda, line: u8, column: u8, string: &str)
+where
+    Scl: OutputPin,
+    Sda: OutputPin,
+{
     for (i, c) in string.chars().enumerate() {
         if c == '\0' {
             break;
@@ -135,14 +168,17 @@ fn pow(x: u32, y: u32) -> u32 {
 /// column: 起始列位置, 范围: 1-16
 /// number: 要显示的数字, 范围: 0-4294967295
 /// length: 要显示数字的长度, 范围: 1-10
-pub fn show_num(
-    scl: &mut OledWScl,
-    sda: &mut OledWSda,
+pub fn show_num<Scl, Sda>(
+    scl: &mut Scl,
+    sda: &mut Sda,
     line: u8,
     column: u8,
     number: u32,
     length: u8,
-) {
+) where
+    Scl: OutputPin,
+    Sda: OutputPin,
+{
     for i in 0..length {
         let digit = number / pow(10, (length - i - 1).into()) % 10;
         let cchar = (digit as u8 + b'0') as char;
@@ -155,14 +191,17 @@ pub fn show_num(
 /// column: 起始列位置，范围：1~16
 /// number: 要显示的数字，范围：-2147483648~2147483647
 /// length: 要显示数字的长度, 范围: 1~10
-pub fn show_signed_num(
-    scl: &mut OledWScl,
-    sda: &mut OledWSda,
+pub fn show_signed_num<Scl, Sda>(
+    scl: &mut Scl,
+    sda: &mut Sda,
     line: u8,
     column: u8,
     number: i32,
     length: u8,
-) {
+) where
+    Scl: OutputPin,
+    Sda: OutputPin,
+{
     #[allow(unused)]
     let mut number1: i32 = 0;
     if number >= 0 {
@@ -185,14 +224,17 @@ pub fn show_signed_num(
 /// column: 起始列位置，范围：1~16
 /// number: 要显示的数字，范围：0~0xFFFFFFFF
 /// length: 要显示数字的长度，范围：1~8
-pub fn show_hex_num(
-    scl: &mut OledWScl,
-    sda: &mut OledWSda,
+pub fn show_hex_num<Scl, Sda>(
+    scl: &mut Scl,
+    sda: &mut Sda,
     line: u8,
     column: u8,
     number: u32,
     length: u8,
-) {
+) where
+    Scl: OutputPin,
+    Sda: OutputPin,
+{
     #[allow(unused)]
     let mut single_number = 0;
     for i in 0..length {
@@ -212,14 +254,17 @@ pub fn show_hex_num(
 /// column: 起始列位置，范围：1~16
 /// number: 要显示的数字，范围：0~1111 1111 1111 1111
 /// length: 要显示数字的长度，范围：1~16
-pub fn show_bin_num(
-    scl: &mut OledWScl,
-    sda: &mut OledWSda,
+pub fn show_bin_num<Scl, Sda>(
+    scl: &mut Scl,
+    sda: &mut Sda,
     line: u8,
     column: u8,
     number: u32,
     length: u8,
-) {
+) where
+    Scl: OutputPin,
+    Sda: OutputPin,
+{
     for i in 0..length {
         let digit = number / pow(2, (length - i - 1).into()) % 2;
         let cchar = (digit as u8 + b'0') as char;
@@ -230,7 +275,11 @@ pub fn show_bin_num(
 /// 初始化 OLED 配置
 /// 注意需要提前进行端口初始化
 /// 注意上电延时
-pub fn init_oled_config(scl: &mut OledWScl, sda: &mut OledWSda) {
+pub fn init_oled_config<Scl, Sda>(scl: &mut Scl, sda: &mut Sda)
+where
+    Scl: OutputPin,
+    Sda: OutputPin,
+{
     // OLED 状态初始化
     scl.set_high();
     sda.set_high();
@@ -274,25 +323,4 @@ pub fn init_oled_config(scl: &mut OledWScl, sda: &mut OledWSda) {
     write_command(scl, sda, 0xAF); //开启显示
 
     clear(scl, sda); //OLED清屏
-}
-
-/// 初始化 OLED 显示屏
-pub fn init_oled(
-    pb8: gpio::Pin<'B', 8>,
-    pb9: gpio::Pin<'B', 9>,
-    crh: &mut gpio::Cr<'B', true>,
-) -> (
-    gpio::PB8<gpio::Output<gpio::OpenDrain>>,
-    gpio::PB9<gpio::Output<gpio::OpenDrain>>,
-) {
-    // 将引脚配置为作为开漏输出模式
-    let mut scl = pb8.into_open_drain_output(crh);
-    let mut sda = pb9.into_open_drain_output(crh);
-    scl.set_speed(crh, gpio::IOPinSpeed::Mhz50);
-    sda.set_speed(crh, gpio::IOPinSpeed::Mhz50);
-
-    // 始化 OLED 配置
-    init_oled_config(&mut scl, &mut sda);
-
-    (scl, sda)
 }

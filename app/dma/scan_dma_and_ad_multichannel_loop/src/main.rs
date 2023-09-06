@@ -17,19 +17,15 @@ use stm32f1xx_hal::dma::Half;
 use stm32f1xx_hal::flash;
 use stm32f1xx_hal::gpio::gpioa;
 use stm32f1xx_hal::gpio::Analog;
-use stm32f1xx_hal::gpio::PA0;
-use stm32f1xx_hal::gpio::PA1;
-use stm32f1xx_hal::gpio::PA2;
-use stm32f1xx_hal::gpio::PA3;
+use stm32f1xx_hal::gpio::{PA0, PA1, PA2, PA3};
 use stm32f1xx_hal::pac;
 use stm32f1xx_hal::pac::adc1;
 use stm32f1xx_hal::pac::ADC1;
 use stm32f1xx_hal::prelude::_fugit_RateExtU32;
-use stm32f1xx_hal::prelude::_stm32_hal_adc_ChannelTimeSequence;
-use stm32f1xx_hal::prelude::_stm32_hal_dma_CircReadDma;
-use stm32f1xx_hal::prelude::_stm32_hal_dma_DmaExt;
-use stm32f1xx_hal::prelude::_stm32_hal_flash_FlashExt;
-use stm32f1xx_hal::prelude::_stm32_hal_gpio_GpioExt;
+use stm32f1xx_hal::prelude::{
+    _stm32_hal_adc_ChannelTimeSequence, _stm32_hal_dma_CircReadDma, _stm32_hal_dma_DmaExt,
+    _stm32_hal_flash_FlashExt, _stm32_hal_gpio_GpioExt,
+};
 use stm32f1xx_hal::rcc;
 use stm32f1xx_hal::rcc::RccExt;
 use stm32f1xx_hal::timer::SysDelay;

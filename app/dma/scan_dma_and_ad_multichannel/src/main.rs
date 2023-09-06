@@ -15,22 +15,19 @@ use stm32f1xx_hal::adc;
 use stm32f1xx_hal::adc::Adc;
 use stm32f1xx_hal::adc::SetChannels;
 use stm32f1xx_hal::flash;
+use stm32f1xx_hal::gpio;
 use stm32f1xx_hal::gpio::gpioa;
 use stm32f1xx_hal::gpio::gpiob;
 use stm32f1xx_hal::gpio::Analog;
-use stm32f1xx_hal::gpio::PA0;
-use stm32f1xx_hal::gpio::PA1;
-use stm32f1xx_hal::gpio::PA2;
-use stm32f1xx_hal::gpio::PA3;
+use stm32f1xx_hal::gpio::OutputSpeed;
+use stm32f1xx_hal::gpio::{PA0, PA1, PA2, PA3};
 use stm32f1xx_hal::pac;
 use stm32f1xx_hal::pac::adc1;
 use stm32f1xx_hal::pac::ADC1;
-use stm32f1xx_hal::prelude::_fugit_RateExtU32;
-use stm32f1xx_hal::prelude::_stm32_hal_adc_ChannelTimeSequence;
-use stm32f1xx_hal::prelude::_stm32_hal_dma_DmaExt;
-use stm32f1xx_hal::prelude::_stm32_hal_dma_ReadDma;
-use stm32f1xx_hal::prelude::_stm32_hal_flash_FlashExt;
-use stm32f1xx_hal::prelude::_stm32_hal_gpio_GpioExt;
+use stm32f1xx_hal::prelude::{
+    _fugit_RateExtU32, _stm32_hal_adc_ChannelTimeSequence, _stm32_hal_dma_DmaExt,
+    _stm32_hal_dma_ReadDma, _stm32_hal_flash_FlashExt, _stm32_hal_gpio_GpioExt,
+};
 use stm32f1xx_hal::rcc;
 use stm32f1xx_hal::rcc::RccExt;
 use stm32f1xx_hal::timer::SysTimerExt;
@@ -82,7 +79,7 @@ fn main() -> ! {
 
     // 初始化 OLED 显示屏
     println!("load oled...");
-    let (mut scl, mut sda) = oled::init_oled(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let (mut scl, mut sda) = init_oled(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
 
     // 初始化 ADC
     let adc1 = dp.ADC1;
@@ -130,4 +127,24 @@ fn main() -> ! {
     loop {
         wfi();
     }
+}
+
+/// 初始化 OLED 显示屏
+pub fn init_oled(
+    pb8: gpio::Pin<'B', 8>,
+    pb9: gpio::Pin<'B', 9>,
+    crh: &mut gpio::Cr<'B', true>,
+) -> (
+    gpio::PB8<gpio::Output<gpio::OpenDrain>>,
+    gpio::PB9<gpio::Output<gpio::OpenDrain>>,
+) {
+    // 将引脚配置为作为开漏输出模式
+    let mut scl = pb8.into_open_drain_output(crh);
+    let mut sda = pb9.into_open_drain_output(crh);
+    scl.set_speed(crh, gpio::IOPinSpeed::Mhz50);
+    sda.set_speed(crh, gpio::IOPinSpeed::Mhz50);
+
+    // 始化 OLED 配置
+    hardware::oled::init_oled_config(&mut scl, &mut sda);
+    (scl, sda)
 }
