@@ -16,9 +16,15 @@ cargo rp ffi-blinky
 cargo run --target thumbv7m-none-eabi -p ffi-blinky probe-run -- --chip STM32F103C8 trace
 ```
 
+## 逐步调制指令
+
+```shell
+# 编译
 cargo build --target thumbv7m-none-eabi -p ffi-blinky
 
+# 烧录
 probe-run --chip STM32F103C8 target/thumbv7m-none-eabi/debug/ffi-blinky
+```
 
 ## 学习目标
 
