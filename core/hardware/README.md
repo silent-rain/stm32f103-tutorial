@@ -8,4 +8,4 @@
 - OLED
 - Serial
 - 软件 I2C 读写 MPU6050 6 轴姿态传感器
-- MPU6050 HAL 库
+- MPU6050 HAL 库读写 MPU6050 6 轴姿态传感器
