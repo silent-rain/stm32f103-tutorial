@@ -4,5 +4,7 @@
 
 ## 工具列表
 
+- KEY 按键
 - OLED
 - Serial
+- 软件 I2C 读写 MPU6050
