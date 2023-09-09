@@ -2,7 +2,7 @@
 #![no_std]
 #![no_main]
 
-use hardware::{mpu6050, oled};
+use hardware::{mpu6050::mpu6050_reg, oled};
 
 use defmt::println;
 use defmt_rtt as _;
@@ -43,15 +43,14 @@ fn main() -> ! {
     let mut mpu_sda = gpiob.pb11.into_open_drain_output(&mut gpiob.crh);
     mpu_sda.set_speed(&mut gpiob.crh, gpio::IOPinSpeed::Mhz50);
     mpu_scl.set_speed(&mut gpiob.crh, gpio::IOPinSpeed::Mhz50);
-    mpu6050::mpu6050_init(&mut mpu_scl, &mut mpu_sda);
+    mpu6050_reg::init_mpu6050(&mut mpu_scl, &mut mpu_sda);
 
-    let id = mpu6050::get_mpu6050_id(&mut mpu_scl, &mut mpu_sda);
+    let id = mpu6050_reg::get_id(&mut mpu_scl, &mut mpu_sda);
     oled::show_string(&mut scl, &mut sda, 1, 1, "ID:");
     oled::show_hex_num(&mut scl, &mut sda, 1, 4, id as u32, 2);
 
-    let mut data = mpu6050::MPU6050Data::default();
     loop {
-        mpu6050::get_mpu6050_data(&mut mpu_scl, &mut mpu_sda, &mut data);
+        let data = mpu6050_reg::get_data(&mut mpu_scl, &mut mpu_sda);
 
         oled::show_signed_num(&mut scl, &mut sda, 2, 1, data.acc_x as i32, 5);
         oled::show_signed_num(&mut scl, &mut sda, 3, 1, data.acc_y as i32, 5);
