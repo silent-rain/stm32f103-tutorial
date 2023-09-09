@@ -93,7 +93,7 @@ fn main() -> ! {
     oled::show_string(&mut scl, &mut sda, 3, 1, "RxPacket");
     loop {
         // 按键事件
-        if get_key_num(&mut key, &mut delay) == 1 {
+        if get_key_status(&mut key, &mut delay) {
             println!("key");
             unsafe {
                 SERIAL_TX_PACKET[0] += 1;
@@ -120,12 +120,13 @@ fn main() -> ! {
     }
 }
 
-/// 获取按键的值
-fn get_key_num(
+/// 获取按键的状态
+/// 按键是否按下
+fn get_key_status(
     key1: &mut gpio::Pin<'B', 1, gpio::Input<gpio::PullUp>>,
     delay: &mut SysDelay,
-) -> i32 {
-    let mut key_num = 0;
+) -> bool {
+    let mut key_num = false;
 
     if key1.is_low() {
         // 按键按下抖动
@@ -135,7 +136,7 @@ fn get_key_num(
         // 按键松开抖动
         delay.delay_ms(20_u16);
 
-        key_num = 1;
+        key_num = true;
     }
     key_num
 }
