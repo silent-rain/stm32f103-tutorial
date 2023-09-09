@@ -21,6 +21,7 @@
 - [系统计时器延迟](./app/delay/syst_timer_delay)
 - [系统定时器延迟](./app/delay/syst_delay)
 - [TIM2 定时器延迟](./app/delay/tim2_delay)
+- [汇编延迟](./app/delay/asm_delay)
 
 ### 通用 GPIO
 
@@ -36,7 +37,6 @@
 - [蜂鸣器](./app/general_gpio/buzzer)
 - [按键控制 LED](./app/general_gpio/key_control_led)
 - [光敏传感器控制蜂鸣器](./app/general_gpio/light_sensor_control_buzzer)
-- [OLED I2C 通信协议显示字符](./app/general_gpio/oled_i2c_show_character)
 - [FFI 绑定版的闪烁 LED](./app/general_gpio/ffi-blinky)
 
 ### 中断
@@ -90,6 +90,12 @@
 - [串行接口中断](./app/usart/serial_interrupt_idle)
 - [串行接口收发 HEX 数据包](./app/usart/serial_hex_packet)
 - [串行接口收发文本数据包](./app/usart/serial_text_packet)
+
+### I2C
+
+- [I2C OLED 显示字符](./app/i2c/i2c_oled_show_character)
+- [I2C 软件读写 MPU6050 ](./app/i2c/i2c_soft_mpu6050)
+- [I2C 硬件读写 MPU6050 ](./app/i2c/i2c_hard_mpu6050)
 
 ### RITC
 

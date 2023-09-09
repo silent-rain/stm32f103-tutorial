@@ -24,6 +24,7 @@ members = [
     "app/delay/syst_timer_delay",
     "app/delay/syst_delay",
     "app/delay/tim2_delay",
+    "app/delay/asm_delay",
     # 通用 GPIO
     "app/general_gpio/turns_user_led",
     "app/general_gpio/delay_blinky",
@@ -35,7 +36,6 @@ members = [
     "app/general_gpio/buzzer",
     "app/general_gpio/key_control_led",
     "app/general_gpio/light_sensor_control_buzzer",
-    "app/general_gpio/oled_i2c_show_character",
     "app/general_gpio/ffi-blinky",
     # 中断
     "app/interrupt/opposing_infrared_sensor_count",
@@ -78,6 +78,10 @@ members = [
     "app/usart/serial_interrupt_idle",
     "app/usart/serial_hex_packet",
     "app/usart/serial_text_packet",
+    # I2C
+    "app/i2c/i2c_oled_show_character",
+    "app/i2c/i2c_soft_mpu6050",
+    "app/i2c/i2c_hard_mpu6050",
     # RTIC
     "app/rtic/spawn_task_rtic",
     "app/rtic/exti_rtic",
