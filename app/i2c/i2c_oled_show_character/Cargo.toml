@@ -1,5 +1,5 @@
 [package]
-name = "oled_i2c_show_character"
+name = "i2c_oled_show_character"
 version = "0.1.0"
 edition = "2021"
 
