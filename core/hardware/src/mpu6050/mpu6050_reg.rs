@@ -1,37 +1,11 @@
-//! 软件I2C读写MPU6050
-//! MPU6050 是一个6轴姿态传感器，可以测量芯片自身X、Y、Z轴的加速度、角速度参数，
-//! 通过数据融合，可进一步得到姿态角，常应用于平衡车、飞行器等需要检测自身姿态的场景。
-
+//! 寄存器版本实现
 #![allow(unused)]
+
+use super::conf::*;
+pub use super::AccelGyroData;
 
 use embedded_hal::digital::v2::{OutputPin, StatefulOutputPin};
 use stm32f1xx_hal::gpio::{self, OutputSpeed};
-
-const MPU6050_ADDRESS: u8 = 0xD0;
-
-const MPU6050_SMPLRT_DIV: u8 = 0x19;
-const MPU6050_CONFIG: u8 = 0x1A;
-const MPU6050_GYRO_CONFIG: u8 = 0x1B;
-const MPU6050_ACCEL_CONFIG: u8 = 0x1C;
-
-const MPU6050_ACCEL_XOUT_H: u8 = 0x3B;
-const MPU6050_ACCEL_XOUT_L: u8 = 0x3C;
-const MPU6050_ACCEL_YOUT_H: u8 = 0x3D;
-const MPU6050_ACCEL_YOUT_L: u8 = 0x3E;
-const MPU6050_ACCEL_ZOUT_H: u8 = 0x3F;
-const MPU6050_ACCEL_ZOUT_L: u8 = 0x40;
-const MPU6050_TEMP_OUT_H: u8 = 0x41;
-const MPU6050_TEMP_OUT_L: u8 = 0x42;
-const MPU6050_GYRO_XOUT_H: u8 = 0x43;
-const MPU6050_GYRO_XOUT_L: u8 = 0x44;
-const MPU6050_GYRO_YOUT_H: u8 = 0x45;
-const MPU6050_GYRO_YOUT_L: u8 = 0x46;
-const MPU6050_GYRO_ZOUT_H: u8 = 0x47;
-const MPU6050_GYRO_ZOUT_L: u8 = 0x48;
-
-const MPU6050_PWR_MGMT_1: u8 = 0x6B;
-const MPU6050_PWR_MGMT_2: u8 = 0x6C;
-const MPU6050_WHO_AM_I: u8 = 0x75;
 
 pub fn i2c_r_sda<Sda>(sda: &mut Sda) -> bool
 where
@@ -136,7 +110,7 @@ where
 
 /// I2C 初始化
 /// open-drain output pin 10,11
-pub fn i2c_init<Scl, Sda>(scl: &mut Scl, sda: &mut Sda)
+pub fn init_i2c<Scl, Sda>(scl: &mut Scl, sda: &mut Sda)
 where
     Scl: OutputPin,
     Sda: OutputPin,
@@ -146,7 +120,7 @@ where
 }
 
 /// 写入寄存器
-pub fn mpu6050_write_reg<Scl, Sda>(scl: &mut Scl, sda: &mut Sda, reg_address: u8, data: u8)
+pub fn write_reg<Scl, Sda>(scl: &mut Scl, sda: &mut Sda, reg_address: u8, data: u8)
 where
     Scl: OutputPin + StatefulOutputPin,
     <Scl as OutputPin>::Error: core::fmt::Debug,
@@ -164,7 +138,7 @@ where
 }
 
 /// 读取寄存器
-pub fn mpu6050_read_reg<Scl, Sda>(scl: &mut Scl, sda: &mut Sda, reg_address: u8) -> i16
+pub fn read_reg<Scl, Sda>(scl: &mut Scl, sda: &mut Sda, reg_address: u8) -> i16
 where
     Scl: OutputPin + StatefulOutputPin,
     <Scl as OutputPin>::Error: core::fmt::Debug,
@@ -193,75 +167,68 @@ where
 /// let mut sda = gpiob.pb11.into_open_drain_output(&mut gpiob.crh);
 /// sda.set_speed(&mut gpiob.crh, gpio::IOPinSpeed::Mhz50);
 /// scl.set_speed(&mut gpiob.crh, gpio::IOPinSpeed::Mhz50);
-/// hardware::mpu6050::mpu6050_init(&mut scl, &mut sda);
+/// hardware::mpu6050::init_mpu6050(&mut scl, &mut sda);
 /// ```
-pub fn mpu6050_init<Scl, Sda>(scl: &mut Scl, sda: &mut Sda)
+pub fn init_mpu6050<Scl, Sda>(scl: &mut Scl, sda: &mut Sda)
 where
     Scl: OutputPin + StatefulOutputPin,
     <Scl as OutputPin>::Error: core::fmt::Debug,
     Sda: OutputPin + StatefulOutputPin,
     <Sda as OutputPin>::Error: core::fmt::Debug,
 {
-    i2c_init(scl, sda);
-    mpu6050_write_reg(scl, sda, MPU6050_PWR_MGMT_1, 0x01);
-    mpu6050_write_reg(scl, sda, MPU6050_PWR_MGMT_2, 0x00);
-    mpu6050_write_reg(scl, sda, MPU6050_SMPLRT_DIV, 0x09);
-    mpu6050_write_reg(scl, sda, MPU6050_CONFIG, 0x06);
-    mpu6050_write_reg(scl, sda, MPU6050_GYRO_CONFIG, 0x18);
-    mpu6050_write_reg(scl, sda, MPU6050_ACCEL_CONFIG, 0x18);
+    init_i2c(scl, sda);
+    write_reg(scl, sda, MPU6050_PWR_MGMT_1, 0x01);
+    write_reg(scl, sda, MPU6050_PWR_MGMT_2, 0x00);
+    write_reg(scl, sda, MPU6050_SMPLRT_DIV, 0x09);
+    write_reg(scl, sda, MPU6050_CONFIG, 0x06);
+    write_reg(scl, sda, MPU6050_GYRO_CONFIG, 0x18);
+    write_reg(scl, sda, MPU6050_ACCEL_CONFIG, 0x18);
 }
 
 /// 获取 MPU6050 ID
-pub fn get_mpu6050_id<Scl, Sda>(scl: &mut Scl, sda: &mut Sda) -> i16
+pub fn get_id<Scl, Sda>(scl: &mut Scl, sda: &mut Sda) -> i16
 where
     Scl: OutputPin + StatefulOutputPin,
     <Scl as OutputPin>::Error: core::fmt::Debug,
     Sda: OutputPin + StatefulOutputPin,
     <Sda as OutputPin>::Error: core::fmt::Debug,
 {
-    mpu6050_read_reg(scl, sda, MPU6050_WHO_AM_I)
-}
-
-/// 获取 MPU6050 轴数据
-#[derive(Default)]
-pub struct MPU6050Data {
-    pub acc_x: i16,
-    pub acc_y: i16,
-    pub acc_z: i16,
-    pub gyro_x: i16,
-    pub gyro_y: i16,
-    pub gyro_z: i16,
+    read_reg(scl, sda, MPU6050_WHO_AM_I)
 }
 
 /// 获取数据
-pub fn get_mpu6050_data<Scl, Sda>(scl: &mut Scl, sda: &mut Sda, data: &mut MPU6050Data)
+pub fn get_data<Scl, Sda>(scl: &mut Scl, sda: &mut Sda) -> AccelGyroData
 where
     Scl: OutputPin + StatefulOutputPin,
     <Scl as OutputPin>::Error: core::fmt::Debug,
     Sda: OutputPin + StatefulOutputPin,
     <Sda as OutputPin>::Error: core::fmt::Debug,
 {
-    let data_h = mpu6050_read_reg(scl, sda, MPU6050_ACCEL_XOUT_H);
-    let data_l = mpu6050_read_reg(scl, sda, MPU6050_ACCEL_XOUT_L);
+    let mut data = AccelGyroData::default();
+
+    let data_h = read_reg(scl, sda, MPU6050_ACCEL_XOUT_H);
+    let data_l = read_reg(scl, sda, MPU6050_ACCEL_XOUT_L);
     data.acc_x = (data_h << 8) | data_l;
 
-    let data_h = mpu6050_read_reg(scl, sda, MPU6050_ACCEL_YOUT_H);
-    let data_l = mpu6050_read_reg(scl, sda, MPU6050_ACCEL_YOUT_L);
+    let data_h = read_reg(scl, sda, MPU6050_ACCEL_YOUT_H);
+    let data_l = read_reg(scl, sda, MPU6050_ACCEL_YOUT_L);
     data.acc_y = (data_h << 8) | data_l;
 
-    let data_h = mpu6050_read_reg(scl, sda, MPU6050_ACCEL_ZOUT_H);
-    let data_l = mpu6050_read_reg(scl, sda, MPU6050_ACCEL_ZOUT_L);
+    let data_h = read_reg(scl, sda, MPU6050_ACCEL_ZOUT_H);
+    let data_l = read_reg(scl, sda, MPU6050_ACCEL_ZOUT_L);
     data.acc_z = (data_h << 8) | data_l;
 
-    let data_h = mpu6050_read_reg(scl, sda, MPU6050_GYRO_XOUT_H);
-    let data_l = mpu6050_read_reg(scl, sda, MPU6050_GYRO_XOUT_L);
+    let data_h = read_reg(scl, sda, MPU6050_GYRO_XOUT_H);
+    let data_l = read_reg(scl, sda, MPU6050_GYRO_XOUT_L);
     data.gyro_x = (data_h << 8) | data_l;
 
-    let data_h = mpu6050_read_reg(scl, sda, MPU6050_GYRO_YOUT_H);
-    let data_l = mpu6050_read_reg(scl, sda, MPU6050_GYRO_YOUT_L);
+    let data_h = read_reg(scl, sda, MPU6050_GYRO_YOUT_H);
+    let data_l = read_reg(scl, sda, MPU6050_GYRO_YOUT_L);
     data.gyro_y = (data_h << 8) | data_l;
 
-    let data_h = mpu6050_read_reg(scl, sda, MPU6050_GYRO_ZOUT_H);
-    let data_l = mpu6050_read_reg(scl, sda, MPU6050_GYRO_ZOUT_L);
+    let data_h = read_reg(scl, sda, MPU6050_GYRO_ZOUT_H);
+    let data_l = read_reg(scl, sda, MPU6050_GYRO_ZOUT_L);
     data.gyro_z = (data_h << 8) | data_l;
+
+    data
 }

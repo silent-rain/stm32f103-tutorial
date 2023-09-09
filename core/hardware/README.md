@@ -7,4 +7,5 @@
 - KEY 按键
 - OLED
 - Serial
-- 软件 I2C 读写 MPU6050
+- 软件 I2C 读写 MPU6050 6 轴姿态传感器
+- MPU6050 HAL 库
