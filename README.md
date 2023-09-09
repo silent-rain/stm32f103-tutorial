@@ -54,7 +54,7 @@
 
 - [禁用 JTAG 端口](./app/port_remap/disable_jtag_ports)
 
-### PWM
+### PWM 脉冲宽度调制
 
 - [PWM 驱动呼吸灯](./app/pwm/pwm_led)
 - [自定义引脚组合的 PWM 输出](./app/pwm/pwm_custom)
@@ -66,12 +66,12 @@
 - [旋转编码器接口延时测速](./app/pwm/pwm_rotary_encoder_speed)
 - [旋转编码器接口定时器测速](./app/pwm/pwm_rotary_encoder_timer_speed)
 
-### ADC
+### ADC 模数转换器
 
 - [AD 单通道](./app/adc/ad_single_channel)
 - [AD 多通道](./app/adc/ad_multichannel)
 
-### DMA
+### DMA 数据转运
 
 - [打印内存地址](./app/dma/print_memory_address)
 - [DMA 数据转运](./app/dma/dma_data_transfer)
@@ -80,7 +80,7 @@
 - [DMA+AD 多通道循环读取](./app/dma/scan_dma_and_ad_multichannel_loop)
 - [DMA+AD 多通道分批读取](./app/dma/scan_dma_and_ad_multichannel_peek)
 
-### USART
+### USART 串行接口
 
 - [串行接口配置](./app/usart/serial_config)
 - [串行接口发送与接收](./app/usart/serial_tx_and_rx)
@@ -91,12 +91,14 @@
 - [串行接口收发 HEX 数据包](./app/usart/serial_hex_packet)
 - [串行接口收发文本数据包](./app/usart/serial_text_packet)
 
-### I2C
+### I2C 通信
 
 - [I2C OLED 显示字符](./app/i2c/i2c_oled_show_character)
 - x[I2C 软件读写 MPU6050 ](./app/i2c/i2c_soft_mpu6050)
 - x[I2C 硬件读写 MPU6050 ](./app/i2c/i2c_hard_mpu6050)
 - x[I2C MPU6050 crate 读写 ](./app/i2c/i2c_mpu6050_crate)
+
+### SPI 通信
 
 ### RITC
 
