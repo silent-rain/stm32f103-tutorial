@@ -583,7 +583,6 @@ dependencies = [
  "defmt-test",
  "embedded-hal 0.2.7",
  "heapless",
- "mpu6050",
  "nb 1.1.0",
  "numtoa",
  "panic-probe",
@@ -639,6 +638,24 @@ dependencies = [
  "embedded-dma",
  "hardware",
  "heapless",
+ "nb 1.1.0",
+ "panic-probe",
+ "stm32f1xx-hal",
+ "unwrap-infallible",
+]
+
+[[package]]
+name = "i2c_mpu6050_crate"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "embedded-dma",
+ "hardware",
+ "heapless",
+ "mpu6050",
  "nb 1.1.0",
  "panic-probe",
  "stm32f1xx-hal",

@@ -82,6 +82,7 @@ members = [
     "app/i2c/i2c_oled_show_character",
     "app/i2c/i2c_soft_mpu6050",
     "app/i2c/i2c_hard_mpu6050",
+    "app/i2c/i2c_mpu6050_crate",
     # RTIC
     "app/rtic/spawn_task_rtic",
     "app/rtic/exti_rtic",
