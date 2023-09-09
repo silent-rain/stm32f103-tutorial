@@ -60,7 +60,7 @@
 - [自定义引脚组合的 PWM 输出](./app/pwm/pwm_custom)
 - [PWM 驱动呼吸灯-端口重映射](./app/pwm/pwm_led_remap)
 - [PWM 驱动舵机](./app/pwm/pwm_driven_servo)
-- [PWM 驱动直流电机](./app/pwm/pwm_driven_motor)
+- x[PWM 驱动直流电机](./app/pwm/pwm_driven_motor)
 - [输入捕获模式测频率占空比](./app/pwm/pwm_input_capture_freq_duty_cycle)
 - [旋转编码器接口计数](./app/pwm/pwm_rotary_encoder_count)
 - [旋转编码器接口延时测速](./app/pwm/pwm_rotary_encoder_speed)
@@ -94,14 +94,14 @@
 ### I2C
 
 - [I2C OLED 显示字符](./app/i2c/i2c_oled_show_character)
-- [I2C 软件读写 MPU6050 ](./app/i2c/i2c_soft_mpu6050)
-- [I2C 硬件读写 MPU6050 ](./app/i2c/i2c_hard_mpu6050)
+- x[I2C 软件读写 MPU6050 ](./app/i2c/i2c_soft_mpu6050)
+- x[I2C 硬件读写 MPU6050 ](./app/i2c/i2c_hard_mpu6050)
 
 ### RITC
 
 - [任务调度-RTIC](./app/rtic/spawn_task_rtic)
-- [EXTI 中断-RTIC](./app/rtic/exti_rtic)
-- [TIM 定时器中断-RTIC](./app/rtic/timer_interrupt_rtic)
+- x[EXTI 中断-RTIC](./app/rtic/exti_rtic)
+- x[TIM 定时器中断-RTIC](./app/rtic/timer_interrupt_rtic)
 
 ### 常用外设工具库封装
 
