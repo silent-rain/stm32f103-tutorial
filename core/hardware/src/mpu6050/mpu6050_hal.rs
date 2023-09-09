@@ -57,6 +57,7 @@ where
     i2c.write_read(MPU6050_ADDRESS, &[MPU6050_WHO_AM_I], &mut buffer[0..1])
         .unwrap();
 
+    // assert_eq!(buffer[0], MPU6050_ADDRESS);
     buffer[0]
 }
 

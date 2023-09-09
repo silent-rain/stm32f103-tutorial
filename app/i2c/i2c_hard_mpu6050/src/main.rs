@@ -46,8 +46,9 @@ fn main() -> ! {
     let mpu_sda = gpiob.pb11.into_alternate_open_drain(&mut gpiob.crh);
     let mut mpu = mpu6050_hal::init((mpu_scl, mpu_sda), i2c2, clocks);
 
-    oled::show_string(&mut scl, &mut sda, 1, 1, "TxPacket");
-    oled::show_string(&mut scl, &mut sda, 3, 1, "RxPacket");
+    let id = mpu6050_hal::get_id(&mut mpu);
+    oled::show_string(&mut scl, &mut sda, 1, 1, "ID:");
+    oled::show_hex_num(&mut scl, &mut sda, 1, 4, id as u32, 2);
 
     // 循环读取加速度和角速度数据
     loop {
