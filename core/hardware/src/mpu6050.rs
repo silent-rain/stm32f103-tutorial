@@ -1,12 +1,7 @@
 //! 软件I2C读写MPU6050
 //! MPU6050 是一个6轴姿态传感器，可以测量芯片自身X、Y、Z轴的加速度、角速度参数，
 //! 通过数据融合，可进一步得到姿态角，常应用于平衡车、飞行器等需要检测自身姿态的场景。
-//! 
-//! ```rust
-//! mpu6050_init();
-//! get_mpu6050_id();
-//! get_mpu6050_data();
-//! ```
+
 #![allow(unused)]
 
 use embedded_hal::digital::v2::{OutputPin, StatefulOutputPin};
@@ -38,18 +33,19 @@ const MPU6050_PWR_MGMT_1: u8 = 0x6B;
 const MPU6050_PWR_MGMT_2: u8 = 0x6C;
 const MPU6050_WHO_AM_I: u8 = 0x75;
 
-pub fn i2c_r_sda<Pin>(sda: &mut Pin) -> bool
+pub fn i2c_r_sda<Sda>(sda: &mut Sda) -> bool
 where
-    Pin: OutputPin + StatefulOutputPin,
-    <Pin as OutputPin>::Error: core::fmt::Debug,
+    Sda: OutputPin + StatefulOutputPin,
+    <Sda as OutputPin>::Error: core::fmt::Debug,
 {
     sda.is_set_high().unwrap()
 }
 
 /// I2C 开始
-pub fn i2c_start<Pin>(scl: &mut Pin, sda: &mut Pin)
+pub fn i2c_start<Scl, Sda>(scl: &mut Scl, sda: &mut Sda)
 where
-    Pin: OutputPin,
+    Scl: OutputPin,
+    Sda: OutputPin,
 {
     let _ = sda.set_high();
     let _ = scl.set_high();
@@ -58,9 +54,10 @@ where
 }
 
 /// I2C 结束
-pub fn i2c_stop<Pin>(scl: &mut Pin, sda: &mut Pin)
+pub fn i2c_stop<Scl, Sda>(scl: &mut Scl, sda: &mut Sda)
 where
-    Pin: OutputPin,
+    Scl: OutputPin,
+    Sda: OutputPin,
 {
     let _ = sda.set_low();
     let _ = scl.set_high();
@@ -68,9 +65,10 @@ where
 }
 
 /// I2C 发送字节
-pub fn i2c_send_byte<Pin>(scl: &mut Pin, sda: &mut Pin, byte: u8)
+pub fn i2c_send_byte<Scl, Sda>(scl: &mut Scl, sda: &mut Sda, byte: u8)
 where
-    Pin: OutputPin,
+    Scl: OutputPin,
+    Sda: OutputPin,
 {
     for i in 0..8 {
         if byte & (0x80 >> i) > 0 {
@@ -84,10 +82,12 @@ where
 }
 
 /// I2C 接收字节
-pub fn i2c_receive_byte<Pin>(scl: &mut Pin, sda: &mut Pin) -> u8
+pub fn i2c_receive_byte<Scl, Sda>(scl: &mut Scl, sda: &mut Sda) -> u8
 where
-    Pin: OutputPin + StatefulOutputPin,
-    <Pin as OutputPin>::Error: core::fmt::Debug,
+    Scl: OutputPin + StatefulOutputPin,
+    <Scl as OutputPin>::Error: core::fmt::Debug,
+    Sda: OutputPin + StatefulOutputPin,
+    <Sda as OutputPin>::Error: core::fmt::Debug,
 {
     let mut byte: u8 = 0x00;
     let _ = sda.set_high();
@@ -105,9 +105,10 @@ where
 }
 
 /// I2C 发送 ACK
-pub fn i2c_send_ack<Pin>(scl: &mut Pin, sda: &mut Pin, ack_bit: u8)
+pub fn i2c_send_ack<Scl, Sda>(scl: &mut Scl, sda: &mut Sda, ack_bit: u8)
 where
-    Pin: OutputPin,
+    Scl: OutputPin,
+    Sda: OutputPin,
 {
     if ack_bit == 0 {
         let _ = sda.set_low();
@@ -119,10 +120,12 @@ where
 }
 
 /// I2C 接收 ACK
-pub fn i2c_receive_ack<Pin>(scl: &mut Pin, sda: &mut Pin) -> bool
+pub fn i2c_receive_ack<Scl, Sda>(scl: &mut Scl, sda: &mut Sda) -> bool
 where
-    Pin: OutputPin + StatefulOutputPin,
-    <Pin as OutputPin>::Error: core::fmt::Debug,
+    Scl: OutputPin + StatefulOutputPin,
+    <Scl as OutputPin>::Error: core::fmt::Debug,
+    Sda: OutputPin + StatefulOutputPin,
+    <Sda as OutputPin>::Error: core::fmt::Debug,
 {
     let _ = sda.set_high();
     let _ = scl.set_high();
@@ -133,21 +136,22 @@ where
 
 /// I2C 初始化
 /// open-drain output pin 10,11
-pub fn i2c_init<Pin>(scl: &mut Pin, sda: &mut Pin, cr: &mut <Pin as gpio::HL>::Cr)
+pub fn i2c_init<Scl, Sda>(scl: &mut Scl, sda: &mut Sda)
 where
-    Pin: OutputPin + OutputSpeed,
+    Scl: OutputPin,
+    Sda: OutputPin,
 {
-    sda.set_speed(cr, gpio::IOPinSpeed::Mhz50);
-    scl.set_speed(cr, gpio::IOPinSpeed::Mhz50);
     let _ = sda.set_high();
     let _ = scl.set_high();
 }
 
 /// 写入寄存器
-pub fn mpu6050_write_reg<Pin>(scl: &mut Pin, sda: &mut Pin, reg_address: u8, data: u8)
+pub fn mpu6050_write_reg<Scl, Sda>(scl: &mut Scl, sda: &mut Sda, reg_address: u8, data: u8)
 where
-    Pin: OutputPin + StatefulOutputPin,
-    <Pin as OutputPin>::Error: core::fmt::Debug,
+    Scl: OutputPin + StatefulOutputPin,
+    <Scl as OutputPin>::Error: core::fmt::Debug,
+    Sda: OutputPin + StatefulOutputPin,
+    <Sda as OutputPin>::Error: core::fmt::Debug,
 {
     i2c_start(scl, sda);
     i2c_send_byte(scl, sda, MPU6050_ADDRESS);
@@ -160,10 +164,12 @@ where
 }
 
 /// 读取寄存器
-pub fn mpu6050_read_reg<Pin>(scl: &mut Pin, sda: &mut Pin, reg_address: u8) -> i16
+pub fn mpu6050_read_reg<Scl, Sda>(scl: &mut Scl, sda: &mut Sda, reg_address: u8) -> i16
 where
-    Pin: OutputPin + StatefulOutputPin,
-    <Pin as OutputPin>::Error: core::fmt::Debug,
+    Scl: OutputPin + StatefulOutputPin,
+    <Scl as OutputPin>::Error: core::fmt::Debug,
+    Sda: OutputPin + StatefulOutputPin,
+    <Sda as OutputPin>::Error: core::fmt::Debug,
 {
     i2c_start(scl, sda);
     i2c_send_byte(scl, sda, MPU6050_ADDRESS);
@@ -182,12 +188,21 @@ where
 }
 
 /// MPU6050 初始化
-pub fn mpu6050_init<Pin>(scl: &mut Pin, sda: &mut Pin, cr: &mut <Pin as gpio::HL>::Cr)
+/// ```rust
+/// let mut scl = gpiob.pb10.into_open_drain_output(&mut gpiob.crh);
+/// let mut sda = gpiob.pb11.into_open_drain_output(&mut gpiob.crh);
+/// sda.set_speed(&mut gpiob.crh, gpio::IOPinSpeed::Mhz50);
+/// scl.set_speed(&mut gpiob.crh, gpio::IOPinSpeed::Mhz50);
+/// hardware::mpu6050::mpu6050_init(&mut scl, &mut sda);
+/// ```
+pub fn mpu6050_init<Scl, Sda>(scl: &mut Scl, sda: &mut Sda)
 where
-    Pin: OutputPin + StatefulOutputPin + OutputSpeed,
-    <Pin as OutputPin>::Error: core::fmt::Debug,
+    Scl: OutputPin + StatefulOutputPin,
+    <Scl as OutputPin>::Error: core::fmt::Debug,
+    Sda: OutputPin + StatefulOutputPin,
+    <Sda as OutputPin>::Error: core::fmt::Debug,
 {
-    i2c_init(scl, sda, cr);
+    i2c_init(scl, sda);
     mpu6050_write_reg(scl, sda, MPU6050_PWR_MGMT_1, 0x01);
     mpu6050_write_reg(scl, sda, MPU6050_PWR_MGMT_2, 0x00);
     mpu6050_write_reg(scl, sda, MPU6050_SMPLRT_DIV, 0x09);
@@ -197,15 +212,18 @@ where
 }
 
 /// 获取 MPU6050 ID
-pub fn get_mpu6050_id<Pin>(scl: &mut Pin, sda: &mut Pin) -> i16
+pub fn get_mpu6050_id<Scl, Sda>(scl: &mut Scl, sda: &mut Sda) -> i16
 where
-    Pin: OutputPin + StatefulOutputPin,
-    <Pin as OutputPin>::Error: core::fmt::Debug,
+    Scl: OutputPin + StatefulOutputPin,
+    <Scl as OutputPin>::Error: core::fmt::Debug,
+    Sda: OutputPin + StatefulOutputPin,
+    <Sda as OutputPin>::Error: core::fmt::Debug,
 {
     mpu6050_read_reg(scl, sda, MPU6050_WHO_AM_I)
 }
 
 /// 获取 MPU6050 轴数据
+#[derive(Default)]
 pub struct MPU6050Data {
     pub acc_x: i16,
     pub acc_y: i16,
@@ -216,10 +234,12 @@ pub struct MPU6050Data {
 }
 
 /// 获取数据
-pub fn get_mpu6050_data<Pin>(scl: &mut Pin, sda: &mut Pin, data: &mut MPU6050Data)
+pub fn get_mpu6050_data<Scl, Sda>(scl: &mut Scl, sda: &mut Sda, data: &mut MPU6050Data)
 where
-    Pin: OutputPin + StatefulOutputPin,
-    <Pin as OutputPin>::Error: core::fmt::Debug,
+    Scl: OutputPin + StatefulOutputPin,
+    <Scl as OutputPin>::Error: core::fmt::Debug,
+    Sda: OutputPin + StatefulOutputPin,
+    <Sda as OutputPin>::Error: core::fmt::Debug,
 {
     let data_h = mpu6050_read_reg(scl, sda, MPU6050_ACCEL_XOUT_H);
     let data_l = mpu6050_read_reg(scl, sda, MPU6050_ACCEL_XOUT_L);
