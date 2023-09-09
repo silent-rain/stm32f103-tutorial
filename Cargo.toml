@@ -48,7 +48,7 @@ members = [
     "app/interrupt/timer_external_clock",
     # 端口重映射
     "app/port_remap/disable_jtag_ports",
-    # PWM
+    # PWM 脉冲宽度调制
     "app/pwm/pwm_led",
     "app/pwm/pwm_led2",
     "app/pwm/pwm_led_remap",
@@ -59,17 +59,17 @@ members = [
     "app/pwm/pwm_rotary_encoder_count",
     "app/pwm/pwm_rotary_encoder_speed",
     "app/pwm/pwm_rotary_encoder_timer_speed",
-    # ADC
+    # ADC 模数转换器
     "app/adc/ad_single_channel",
     "app/adc/ad_multichannel",
-    # DMA
+    # DMA 数据转运
     "app/dma/print_memory_address",
     "app/dma/dma_data_transfer",
     "app/dma/dma_data_continuous_transfer",
     "app/dma/scan_dma_and_ad_multichannel",
     "app/dma/scan_dma_and_ad_multichannel_loop",
     "app/dma/scan_dma_and_ad_multichannel_peek",
-    # USART
+    # USART 串行接口
     "app/usart/serial_config",
     "app/usart/serial_tx_and_rx",
     "app/usart/serial_reconfigure",
@@ -78,7 +78,7 @@ members = [
     "app/usart/serial_interrupt_idle",
     "app/usart/serial_hex_packet",
     "app/usart/serial_text_packet",
-    # I2C
+    # I2C 通信
     "app/i2c/i2c_oled_show_character",
     "app/i2c/i2c_soft_mpu6050",
     "app/i2c/i2c_hard_mpu6050",
