@@ -4,19 +4,18 @@ use cortex_m::prelude::{_embedded_hal_blocking_spi_Transfer, _embedded_hal_block
 use stm32f1xx_hal::gpio::{Output, PushPull, PA4};
 use stm32f1xx_hal::pac::{self, SPI1};
 use stm32f1xx_hal::prelude::_fugit_RateExtU32;
-use stm32f1xx_hal::spi::{Master, Pins, Remap, Spi};
+use stm32f1xx_hal::spi::{Master, Pins, Remap, Spi, Spi1NoRemap};
 use stm32f1xx_hal::{afio, rcc, spi};
 
 /// 初始化 W25Q64
-pub fn init_w25q64<REMAP, PINS>(
+pub fn init_w25q64<PINS>(
     spi1: SPI1,
     pins: PINS,
     mapr: &mut afio::MAPR,
     clocks: rcc::Clocks,
-) -> Spi<pac::SPI1, REMAP, PINS, u8, Master>
+) -> Spi<pac::SPI1, Spi1NoRemap, PINS, u8, Master>
 where
-    REMAP: Remap<Periph = pac::SPI1>,
-    PINS: Pins<REMAP>,
+    PINS: Pins<Spi1NoRemap>,
 {
     let mode = spi::Mode {
         polarity: spi::Polarity::IdleLow,

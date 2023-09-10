@@ -46,6 +46,7 @@ fn main() -> ! {
 
     // 配置SPI1的引脚和模式
     let sck = gpioa.pa5.into_alternate_push_pull(&mut gpioa.crl);
+    // let miso = gpioa.pa6;
     let miso = gpioa.pa6.into_floating_input(&mut gpioa.crl);
     let mosi = gpioa.pa7.into_alternate_push_pull(&mut gpioa.crl);
     let mut cs = gpioa.pa4.into_push_pull_output(&mut gpioa.crl); // 配置片选引脚为推挽输出

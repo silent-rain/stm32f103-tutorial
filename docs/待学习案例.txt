@@ -27,8 +27,12 @@ dynamic_gpio.rs
 timer-interrupt-rtic.rs
 exti_rtic.rs
 blinky_timer_irq.rs
+mpu9250.rs.disabled
 
 
+spi-dma.rs
+spi-slave.rs
+spi.rs
 
 
 i2c-bme280
@@ -43,15 +47,11 @@ enc28j60.rs.disabled
 itm.rs
 mfrc522.rs
 motor.rs.disabled
-mpu9250.rs.disabled
 rtc.rs
 serial-dma-circ.rs
 serial-dma-peek.rs
 serial-dma-rx.rs
 serial-dma-tx.rs
-spi-dma.rs
-spi-slave.rs
-spi.rs
 usb_serial.rs
 usb_serial_interrupt.rs
 usb_serial_rtic.rs
