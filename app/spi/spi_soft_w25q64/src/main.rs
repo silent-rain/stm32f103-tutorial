@@ -50,8 +50,6 @@ fn main() -> ! {
     w_mosi.set_speed(&mut gpioa.crl, gpio::IOPinSpeed::Mhz50);
     w25q64_reg::init_w25q64(&mut w_ss, &mut w_sck);
 
-    w_miso.is_high();
-
     let (mid, did) = w25q64_reg::read_id(&mut w_ss, &mut w_sck, &mut w_mosi, &mut w_miso);
 
     oled::show_string(&mut scl, &mut sda, 1, 1, "MID:   DID:");

@@ -98,7 +98,7 @@ where
     (mid, did)
 }
 
-/// 开启 W25Q64
+/// 启用写入功能
 pub fn write_enable<SS, SCK, MOSI, MISO>(
     ss: &mut SS,
     sck: &mut SCK,
@@ -116,6 +116,7 @@ pub fn write_enable<SS, SCK, MOSI, MISO>(
     spi_stop(ss);
 }
 
+/// 等待W25Q64芯片空闲
 pub fn wait_busy<SS, SCK, MOSI, MISO>(ss: &mut SS, sck: &mut SCK, mosi: &mut MOSI, miso: &mut MISO)
 where
     SS: OutputPin,
@@ -167,7 +168,7 @@ pub fn page_program<SS, SCK, MOSI, MISO>(
     wait_busy(ss, sck, mosi, miso);
 }
 
-/// 擦除
+/// 擦除地址所在的扇区
 pub fn sector_erase<SS, SCK, MOSI, MISO>(
     ss: &mut SS,
     sck: &mut SCK,
