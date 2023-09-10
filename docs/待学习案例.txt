@@ -26,6 +26,7 @@ multi_mode_gpio.rs
 dynamic_gpio.rs
 timer-interrupt-rtic.rs
 exti_rtic.rs
+blinky_timer_irq.rs
 
 
 
@@ -33,7 +34,6 @@ exti_rtic.rs
 i2c-bme280
 blinky_rtc.rs
 blinky_rtcalarm_irq.rs
-blinky_timer_irq.rs
 can-echo.rs
 can-loopback.rs
 can-rtic.rs
