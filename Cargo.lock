@@ -1595,6 +1595,40 @@ dependencies = [
 ]
 
 [[package]]
+name = "spi_hard_w25q64"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "embedded-dma",
+ "hardware",
+ "heapless",
+ "nb 1.1.0",
+ "panic-probe",
+ "stm32f1xx-hal",
+ "unwrap-infallible",
+]
+
+[[package]]
+name = "spi_soft_w25q64"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "embedded-dma",
+ "hardware",
+ "heapless",
+ "nb 1.1.0",
+ "panic-probe",
+ "stm32f1xx-hal",
+ "unwrap-infallible",
+]
+
+[[package]]
 name = "spin"
 version = "0.9.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"

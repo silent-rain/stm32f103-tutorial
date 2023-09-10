@@ -100,6 +100,9 @@
 
 ### SPI 通信
 
+- x[SPI 软件读写 W25Q64 ](./app/spi/spi_soft_w25q64)
+- x[SPI 硬件读写 W25Q64 ](./app/spi/spi_hard_w25q64)
+
 ### RITC
 
 - [任务调度-RTIC](./app/rtic/spawn_task_rtic)

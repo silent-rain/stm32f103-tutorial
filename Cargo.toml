@@ -83,6 +83,9 @@ members = [
     "app/i2c/i2c_soft_mpu6050",
     "app/i2c/i2c_hard_mpu6050",
     "app/i2c/i2c_mpu6050_crate",
+    # SPI 通信
+    "app/spi/spi_soft_w25q64",
+    "app/spi/spi_hard_w25q64",
     # RTIC
     "app/rtic/spawn_task_rtic",
     "app/rtic/exti_rtic",

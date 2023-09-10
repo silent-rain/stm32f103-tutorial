@@ -5,3 +5,4 @@ scripts/renode/
 
 # 临时测试代码
 examples/examples
+examples/stm32*
