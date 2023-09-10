@@ -191,3 +191,27 @@ Caused by:
 - 切换到 embed 的方式进行烧录；
 - 按住重置键，迅速烧录；
 - 如失败，多测试几次；
+
+## rust profiles 编译警告
+
+### 错误信息
+
+```shell
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /home/one/Documents/code/RustEmbedProject/stm32f103-tutorial/app/basic/flash_tool_defmt/Cargo.toml
+```
+
+### 解决方案
+
+删除所有子项目的 Cargo.toml 配置文件中的重复配置项。
+
+### 解决方案 2
+
+在工作空间的 Cargo.toml 配置文件中对 profiles 的配置进行覆盖。
+
+如果你有一个名为 hardware 的 lib crate：
+
+```toml
+[profile.dev.overrides.hardware]
+opt-level = 0
+```
