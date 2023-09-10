@@ -23,16 +23,6 @@ bindgen = "0.66.1"
 cc = "1.0.83"
 glob = "0.3.1"
 
-# cargo test
-[profile.test]
-codegen-units = 1
-debug = 2
-debug-assertions = true
-incremental = false
-opt-level = 3
-overflow-checks = true
-
-
 [[test]]
 name = "hello_demo"
 path = "tests/hello_demo.rs"

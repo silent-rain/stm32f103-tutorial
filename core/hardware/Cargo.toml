@@ -23,13 +23,3 @@ heapless = "0.7.16"
 
 [dev-dependencies]
 defmt-test = "0.3.0"
-
-
-# cargo test
-[profile.test]
-codegen-units = 1
-debug = 2
-debug-assertions = true # <-
-incremental = false
-opt-level = 3           # <-
-overflow-checks = true  # <-
