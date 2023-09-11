@@ -22,7 +22,7 @@ where
     let mut i2c = BlockingI2c::i2c2(
         i2c2,
         pins,
-        i2c::Mode::standard(10.MHz()),
+        i2c::Mode::standard(10.kHz()),
         clocks,
         1000,
         10,
@@ -30,16 +30,17 @@ where
         1000,
     );
     // 唤醒 mpu6050
-    i2c.write(MPU6050_ADDRESS, &[MPU6050_PWR_MGMT_1, 0x01])
+    i2c.write(DEFAULT_SLAVE_ADDR, &[MPU6050_PWR_MGMT_1, 0x01])
         .unwrap();
-    i2c.write(MPU6050_ADDRESS, &[MPU6050_PWR_MGMT_2, 0x00])
+    i2c.write(DEFAULT_SLAVE_ADDR, &[MPU6050_PWR_MGMT_2, 0x00])
         .unwrap();
-    i2c.write(MPU6050_ADDRESS, &[MPU6050_SMPLRT_DIV, 0x09])
+    i2c.write(DEFAULT_SLAVE_ADDR, &[MPU6050_SMPLRT_DIV, 0x09])
         .unwrap();
-    i2c.write(MPU6050_ADDRESS, &[MPU6050_CONFIG, 0x06]).unwrap();
-    i2c.write(MPU6050_ADDRESS, &[MPU6050_GYRO_CONFIG, 0x18])
+    i2c.write(DEFAULT_SLAVE_ADDR, &[MPU6050_CONFIG, 0x06])
         .unwrap();
-    i2c.write(MPU6050_ADDRESS, &[MPU6050_ACCEL_CONFIG, 0x18])
+    i2c.write(DEFAULT_SLAVE_ADDR, &[MPU6050_GYRO_CONFIG, 0x18])
+        .unwrap();
+    i2c.write(DEFAULT_SLAVE_ADDR, &[MPU6050_ACCEL_CONFIG, 0x18])
         .unwrap();
 
     i2c
@@ -54,10 +55,10 @@ where
     let mut buffer: [u8; 14] = [0; 14];
 
     // 检查mpu6050的设备ID是否正确
-    i2c.write_read(MPU6050_ADDRESS, &[MPU6050_WHO_AM_I], &mut buffer[0..1])
+    i2c.write_read(DEFAULT_SLAVE_ADDR, &[MPU6050_WHO_AM_I], &mut buffer[0..1])
         .unwrap();
 
-    // assert_eq!(buffer[0], MPU6050_ADDRESS);
+    // assert_eq!(buffer[0], DEFAULT_SLAVE_ADDR);
     buffer[0]
 }
 
@@ -71,7 +72,7 @@ where
     let mut buffer: [u8; 14] = [0; 14];
 
     // 从mpu6050中读取14个字节的数据，包括加速度和角速度
-    i2c.write_read(MPU6050_ADDRESS, &[MPU6050_ACCEL_XOUT_H], &mut buffer)
+    i2c.write_read(DEFAULT_SLAVE_ADDR, &[MPU6050_ACCEL_XOUT_H], &mut buffer)
         .unwrap();
 
     // 将数据转换为有符号的16位整数

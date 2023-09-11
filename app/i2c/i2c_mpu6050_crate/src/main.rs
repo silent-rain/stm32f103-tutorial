@@ -45,7 +45,7 @@ fn main() -> ! {
     let i2c = BlockingI2c::i2c2(
         i2c2,
         pins,
-        i2c::Mode::standard(10.MHz()),
+        i2c::Mode::standard(10.kHz()),
         clocks,
         1000,
         10,

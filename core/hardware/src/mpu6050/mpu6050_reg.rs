@@ -115,8 +115,8 @@ where
     Scl: OutputPin,
     Sda: OutputPin,
 {
-    let _ = sda.set_high();
     let _ = scl.set_high();
+    let _ = sda.set_high();
 }
 
 /// 写入寄存器
@@ -128,7 +128,7 @@ where
     <Sda as OutputPin>::Error: core::fmt::Debug,
 {
     i2c_start(scl, sda);
-    i2c_send_byte(scl, sda, MPU6050_ADDRESS);
+    i2c_send_byte(scl, sda, DEFAULT_SLAVE_ADDR);
     i2c_receive_ack(scl, sda);
     i2c_send_byte(scl, sda, reg_address);
     i2c_receive_ack(scl, sda);
@@ -146,13 +146,13 @@ where
     <Sda as OutputPin>::Error: core::fmt::Debug,
 {
     i2c_start(scl, sda);
-    i2c_send_byte(scl, sda, MPU6050_ADDRESS);
+    i2c_send_byte(scl, sda, DEFAULT_SLAVE_ADDR);
     i2c_receive_ack(scl, sda);
     i2c_send_byte(scl, sda, reg_address);
     i2c_receive_ack(scl, sda);
 
     i2c_start(scl, sda);
-    i2c_send_byte(scl, sda, MPU6050_ADDRESS | 0x01);
+    i2c_send_byte(scl, sda, DEFAULT_SLAVE_ADDR | 0x01);
     i2c_receive_ack(scl, sda);
     let data = i2c_receive_byte(scl, sda);
     i2c_send_ack(scl, sda, 1);

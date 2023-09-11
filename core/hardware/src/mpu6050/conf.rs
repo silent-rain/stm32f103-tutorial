@@ -1,5 +1,5 @@
 //!配置
-pub const MPU6050_ADDRESS: u8 = 0xD0;
+pub const DEFAULT_SLAVE_ADDR: u8 = 0x68;
 
 pub const MPU6050_SMPLRT_DIV: u8 = 0x19;
 pub const MPU6050_CONFIG: u8 = 0x1A;

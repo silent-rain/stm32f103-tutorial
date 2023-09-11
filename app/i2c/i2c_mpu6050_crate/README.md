@@ -1,5 +1,7 @@
 # I2C MPU6050 crate 读写
 
+使用第三方 crate 进行读写 MPU6050。
+
 ## 执行指令
 
 ```shell

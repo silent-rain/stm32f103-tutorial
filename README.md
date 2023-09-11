@@ -95,8 +95,8 @@
 
 - [I2C OLED 显示字符](./app/i2c/i2c_oled_show_character)
 - x[I2C 软件读写 MPU6050 ](./app/i2c/i2c_soft_mpu6050)
-- x[I2C 硬件读写 MPU6050 ](./app/i2c/i2c_hard_mpu6050)
-- x[I2C MPU6050 crate 读写 ](./app/i2c/i2c_mpu6050_crate)
+- [I2C 硬件读写 MPU6050 ](./app/i2c/i2c_hard_mpu6050)
+- [I2C MPU6050 crate 读写 ](./app/i2c/i2c_mpu6050_crate)
 
 ### SPI 通信
 

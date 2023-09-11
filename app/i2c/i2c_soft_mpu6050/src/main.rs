@@ -50,14 +50,14 @@ fn main() -> ! {
     oled::show_hex_num(&mut scl, &mut sda, 1, 4, id as u32, 2);
 
     loop {
-        let data = mpu6050_reg::get_data(&mut mpu_scl, &mut mpu_sda);
+        // let data = mpu6050_reg::get_data(&mut mpu_scl, &mut mpu_sda);
 
-        oled::show_signed_num(&mut scl, &mut sda, 2, 1, data.acc_x as i32, 5);
-        oled::show_signed_num(&mut scl, &mut sda, 3, 1, data.acc_y as i32, 5);
-        oled::show_signed_num(&mut scl, &mut sda, 4, 1, data.acc_z as i32, 5);
-        oled::show_signed_num(&mut scl, &mut sda, 2, 8, data.gyro_x as i32, 5);
-        oled::show_signed_num(&mut scl, &mut sda, 3, 8, data.gyro_y as i32, 5);
-        oled::show_signed_num(&mut scl, &mut sda, 4, 8, data.gyro_z as i32, 5);
+        // oled::show_signed_num(&mut scl, &mut sda, 2, 1, data.acc_x as i32, 5);
+        // oled::show_signed_num(&mut scl, &mut sda, 3, 1, data.acc_y as i32, 5);
+        // oled::show_signed_num(&mut scl, &mut sda, 4, 1, data.acc_z as i32, 5);
+        // oled::show_signed_num(&mut scl, &mut sda, 2, 8, data.gyro_x as i32, 5);
+        // oled::show_signed_num(&mut scl, &mut sda, 3, 8, data.gyro_y as i32, 5);
+        // oled::show_signed_num(&mut scl, &mut sda, 4, 8, data.gyro_z as i32, 5);
     }
 }
 
