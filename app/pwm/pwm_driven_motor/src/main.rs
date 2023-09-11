@@ -39,9 +39,9 @@ fn main() -> ! {
         .cfgr
         // .use_hse(8.MHz())
         // 设置系统时钟
-        // .sysclk(72.MHz())
+        .sysclk(72.MHz())
         // .pclk1(36.MHz())
-        .hclk(8.MHz())
+        // .hclk(8.MHz())
         .freeze(&mut flash.acr);
 
     // 具有自定义精度的阻塞延迟函数
@@ -57,31 +57,35 @@ fn main() -> ! {
 
     // 直流电机方向引脚
     println!("load motor...");
-    let mut ain1: gpio::Pin<'A', 4, gpio::Output> = gpioa.pa4.into_push_pull_output(&mut gpioa.crl);
+    let mut ain1 = gpioa.pa4.into_push_pull_output(&mut gpioa.crl);
     let mut ain2 = gpioa.pa5.into_push_pull_output(&mut gpioa.crl);
     ain1.set_speed(&mut gpioa.crl, IOPinSpeed::Mhz50);
     ain2.set_speed(&mut gpioa.crl, IOPinSpeed::Mhz50);
 
     // pwma 速度控制引脚
-    println!("load pwma...");
-    let c3 = gpioa.pa2.into_alternate_push_pull(&mut gpioa.crl);
-    let pins = c3;
-
     println!("load pwm...");
-    let mut pwm = tim2.pwm_hz::<Tim2NoRemap, _, _>(pins, &mut afio.mapr, 1.kHz(), &clocks);
+    let pwma = gpioa.pa2.into_alternate_push_pull(&mut gpioa.crl);
+    let mut pwm = tim2.pwm_hz::<Tim2NoRemap, _, _>(pwma, &mut afio.mapr, 1.kHz(), &clocks);
 
     // Enable clock on each of the channels
     // https://docs.rs/stm32f1xx-hal/0.10.0/stm32f1xx_hal/timer/index.html
     pwm.enable(Channel::C3);
 
     // Return to the original frequency
-    pwm.set_period(1.kHz());
+    pwm.set_period(10.kHz());
 
     let max_duty = pwm.get_max_duty();
     println!("max_duty={:?}", max_duty);
+    let x = pwm.get_period();
+    println!("period={:?} Hz", x.raw());
+
+    // 电机有足够的时间启动和停止
+    // 防止电机无法达到稳定状态，或者因为速度变化太快而损坏电机。
+    delay.delay_ms(1000_u32);
 
     let mut speed = 0;
     oled::show_string(&mut scl, &mut sda, 1, 1, "Speed:");
+    println!("loop");
     loop {
         let key_num = get_key_num(&mut key, &mut delay);
         if key_num == 1 {
@@ -90,7 +94,7 @@ fn main() -> ! {
                 speed = -100;
             }
         }
-        set_speed(&mut ain1, &mut ain2, &mut pwm, 20);
+        set_speed(&mut ain1, &mut ain2, &mut pwm, speed);
         oled::show_signed_num(&mut scl, &mut sda, 1, 7, speed, 3);
     }
 }
@@ -116,21 +120,33 @@ fn get_key_num(
 }
 
 /// 设置直流电机速度
+/// 设置电机的速度和方向，speed为-100到100之间的整数，负数表示反转，正数表示正转，绝对值越大速度越快
 fn set_speed(
     ain1: &mut gpio::Pin<'A', 4, gpio::Output>,
     ain2: &mut gpio::Pin<'A', 5, gpio::Output>,
     pwm: &mut PwmHz<TIM2, Tim2NoRemap, Ch<2>, gpio::Pin<'A', 2, Alternate>>,
     speed: i32,
 ) {
-    // 正转
+    let max_duty = pwm.get_max_duty();
     if speed >= 0 {
+        // 设置正转方向
         ain1.set_high();
         ain2.set_low();
+        // 设置占空比
+        pwm.set_duty(
+            Channel::C3,
+            (max_duty as f32 * (speed as f32 / 100.0)) as u16,
+        );
     } else {
-        ain2.set_high();
+        // 设置反转方向
         ain1.set_low();
+        ain2.set_high();
+        // 设置占空比
+        pwm.set_duty(
+            Channel::C3,
+            (max_duty as f32 * (-speed as f32 / 100.0)) as u16,
+        );
     }
-    pwm.set_duty(Channel::C3, speed as u16);
 }
 
 /// 初始化 OLED 显示屏
