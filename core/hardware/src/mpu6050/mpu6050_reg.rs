@@ -5,7 +5,7 @@ use super::conf::*;
 pub use super::AccelGyroData;
 
 use embedded_hal::{
-    digital::v2::{OutputPin, StatefulOutputPin},
+    digital::v2::{InputPin, OutputPin, StatefulOutputPin},
     prelude::_embedded_hal_blocking_delay_DelayUs,
 };
 use stm32f1xx_hal::{
@@ -17,8 +17,9 @@ use stm32f1xx_hal::{
 pub struct Mpu6050<'a, Scl, Sda>
 where
     Scl: OutputPin,
-    Sda: OutputPin + StatefulOutputPin,
-    <Sda as OutputPin>::Error: core::fmt::Debug,
+    <Scl as OutputPin>::Error: core::fmt::Debug,
+    Sda: InputPin + OutputPin,
+    <Sda as InputPin>::Error: core::fmt::Debug,
 {
     scl: &'a mut Scl,
     sda: &'a mut Sda,
@@ -29,7 +30,8 @@ impl<'a, Scl, Sda> Mpu6050<'a, Scl, Sda>
 where
     Scl: OutputPin,
     <Scl as OutputPin>::Error: core::fmt::Debug,
-    Sda: OutputPin + StatefulOutputPin,
+    Sda: InputPin + OutputPin,
+    <Sda as InputPin>::Error: core::fmt::Debug,
     <Sda as OutputPin>::Error: core::fmt::Debug,
 {
     pub fn new(scl: &'a mut Scl, sda: &'a mut Sda, delay: &'a mut SysDelay) -> Self {
@@ -38,24 +40,24 @@ where
 
     fn i2c_w_scl(&mut self, bit_value: u8) {
         if bit_value > 0 {
-            self.scl.set_high();
+            self.scl.set_high().unwrap();
         } else {
-            self.scl.set_low();
+            self.scl.set_low().unwrap();
         }
         self.delay.delay_us(10_u32);
     }
 
     fn i2c_w_sda(&mut self, bit_value: u8) {
         if bit_value > 0 {
-            self.sda.set_high();
+            self.sda.set_high().unwrap();
         } else {
-            self.sda.set_low();
+            self.sda.set_low().unwrap();
         }
         self.delay.delay_us(10_u32);
     }
 
     fn i2c_r_sda(&mut self) -> u8 {
-        let bit_value = self.sda.is_set_high().unwrap();
+        let bit_value = self.sda.is_high().unwrap();
         self.delay.delay_us(10_u32);
         if bit_value {
             1
@@ -65,7 +67,7 @@ where
     }
 
     /// 产生 I2C 协议起始信号
-    fn i2c_start(&mut self) {
+    pub fn i2c_start(&mut self) {
         self.i2c_w_sda(1);
         self.i2c_w_scl(1);
         self.i2c_w_sda(0);
@@ -129,7 +131,8 @@ impl<'a, Scl, Sda> Mpu6050<'a, Scl, Sda>
 where
     Scl: OutputPin,
     <Scl as OutputPin>::Error: core::fmt::Debug,
-    Sda: OutputPin + StatefulOutputPin,
+    Sda: InputPin + OutputPin,
+    <Sda as InputPin>::Error: core::fmt::Debug,
     <Sda as OutputPin>::Error: core::fmt::Debug,
 {
     /// MPU6050 写寄存器函数
@@ -138,6 +141,7 @@ where
     pub fn write_reg(&mut self, reg_address: u8, data: u8) {
         // 发送起始信号
         self.i2c_start();
+
         // 发送设备地址
         self.i2c_send_byte(DEFAULT_SLAVE_ADDR);
         self.i2c_receive_ack();

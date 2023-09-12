@@ -32,7 +32,7 @@ fn main() -> ! {
     let clocks = rcc.cfgr.freeze(&mut flash.acr);
 
     // 具有自定义精度的阻塞延迟函数
-    let mut _delay = syst.delay(&clocks);
+    let mut delay = syst.delay(&clocks);
 
     // 初始化 OLED 显示屏
     println!("load oled...");
@@ -41,16 +41,17 @@ fn main() -> ! {
     // 初始化 MPU6050
     let mut mpu_scl = gpiob.pb10.into_open_drain_output(&mut gpiob.crh);
     let mut mpu_sda = gpiob.pb11.into_open_drain_output(&mut gpiob.crh);
-    mpu_sda.set_speed(&mut gpiob.crh, gpio::IOPinSpeed::Mhz50);
     mpu_scl.set_speed(&mut gpiob.crh, gpio::IOPinSpeed::Mhz50);
-    mpu6050_reg::init_mpu6050(&mut mpu_scl, &mut mpu_sda);
+    mpu_sda.set_speed(&mut gpiob.crh, gpio::IOPinSpeed::Mhz50);
+    let mut mpu = mpu6050_reg::Mpu6050::new(&mut mpu_scl, &mut mpu_sda, &mut delay);
+    mpu.init_mpu6050();
 
-    let id = mpu6050_reg::get_id(&mut mpu_scl, &mut mpu_sda);
+    let id = mpu.get_id();
     oled::show_string(&mut scl, &mut sda, 1, 1, "ID:");
     oled::show_hex_num(&mut scl, &mut sda, 1, 4, id as u32, 2);
 
     loop {
-        // let data = mpu6050_reg::get_data(&mut mpu_scl, &mut mpu_sda);
+        // let data = mpu.get_data();
 
         // oled::show_signed_num(&mut scl, &mut sda, 2, 1, data.acc_x as i32, 5);
         // oled::show_signed_num(&mut scl, &mut sda, 3, 1, data.acc_y as i32, 5);
