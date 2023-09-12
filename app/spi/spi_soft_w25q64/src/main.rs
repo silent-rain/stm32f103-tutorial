@@ -48,9 +48,18 @@ fn main() -> ! {
     w_ss.set_speed(&mut gpioa.crl, gpio::IOPinSpeed::Mhz50);
     w_sck.set_speed(&mut gpioa.crl, gpio::IOPinSpeed::Mhz50);
     w_mosi.set_speed(&mut gpioa.crl, gpio::IOPinSpeed::Mhz50);
-    w25q64_reg::init_w25q64(&mut w_ss, &mut w_sck);
+    let mut w25 = w25q64_reg::W25Q64::new(&mut w_ss, &mut w_sck, &mut w_mosi, &mut w_miso);
+    w25.init_w25q64();
 
-    let (mid, did) = w25q64_reg::read_id(&mut w_ss, &mut w_sck, &mut w_mosi, &mut w_miso);
+    let (mid, did) = w25.read_id();
+
+    let array_write: [u8; 4] = [0x01, 0x02, 0x03, 0x04];
+    let mut array_read: [u8; 4] = [0; 4];
+
+    w25.sector_erase(0x000000);
+    // w25.page_program(0x000000, &array_write);
+
+    w25.read_data(0x000000, &mut array_read);
 
     oled::show_string(&mut scl, &mut sda, 1, 1, "MID:   DID:");
     oled::show_string(&mut scl, &mut sda, 2, 1, "W:");
@@ -58,28 +67,6 @@ fn main() -> ! {
 
     oled::show_hex_num(&mut scl, &mut sda, 1, 5, mid as u32, 2);
     oled::show_hex_num(&mut scl, &mut sda, 1, 12, did as u32, 4);
-
-    let array_write: [u8; 4] = [0x01, 0x02, 0x03, 0x04];
-    let mut array_read: [u8; 4] = [0; 4];
-
-    w25q64_reg::sector_erase(&mut w_ss, &mut w_sck, &mut w_mosi, &mut w_miso, 0x000000);
-    w25q64_reg::page_program(
-        &mut w_ss,
-        &mut w_sck,
-        &mut w_mosi,
-        &mut w_miso,
-        0x000000,
-        &array_write,
-    );
-
-    w25q64_reg::read_data(
-        &mut w_ss,
-        &mut w_sck,
-        &mut w_mosi,
-        &mut w_miso,
-        0x000000,
-        &mut array_read,
-    );
 
     oled::show_hex_num(&mut scl, &mut sda, 2, 3, array_write[0] as u32, 2);
     oled::show_hex_num(&mut scl, &mut sda, 2, 6, array_write[1] as u32, 2);

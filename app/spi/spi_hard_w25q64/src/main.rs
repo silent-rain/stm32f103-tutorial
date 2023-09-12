@@ -62,19 +62,19 @@ fn main() -> ! {
     w25q64_hal::write_enable(&mut spi, &mut cs).unwrap();
 
     // 擦除地址所在的扇区
-    let address = 0x0000_0000;
+    let address = 0x000000;
     w25q64_hal::sector_erase(&mut spi, &mut cs, address).unwrap();
 
     // 写入数据
-    let address = 0x0000_0000;
+    // let address = 0x000000;
     let array_write = [0x01, 0x02, 0x03, 0x04];
-    w25q64_hal::page_program(&mut spi, &mut cs, address, &array_write).unwrap();
+    // w25q64_hal::page_program(&mut spi, &mut cs, address, &array_write).unwrap();
 
     // 禁用写入功能
     w25q64_hal::write_disable(&mut spi, &mut cs).unwrap();
 
     // 读取数据
-    let address = 0x0000_0000;
+    let address = 0x000000;
     let mut buffer = [0x00; 4];
     w25q64_hal::read_data(&mut spi, &mut cs, address, &mut buffer).unwrap();
 
