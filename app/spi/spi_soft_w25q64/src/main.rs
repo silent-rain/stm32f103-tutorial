@@ -52,12 +52,13 @@ fn main() -> ! {
     w25.init_w25q64();
 
     let (mid, did) = w25.read_id();
+    println!("mid: {:?}, did: {:?}", mid, did);
 
     let array_write: [u8; 4] = [0x01, 0x02, 0x03, 0x04];
     let mut array_read: [u8; 4] = [0; 4];
 
     w25.sector_erase(0x000000);
-    // w25.page_program(0x000000, &array_write);
+    w25.page_program(0x000000, &array_write);
 
     w25.read_data(0x000000, &mut array_read);
 

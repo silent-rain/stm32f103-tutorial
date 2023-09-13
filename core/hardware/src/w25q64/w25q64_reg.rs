@@ -117,9 +117,9 @@ where
         self.spi_swap_byte(W25Q64_JEDEC_ID);
 
         let mid = self.spi_swap_byte(W25Q64_DUMMY_BYTE);
-        let mut did = self.spi_swap_byte(W25Q64_DUMMY_BYTE) as u16;
+        let mut did = self.spi_swap_byte(W25Q64_DUMMY_BYTE) as u16; // 64
         did <<= 8;
-        did |= self.spi_swap_byte(W25Q64_DUMMY_BYTE) as u16;
+        did |= self.spi_swap_byte(W25Q64_DUMMY_BYTE) as u16; //  23
         self.spi_stop();
 
         (mid, did)
@@ -137,6 +137,7 @@ where
         let mut timeout: u32;
         self.spi_start();
         self.spi_swap_byte(W25Q64_READ_STATUS_REGISTER_1);
+
         timeout = 100000;
         while self.spi_swap_byte(W25Q64_DUMMY_BYTE) & 0x01 == 0x01 {
             timeout -= 1;
