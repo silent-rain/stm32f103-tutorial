@@ -1,10 +1,12 @@
 use super::conf::*;
 
+use defmt::println;
+
 use cortex_m::prelude::{_embedded_hal_blocking_spi_Transfer, _embedded_hal_blocking_spi_Write};
 use embedded_hal::digital::v2::OutputPin;
 use stm32f1xx_hal::pac::{self, SPI1};
 use stm32f1xx_hal::prelude::_fugit_RateExtU32;
-use stm32f1xx_hal::spi::{Master, Pins, Spi, Spi1NoRemap};
+use stm32f1xx_hal::spi::{Master, Pins, Spi, Spi1NoRemap, SpiBitFormat};
 use stm32f1xx_hal::{afio, rcc, spi};
 
 pub struct W25Q64<'a, PINS, SS>
@@ -23,7 +25,6 @@ where
     SS: OutputPin,
     <SS as OutputPin>::Error: core::fmt::Debug,
 {
-    /// 初始化 W25Q64
     pub fn new(
         spi1: SPI1,
         pins: PINS,
@@ -37,8 +38,15 @@ where
         };
 
         // 创建一个Spi实例
-        let spi = Spi::spi1(spi1, pins, mapr, mode, 1.MHz(), clocks);
+        let mut spi = Spi::spi1(spi1, pins, mapr, mode, 1.MHz(), clocks);
+        spi.bit_format(SpiBitFormat::MsbFirst);
+
         W25Q64 { spi, ss }
+    }
+
+    /// 初始化 W25Q64
+    pub fn init(&mut self) {
+        self.spi_w_ss(1);
     }
 
     pub fn spi_w_ss(&mut self, bit_value: u8) {
@@ -59,11 +67,25 @@ where
         self.spi_w_ss(1);
     }
 
+    pub fn spi_swap_cmd_byte(&mut self, words: &[u8]) -> Result<(), spi::Error> {
+        while !self.spi.is_tx_empty() {}
+        self.spi.write(words)?;
+        while self.spi.is_rx_not_empty() {}
+        Ok(())
+    }
+    pub fn spi_swap_byte(&mut self, words: &mut [u8]) -> Result<(), spi::Error> {
+        while !self.spi.is_tx_empty() {}
+        self.spi.transfer(words)?;
+        println!("=======P{:?}", words);
+        while self.spi.is_rx_not_empty() {}
+        Ok(())
+    }
+
     /// 启用写入功能
     pub fn write_enable(&mut self) -> Result<(), spi::Error> {
         self.spi_start();
         // 发送写使能命令
-        self.spi.write(&[W25Q64_WRITE_ENABLE])?;
+        self.spi_swap_cmd_byte(&[W25Q64_WRITE_ENABLE])?;
         self.spi_stop();
         Ok(())
     }
@@ -73,7 +95,7 @@ where
         // 禁用写入功能
         self.spi_start();
         // 发送写禁止命令
-        self.spi.write(&[W25Q64_WRITE_DISABLE])?;
+        self.spi_swap_cmd_byte(&[W25Q64_WRITE_DISABLE])?;
         self.spi_stop();
 
         Ok(())
@@ -81,32 +103,12 @@ where
 
     /// 读取W25Q64芯片的 JEDEC ID
     /// 使用Spi实例和片选引脚来发送和接收命令和数据
-    pub fn read_jedec_id(&mut self) -> Result<u8, spi::Error> {
+    pub fn read_jedec_id(&mut self) -> Result<(u8, u16), spi::Error> {
         self.spi_start();
-        self.spi.write(&[W25Q64_JEDEC_ID]).unwrap();
+        self.spi_swap_cmd_byte(&[W25Q64_JEDEC_ID]).unwrap();
 
         let mut buffer = [W25Q64_DUMMY_BYTE; 3];
-        self.spi.transfer(&mut buffer).unwrap();
-        self.spi_stop();
-
-        // 处理读取到的 JEDEC ID（这里您可以根据需要进行操作）
-        // println!("Manufacturer ID: {:X}", buffer[0]);
-        // println!("Memory Type: {:X}", buffer[1]);
-        // println!("Capacity: {:X}", buffer[2]);
-        let jedec_id = buffer[0];
-        Ok(jedec_id)
-    }
-
-    /// 读取W25Q64芯片的MID和DID
-    ///
-    /// 使用Spi实例和片选引脚来发送和接收命令和数据
-    pub fn read_device_id(&mut self) -> Result<(u8, u16), spi::Error> {
-        let cmd = [W25Q64_MANUFACTURER_DEVICE_ID, 0, 0, 0, 0, 0];
-        let mut buffer = [W25Q64_DUMMY_BYTE; 6];
-
-        self.spi_start();
-        self.spi.write(&cmd).unwrap();
-        self.spi.transfer(&mut buffer).unwrap();
+        self.spi_swap_byte(&mut buffer).unwrap();
         self.spi_stop();
 
         let mid = buffer[0];
@@ -115,18 +117,48 @@ where
         Ok((mid, did))
     }
 
+    /// 读取W25Q64芯片的制造商设备ID
+    ///
+    /// 使用Spi实例和片选引脚来发送和接收命令和数据
+    pub fn read_device_id(&mut self) -> Result<u16, spi::Error> {
+        let cmd = [W25Q64_MANUFACTURER_DEVICE_ID, 0, 0, 0, 0, 0];
+        let mut buffer = [0; 6];
+
+        self.spi_start();
+        self.spi.write(&cmd).unwrap();
+        self.spi.transfer(&mut buffer).unwrap();
+        self.spi_stop();
+
+        let device_id = (buffer[1] as u16) << 8 | buffer[2] as u16;
+        Ok(device_id)
+    }
+
     /// 定义一个辅助函数，用于等待W25Q64芯片空闲
+    // pub fn wait_for_idle(&mut self) -> Result<(), spi::Error> {
+    //     self.spi_start();
+    //     self.spi.write(&[W25Q64_READ_STATUS_REGISTER_1])?; // 发送读状态寄存器1命令
+    //     let mut status = [0x00; 1];
+    //     let mut timeout = 100000;
+    //     loop {
+    //         self.spi.transfer(&mut status)?; // 接收状态寄存器1的值
+    //         if status[0] & 0x01 == 0 {
+    //             // 检查状态寄存器1的最低位，如果为0表示空闲，否则表示忙碌
+    //             break;
+    //         }
+    //         timeout -= 1;
+    //         if timeout == 0 {
+    //             break;
+    //         }
+    //     }
+    //     self.spi_stop();
+    //     Ok(())
+    // }
+
     pub fn wait_for_idle(&mut self) -> Result<(), spi::Error> {
         self.spi_start();
-        self.spi.write(&[W25Q64_READ_STATUS_REGISTER_1])?; // 发送读状态寄存器1命令
-        let mut status = [0x00; 1];
         let mut timeout = 100000;
-        loop {
-            self.spi.transfer(&mut status)?; // 接收状态寄存器1的值
-            if status[0] & 0x01 == 0 {
-                // 检查状态寄存器1的最低位，如果为0表示空闲，否则表示忙碌
-                break;
-            }
+        // 空闲时退出
+        while self.spi.is_busy() {
             timeout -= 1;
             if timeout == 0 {
                 break;
@@ -149,8 +181,8 @@ where
             page_address as u8,
         ];
         self.spi_start();
-        self.spi.write(&cmd).unwrap();
-        self.spi.write(data).unwrap();
+        self.spi_swap_cmd_byte(&cmd).unwrap();
+        self.spi_swap_cmd_byte(data).unwrap();
         self.spi_stop();
 
         // 等待W25Q64芯片空闲
@@ -169,10 +201,9 @@ where
             address as u8,
         ];
         self.spi_start();
-        self.spi.write(&cmd)?;
+        self.spi_swap_cmd_byte(&cmd)?;
         self.spi_stop();
 
-        // 等待W25Q64芯片空闲
         self.wait_for_idle()?;
         Ok(())
     }
@@ -189,10 +220,10 @@ where
         ];
 
         self.spi_start();
-        self.spi.write(&cmd).unwrap();
+        self.spi_swap_cmd_byte(&cmd).unwrap();
 
         // 接收请求的数据
-        self.spi.transfer(data).unwrap();
+        self.spi_swap_byte(data).unwrap();
         self.spi_stop();
 
         Ok(())

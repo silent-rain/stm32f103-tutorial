@@ -47,20 +47,19 @@ fn main() -> ! {
 
     // 配置SPI1的引脚和模式
     let sck = gpioa.pa5.into_alternate_push_pull(&mut gpioa.crl);
-    // let miso = gpioa.pa6;
-    let miso = gpioa.pa6.into_floating_input(&mut gpioa.crl);
     let mosi = gpioa.pa7.into_alternate_push_pull(&mut gpioa.crl);
-    let mut cs = gpioa.pa4.into_push_pull_output(&mut gpioa.crl); // 配置片选引脚为推挽输出
+    // let miso = gpioa.pa6;
+    let miso = gpioa.pa6.into_pull_up_input(&mut gpioa.crl);
+    // 配置片选引脚为推挽输出
+    let mut cs = gpioa.pa4.into_push_pull_output(&mut gpioa.crl);
     let pins = (sck, miso, mosi);
 
     // 创建一个Spi实例
     let mut w25q = w25q64_hal::W25Q64::new(spi1, pins, &mut cs, &mut afio.mapr, clocks);
-
-    let jedec_id = w25q.read_jedec_id().unwrap();
-    println!("jedec_id: {:?}", jedec_id);
+    w25q.init();
 
     // 读取W25Q64芯片的MID和DID
-    let (mid, did) = w25q.read_device_id().unwrap();
+    let (mid, did) = w25q.read_jedec_id().unwrap();
     println!("mid: {:?}, did: {:?}", mid, did);
 
     // 擦除地址所在的扇区
@@ -68,12 +67,12 @@ fn main() -> ! {
     println!("sector_erase ...");
 
     // 写入数据
-    let array_write = [0x01, 0x02, 0x03, 0x04];
-    w25q.page_program(0x000000, &array_write).unwrap();
+    let array_write = [0x01, 0x02, 0x03, 0x05];
+    // w25q.page_program(0x000000, &array_write).unwrap();
     println!("page_program ...");
 
     // 禁用写入功能
-    w25q.write_disable().unwrap();
+    // w25q.write_disable().unwrap();
 
     delay.delay_ms(1000_u32);
 
