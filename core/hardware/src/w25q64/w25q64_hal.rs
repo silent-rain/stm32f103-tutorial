@@ -1,209 +1,200 @@
 use super::conf::*;
 
 use cortex_m::prelude::{_embedded_hal_blocking_spi_Transfer, _embedded_hal_blocking_spi_Write};
-use stm32f1xx_hal::gpio::{Output, PushPull, PA4};
+use embedded_hal::digital::v2::OutputPin;
 use stm32f1xx_hal::pac::{self, SPI1};
 use stm32f1xx_hal::prelude::_fugit_RateExtU32;
-use stm32f1xx_hal::spi::{Master, Pins, Remap, Spi, Spi1NoRemap};
+use stm32f1xx_hal::spi::{Master, Pins, Spi, Spi1NoRemap};
 use stm32f1xx_hal::{afio, rcc, spi};
 
-/// 初始化 W25Q64
-pub fn init_w25q64<PINS>(
-    spi1: SPI1,
-    pins: PINS,
-    mapr: &mut afio::MAPR,
-    clocks: rcc::Clocks,
-) -> Spi<pac::SPI1, Spi1NoRemap, PINS, u8, Master>
+pub struct W25Q64<'a, PINS, SS>
 where
     PINS: Pins<Spi1NoRemap>,
+    SS: OutputPin,
+    <SS as OutputPin>::Error: core::fmt::Debug,
 {
-    let mode = spi::Mode {
-        polarity: spi::Polarity::IdleLow,
-        phase: spi::Phase::CaptureOnFirstTransition,
-    };
-
-    // 创建一个Spi实例
-    Spi::spi1(spi1, pins, mapr, mode, 1.MHz(), clocks)
+    spi: Spi<pac::SPI1, Spi1NoRemap, PINS, u8, Master>,
+    ss: &'a mut SS,
 }
 
-/// 启用写入功能
-pub fn write_enable<REMAP, PINS>(
-    spi: &mut Spi<pac::SPI1, REMAP, PINS, u8, Master>,
-    cs: &mut PA4<Output<PushPull>>,
-) -> Result<(), spi::Error>
+impl<'a, PINS, SS> W25Q64<'a, PINS, SS>
 where
-    REMAP: Remap<Periph = pac::SPI1>,
-    PINS: Pins<REMAP>,
+    PINS: Pins<Spi1NoRemap>,
+    SS: OutputPin,
+    <SS as OutputPin>::Error: core::fmt::Debug,
 {
-    // 启用写入功能
-    cs.set_low(); // 拉低片选信号，开始通信
-    spi.write(&[W25Q64_WRITE_ENABLE])?; // 发送写使能命令
-    cs.set_high(); // 拉高片选信号，结束通信
+    /// 初始化 W25Q64
+    pub fn new(
+        spi1: SPI1,
+        pins: PINS,
+        ss: &'a mut SS,
+        mapr: &'a mut afio::MAPR,
+        clocks: rcc::Clocks,
+    ) -> Self {
+        let mode = spi::Mode {
+            polarity: spi::Polarity::IdleLow,
+            phase: spi::Phase::CaptureOnFirstTransition,
+        };
 
-    Ok(())
-}
+        // 创建一个Spi实例
+        let spi = Spi::spi1(spi1, pins, mapr, mode, 1.MHz(), clocks);
+        W25Q64 { spi, ss }
+    }
 
-/// 禁用写入功能
-pub fn write_disable<REMAP, PINS>(
-    spi: &mut Spi<pac::SPI1, REMAP, PINS, u8, Master>,
-    cs: &mut PA4<Output<PushPull>>,
-) -> Result<(), spi::Error>
-where
-    REMAP: Remap<Periph = pac::SPI1>,
-    PINS: Pins<REMAP>,
-{
-    // 禁用写入功能
-    cs.set_low(); // 拉低片选信号，开始通信
-    spi.write(&[W25Q64_WRITE_DISABLE])?; // 发送写禁止命令
-    cs.set_high(); // 拉高片选信号，结束通信
-
-    Ok(())
-}
-
-/// 读取W25Q64芯片的 JEDEC ID
-/// 使用Spi实例和片选引脚来发送和接收命令和数据
-pub fn read_jedec_id<REMAP, PINS>(
-    spi: &mut Spi<pac::SPI1, REMAP, PINS, u8, Master>,
-    cs: &mut PA4<Output<PushPull>>,
-) -> Result<u64, spi::Error>
-where
-    REMAP: Remap<Periph = pac::SPI1>,
-    PINS: Pins<REMAP>,
-{
-    let mut buffer = [0x00; 5]; // 缓冲区，用于存放命令和数据，大小为5个字节
-    buffer[0] = W25Q64_JEDEC_ID; // 第一个字节为读ID命令
-    cs.set_low(); // 拉低片选信号，开始通信
-    spi.transfer(&mut buffer)?; // 发送并接收数据，覆盖缓冲区
-    cs.set_high(); // 拉高片选信号，结束通信
-
-    // 从缓冲区中提取读取到的ID
-    // 从第二到第五个字节为读取到的ID，使用大端格式，并补齐为64位整数
-    let id = u64::from_be_bytes([
-        buffer[1], buffer[2], buffer[3], buffer[4], 0x00, 0x00, 0x00, 0x00,
-    ]);
-
-    Ok(id)
-}
-
-/// 读取W25Q64芯片的MID和DID
-///
-/// 使用Spi实例和片选引脚来发送和接收命令和数据
-pub fn read_device_id<REMAP, PINS>(
-    spi: &mut Spi<pac::SPI1, REMAP, PINS, u8, Master>,
-    cs: &mut PA4<Output<PushPull>>,
-) -> Result<(u8, u8), spi::Error>
-where
-    REMAP: Remap<Periph = pac::SPI1>,
-    PINS: Pins<REMAP>,
-{
-    let mut buffer = [0x00; 7]; // 缓冲区，用于存放命令和数据，大小为6个字节
-    buffer[0] = W25Q64_MANUFACTURER_DEVICE_ID; // 第一个字节为读MID和DID命令
-    buffer[1..5].copy_from_slice(&0x000000_u32.to_be_bytes()); // 第二到第四个字节为固定地址0x000000，使用大端格式
-
-    cs.set_low(); // 拉低片选信号，开始通信
-    spi.transfer(&mut buffer)?; // 发送并接收数据，覆盖缓冲区
-    cs.set_high(); // 拉高片选信号，结束通信
-
-    // 从缓冲区中提取读取到的MID和DID
-    let mid = buffer[5]; // 第五个字节为读取到的MID
-    let did = buffer[6]; // 第六个字节为读取到的DID
-
-    // EF, 4017
-    Ok((mid, did))
-}
-
-/// 定义一个辅助函数，用于等待W25Q64芯片空闲
-pub fn wait_for_idle<REMAP, PINS>(
-    spi: &mut Spi<pac::SPI1, REMAP, PINS, u8, Master>,
-    cs: &mut PA4<Output<PushPull>>,
-) -> Result<(), spi::Error>
-where
-    REMAP: Remap<Periph = pac::SPI1>,
-    PINS: Pins<REMAP>,
-{
-    let mut status = [0x00];
-    loop {
-        cs.set_low(); // 拉低片选信号，开始通信
-        spi.write(&[W25Q64_READ_STATUS_REGISTER_1])?; // 发送读状态寄存器1命令
-        spi.transfer(&mut status)?; // 接收状态寄存器1的值
-        cs.set_high(); // 拉高片选信号，结束通信
-        if status[0] & 0x01 == 0 {
-            // 检查状态寄存器1的最低位，如果为0表示空闲，否则表示忙碌
-            break;
+    pub fn spi_w_ss(&mut self, bit_value: u8) {
+        if bit_value == 0 {
+            // 拉低片选信号，开始通信
+            self.ss.set_low().unwrap();
+        } else {
+            // 拉高片选信号，结束通信
+            self.ss.set_high().unwrap();
         }
     }
-    Ok(())
-}
 
-/// 页编程, 写入数据
-pub fn page_program<REMAP, PINS>(
-    spi: &mut Spi<pac::SPI1, REMAP, PINS, u8, Master>,
-    cs: &mut PA4<Output<PushPull>>,
-    address: u32, // 目标地址
-    data: &[u8],  // 要写入的数据
-) -> Result<(), spi::Error>
-where
-    REMAP: Remap<Periph = pac::SPI1>,
-    PINS: Pins<REMAP>,
-{
-    // 缓冲区，4个字节的命令和地址
-    let mut cmd_buffer = [0x00; 5];
-    cmd_buffer[0] = W25Q64_PAGE_PROGRAM; // 第一个字节为页编程命令
-    cmd_buffer[1..5].copy_from_slice(&address.to_be_bytes()); // 第二到第四个字节为目标地址，使用大端格式
+    pub fn spi_start(&mut self) {
+        self.spi_w_ss(0);
+    }
 
-    cs.set_low(); // 拉低片选信号，开始通信
-    spi.write(&cmd_buffer)?; // 发送缓冲区中的命令
-    spi.write(data)?; // 要写入的数据
+    pub fn spi_stop(&mut self) {
+        self.spi_w_ss(1);
+    }
 
-    cs.set_high(); // 拉高片选信号，结束通信
+    /// 启用写入功能
+    pub fn write_enable(&mut self) -> Result<(), spi::Error> {
+        self.spi_start();
+        // 发送写使能命令
+        self.spi.write(&[W25Q64_WRITE_ENABLE])?;
+        self.spi_stop();
+        Ok(())
+    }
 
-    // 等待W25Q64芯片空闲
-    wait_for_idle(spi, cs)?;
-    Ok(())
-}
+    /// 禁用写入功能
+    pub fn write_disable(&mut self) -> Result<(), spi::Error> {
+        // 禁用写入功能
+        self.spi_start();
+        // 发送写禁止命令
+        self.spi.write(&[W25Q64_WRITE_DISABLE])?;
+        self.spi_stop();
 
-/// 读取数据
-pub fn read_data<REMAP, PINS>(
-    spi: &mut Spi<pac::SPI1, REMAP, PINS, u8, Master>,
-    cs: &mut PA4<Output<PushPull>>,
-    address: u32,      // 目标地址
-    buffer: &mut [u8], // 缓冲区，用于存放数据
-) -> Result<(), spi::Error>
-where
-    REMAP: Remap<Periph = pac::SPI1>,
-    PINS: Pins<REMAP>,
-{
-    let mut cmd_buffer = [0x00; 5]; // 缓冲区，用于存放命令，大小为4个字节
-    cmd_buffer[0] = W25Q64_READ_DATA; // 第一个字节为读数据命令
-    cmd_buffer[1..5].copy_from_slice(&address.to_be_bytes()); // 第二到第四个字节为目标地址，使用大端格式
+        Ok(())
+    }
 
-    cs.set_low(); // 拉低片选信号，开始通信
-    spi.write(&cmd_buffer)?; // 发送缓冲区中的命令
-    spi.transfer(buffer)?; // 发送并接收数据，覆盖缓冲区
-    cs.set_high(); // 拉高片选信号，结束通信
+    /// 读取W25Q64芯片的 JEDEC ID
+    /// 使用Spi实例和片选引脚来发送和接收命令和数据
+    pub fn read_jedec_id(&mut self) -> Result<u8, spi::Error> {
+        self.spi_start();
+        self.spi.write(&[W25Q64_JEDEC_ID]).unwrap();
 
-    Ok(())
-}
+        let mut buffer = [W25Q64_DUMMY_BYTE; 3];
+        self.spi.transfer(&mut buffer).unwrap();
+        self.spi_stop();
 
-/// 擦除地址所在的扇区
-pub fn sector_erase<REMAP, PINS>(
-    spi: &mut Spi<pac::SPI1, REMAP, PINS, u8, Master>,
-    cs: &mut PA4<Output<PushPull>>,
-    address: u32, // 目标地址
-) -> Result<(), spi::Error>
-where
-    REMAP: Remap<Periph = pac::SPI1>,
-    PINS: Pins<REMAP>,
-{
-    let mut buffer = [0x00; 5]; // 缓冲区，用于存放命令和地址，大小为4个字节
-    buffer[0] = W25Q64_SECTOR_ERASE_4KB; // 第一个字节为Sector Erase命令
-    buffer[1..5].copy_from_slice(&address.to_be_bytes()); // 第二到第四个字节为目标地址，使用大端格式
+        // 处理读取到的 JEDEC ID（这里您可以根据需要进行操作）
+        // println!("Manufacturer ID: {:X}", buffer[0]);
+        // println!("Memory Type: {:X}", buffer[1]);
+        // println!("Capacity: {:X}", buffer[2]);
+        let jedec_id = buffer[0];
+        Ok(jedec_id)
+    }
 
-    cs.set_low(); // 拉低片选信号，开始通信
-    spi.write(&buffer)?; // 发送缓冲区中的命令和地址
-    cs.set_high(); // 拉高片选信号，结束通信
+    /// 读取W25Q64芯片的MID和DID
+    ///
+    /// 使用Spi实例和片选引脚来发送和接收命令和数据
+    pub fn read_device_id(&mut self) -> Result<(u8, u16), spi::Error> {
+        let cmd = [W25Q64_MANUFACTURER_DEVICE_ID, 0, 0, 0, 0, 0];
+        let mut buffer = [W25Q64_DUMMY_BYTE; 6];
 
-    // 等待W25Q64芯片空闲
-    wait_for_idle(spi, cs)?;
-    Ok(())
+        self.spi_start();
+        self.spi.write(&cmd).unwrap();
+        self.spi.transfer(&mut buffer).unwrap();
+        self.spi_stop();
+
+        let mid = buffer[0];
+        let did = (buffer[1] as u16) << 8 | buffer[2] as u16;
+        // EF, 4017
+        Ok((mid, did))
+    }
+
+    /// 定义一个辅助函数，用于等待W25Q64芯片空闲
+    pub fn wait_for_idle(&mut self) -> Result<(), spi::Error> {
+        self.spi_start();
+        self.spi.write(&[W25Q64_READ_STATUS_REGISTER_1])?; // 发送读状态寄存器1命令
+        let mut status = [0x00; 1];
+        let mut timeout = 100000;
+        loop {
+            self.spi.transfer(&mut status)?; // 接收状态寄存器1的值
+            if status[0] & 0x01 == 0 {
+                // 检查状态寄存器1的最低位，如果为0表示空闲，否则表示忙碌
+                break;
+            }
+            timeout -= 1;
+            if timeout == 0 {
+                break;
+            }
+        }
+        self.spi_stop();
+        Ok(())
+    }
+
+    /// 页编程, 写入数据
+    /// page_address: 设定页地址
+    /// data: 要写入的数据
+    pub fn page_program(&mut self, page_address: u32, data: &[u8]) -> Result<(), spi::Error> {
+        self.write_enable().unwrap();
+
+        let cmd = [
+            W25Q64_PAGE_PROGRAM,
+            (page_address >> 16) as u8,
+            (page_address >> 8) as u8,
+            page_address as u8,
+        ];
+        self.spi_start();
+        self.spi.write(&cmd).unwrap();
+        self.spi.write(data).unwrap();
+        self.spi_stop();
+
+        // 等待W25Q64芯片空闲
+        self.wait_for_idle()?;
+        Ok(())
+    }
+
+    /// 擦除地址所在的扇区
+    pub fn sector_erase(&mut self, address: u32) -> Result<(), spi::Error> {
+        self.write_enable().unwrap();
+
+        let cmd = [
+            W25Q64_SECTOR_ERASE_4KB,
+            (address >> 16) as u8,
+            (address >> 8) as u8,
+            address as u8,
+        ];
+        self.spi_start();
+        self.spi.write(&cmd)?;
+        self.spi_stop();
+
+        // 等待W25Q64芯片空闲
+        self.wait_for_idle()?;
+        Ok(())
+    }
+
+    /// 读取数据
+    /// read_address: 目标地址
+    /// data: 用于存放数据
+    pub fn read_data(&mut self, read_address: u32, data: &mut [u8]) -> Result<(), spi::Error> {
+        let cmd = [
+            W25Q64_READ_DATA,
+            (read_address >> 16) as u8,
+            (read_address >> 8) as u8,
+            read_address as u8,
+        ];
+
+        self.spi_start();
+        self.spi.write(&cmd).unwrap();
+
+        // 接收请求的数据
+        self.spi.transfer(data).unwrap();
+        self.spi_stop();
+
+        Ok(())
+    }
 }

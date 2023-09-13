@@ -44,15 +44,15 @@ fn main() -> ! {
     // MPU6050 初始化
     let mpu_scl = gpiob.pb10.into_alternate_open_drain(&mut gpiob.crh);
     let mpu_sda = gpiob.pb11.into_alternate_open_drain(&mut gpiob.crh);
-    let mut mpu = mpu6050_hal::init((mpu_scl, mpu_sda), i2c2, clocks);
+    let mut mpu = mpu6050_hal::Mpu6050::new((mpu_scl, mpu_sda), i2c2, clocks);
 
-    let id = mpu6050_hal::get_id(&mut mpu);
+    let id = mpu.get_id();
     oled::show_string(&mut scl, &mut sda, 1, 1, "ID:");
     oled::show_hex_num(&mut scl, &mut sda, 1, 4, id as u32, 2);
 
     // 循环读取加速度和角速度数据
     loop {
-        let data = mpu6050_hal::get_data(&mut mpu);
+        let data = mpu.get_data();
         // 打印读取到的数据
         println!("Accel: ({}, {}, {})", data.acc_x, data.acc_y, data.acc_z);
         println!("Gyro: ({}, {}, {})", data.gyro_x, data.gyro_y, data.gyro_z);

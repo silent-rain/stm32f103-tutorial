@@ -40,26 +40,26 @@ where
     }
 
     pub fn spi_w_ss(&mut self, bit_value: u8) {
-        if bit_value > 0 {
-            self.ss.set_high().unwrap();
-        } else {
+        if bit_value == 0 {
             self.ss.set_low().unwrap();
+        } else {
+            self.ss.set_high().unwrap();
         }
     }
 
     pub fn spi_w_sck(&mut self, bit_value: u8) {
-        if bit_value > 0 {
-            self.sck.set_high().unwrap();
-        } else {
+        if bit_value == 0 {
             self.sck.set_low().unwrap();
+        } else {
+            self.sck.set_high().unwrap();
         }
     }
 
     pub fn spi_w_mosi(&mut self, bit_value: u8) {
-        if bit_value > 0 {
-            self.mosi.set_high().unwrap();
-        } else {
+        if bit_value == 0 {
             self.mosi.set_low().unwrap();
+        } else {
+            self.mosi.set_high().unwrap();
         }
     }
 

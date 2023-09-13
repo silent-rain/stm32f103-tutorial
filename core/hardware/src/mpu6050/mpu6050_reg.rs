@@ -39,19 +39,19 @@ where
     }
 
     fn i2c_w_scl(&mut self, bit_value: u8) {
-        if bit_value > 0 {
-            self.scl.set_high().unwrap();
-        } else {
+        if bit_value == 0 {
             self.scl.set_low().unwrap();
+        } else {
+            self.scl.set_high().unwrap();
         }
         self.delay.delay_us(10_u32);
     }
 
     fn i2c_w_sda(&mut self, bit_value: u8) {
-        if bit_value > 0 {
-            self.sda.set_high().unwrap();
-        } else {
+        if bit_value == 0 {
             self.sda.set_low().unwrap();
+        } else {
+            self.sda.set_high().unwrap();
         }
         self.delay.delay_us(10_u32);
     }
@@ -181,7 +181,7 @@ where
         self.i2c_send_ack(1);
         self.i2c_stop();
 
-        data as i16
+        data as u16 as i16
     }
 
     /// MPU6050 初始化

@@ -13,6 +13,7 @@ use cortex_m_rt::entry;
 use stm32f1xx_hal::gpio;
 use stm32f1xx_hal::gpio::OutputSpeed;
 use stm32f1xx_hal::pac;
+use stm32f1xx_hal::prelude::_embedded_hal_blocking_delay_DelayMs;
 use stm32f1xx_hal::prelude::{
     _stm32_hal_afio_AfioExt, _stm32_hal_flash_FlashExt, _stm32_hal_gpio_GpioExt,
 };
@@ -38,7 +39,7 @@ fn main() -> ! {
     let clocks = rcc.cfgr.freeze(&mut flash.acr);
 
     // 具有自定义精度的阻塞延迟函数
-    let mut _delay = syst.delay(&clocks);
+    let mut delay = syst.delay(&clocks);
 
     // 初始化 OLED 显示屏
     println!("load oled...");
@@ -53,30 +54,33 @@ fn main() -> ! {
     let pins = (sck, miso, mosi);
 
     // 创建一个Spi实例
-    let mut spi = w25q64_hal::init_w25q64(spi1, pins, &mut afio.mapr, clocks);
+    let mut w25q = w25q64_hal::W25Q64::new(spi1, pins, &mut cs, &mut afio.mapr, clocks);
+
+    let jedec_id = w25q.read_jedec_id().unwrap();
+    println!("jedec_id: {:?}", jedec_id);
 
     // 读取W25Q64芯片的MID和DID
-    let (mid, did) = w25q64_hal::read_device_id(&mut spi, &mut cs).unwrap();
-
-    // 启用写入功能
-    w25q64_hal::write_enable(&mut spi, &mut cs).unwrap();
+    let (mid, did) = w25q.read_device_id().unwrap();
+    println!("mid: {:?}, did: {:?}", mid, did);
 
     // 擦除地址所在的扇区
-    let address = 0x000000;
-    w25q64_hal::sector_erase(&mut spi, &mut cs, address).unwrap();
+    w25q.sector_erase(0x000000).unwrap();
+    println!("sector_erase ...");
 
     // 写入数据
-    // let address = 0x000000;
     let array_write = [0x01, 0x02, 0x03, 0x04];
-    // w25q64_hal::page_program(&mut spi, &mut cs, address, &array_write).unwrap();
+    w25q.page_program(0x000000, &array_write).unwrap();
+    println!("page_program ...");
 
     // 禁用写入功能
-    w25q64_hal::write_disable(&mut spi, &mut cs).unwrap();
+    w25q.write_disable().unwrap();
+
+    delay.delay_ms(1000_u32);
 
     // 读取数据
-    let address = 0x000000;
-    let mut buffer = [0x00; 4];
-    w25q64_hal::read_data(&mut spi, &mut cs, address, &mut buffer).unwrap();
+    let mut buffer = [0xFF; 4];
+    w25q.read_data(0x000000, &mut buffer).unwrap();
+    println!("read_data ...");
 
     oled::show_string(&mut scl, &mut sda, 1, 1, "MID:   DID:");
     oled::show_string(&mut scl, &mut sda, 2, 1, "W:");
