@@ -51,14 +51,18 @@ fn main() -> ! {
     oled::show_hex_num(&mut scl, &mut sda, 1, 4, id as u32, 2);
 
     loop {
-        // let data = mpu.get_data();
+        let data = mpu.get_data();
 
-        // oled::show_signed_num(&mut scl, &mut sda, 2, 1, data.acc_x as i32, 5);
-        // oled::show_signed_num(&mut scl, &mut sda, 3, 1, data.acc_y as i32, 5);
-        // oled::show_signed_num(&mut scl, &mut sda, 4, 1, data.acc_z as i32, 5);
-        // oled::show_signed_num(&mut scl, &mut sda, 2, 8, data.gyro_x as i32, 5);
-        // oled::show_signed_num(&mut scl, &mut sda, 3, 8, data.gyro_y as i32, 5);
-        // oled::show_signed_num(&mut scl, &mut sda, 4, 8, data.gyro_z as i32, 5);
+        // 打印读取到的数据
+        println!("Accel: ({}, {}, {})", data.acc_x, data.acc_y, data.acc_z);
+        println!("Gyro: ({}, {}, {})", data.gyro_x, data.gyro_y, data.gyro_z);
+
+        oled::show_signed_num(&mut scl, &mut sda, 2, 1, data.acc_x as i32, 5);
+        oled::show_signed_num(&mut scl, &mut sda, 3, 1, data.acc_y as i32, 5);
+        oled::show_signed_num(&mut scl, &mut sda, 4, 1, data.acc_z as i32, 5);
+        oled::show_signed_num(&mut scl, &mut sda, 2, 8, data.gyro_x as i32, 5);
+        oled::show_signed_num(&mut scl, &mut sda, 3, 8, data.gyro_y as i32, 5);
+        oled::show_signed_num(&mut scl, &mut sda, 4, 8, data.gyro_z as i32, 5);
     }
 }
 

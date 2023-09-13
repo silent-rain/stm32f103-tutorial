@@ -13,6 +13,8 @@ use stm32f1xx_hal::{
     timer::SysDelay,
 };
 
+const DEFAULT_SLAVE_ADDR: u8 = 0xD0;
+
 /// MPU6050 芯片
 pub struct Mpu6050<'a, Scl, Sda>
 where
@@ -92,8 +94,9 @@ where
 
     /// 读取八位数据（不包含应答）
     pub fn i2c_receive_byte(&mut self) -> u8 {
-        let mut byte = 0x00;
         self.i2c_w_sda(1);
+
+        let mut byte = 0x00;
         for i in 0..8 {
             self.i2c_w_scl(1);
             if self.i2c_r_sda() == 1 {
@@ -108,6 +111,7 @@ where
     pub fn i2c_send_ack(&mut self, ack_bit: u8) {
         self.i2c_w_sda(ack_bit);
         self.i2c_w_scl(1);
+        self.i2c_w_scl(0);
     }
 
     /// 接收应答信号
@@ -153,6 +157,7 @@ where
         // 写数据到寄存器
         self.i2c_send_byte(data);
         self.i2c_receive_ack();
+
         self.i2c_stop();
     }
 
@@ -179,9 +184,10 @@ where
         let data = self.i2c_receive_byte();
         // 非应答信号
         self.i2c_send_ack(1);
+
         self.i2c_stop();
 
-        data as u16 as i16
+        data as i16
     }
 
     /// MPU6050 初始化
@@ -210,8 +216,8 @@ where
     }
 
     /// 获取 MPU6050 ID
-    pub fn get_id(&mut self) -> i16 {
-        self.read_reg(MPU6050_WHO_AM_I)
+    pub fn get_id(&mut self) -> u8 {
+        self.read_reg(MPU6050_WHO_AM_I) as u8
     }
 
     /// 基本数据读取
