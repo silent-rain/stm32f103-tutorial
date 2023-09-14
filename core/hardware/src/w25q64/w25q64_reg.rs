@@ -139,6 +139,7 @@ where
         self.spi_stop();
     }
 
+    /// 分页写入数据
     pub fn page_program(&mut self, address: u32, data_array: &[u8]) {
         self.write_enable();
 
