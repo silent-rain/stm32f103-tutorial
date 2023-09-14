@@ -37,6 +37,7 @@ where
 
         // 创建一个Spi实例
         let mut spi = Spi::spi1(spi1, pins, mapr, mode, 1.MHz(), clocks);
+        // 选择用于数据传输的帧格式
         spi.bit_format(SpiBitFormat::MsbFirst);
 
         let mut w25q = W25Q64 { spi, ss };
@@ -100,6 +101,7 @@ where
 
     /// 读取W25Q64芯片的 JEDEC ID
     /// 使用Spi实例和片选引脚来发送和接收命令和数据
+    /// 0xEF4017: 代表W25Q64芯片
     pub fn read_jedec_id(&mut self) -> Result<(u8, u16), spi::Error> {
         self.spi_start();
         self.spi_write(&[W25Q64_JEDEC_ID]).unwrap();
@@ -117,6 +119,7 @@ where
     /// 读取W25Q64芯片的制造商设备ID
     ///
     /// 使用Spi实例和片选引脚来发送和接收命令和数据
+    /// 0xEF16: 代表W25Q64芯片
     pub fn read_device_id(&mut self) -> Result<u16, spi::Error> {
         let cmd = [W25Q64_MANUFACTURER_DEVICE_ID, 0, 0, 0, 0, 0];
         let mut buffer = [0; 6];
@@ -126,31 +129,55 @@ where
         self.spi.transfer(&mut buffer).unwrap();
         self.spi_stop();
 
-        let device_id = (buffer[1] as u16) << 8 | buffer[2] as u16;
+        let device_id = (buffer[0] as u16) << 8 | buffer[1] as u16;
         Ok(device_id)
     }
 
-    /// 定义一个辅助函数，用于等待W25Q64芯片空闲
-    // pub fn wait_for_idle(&mut self) -> Result<(), spi::Error> {
-    //     self.spi_start();
-    //     self.spi.write(&[W25Q64_READ_STATUS_REGISTER_1])?; // 发送读状态寄存器1命令
-    //     let mut status = [0x00; 1];
-    //     let mut timeout = 100000;
-    //     loop {
-    //         self.spi.transfer(&mut status)?; // 接收状态寄存器1的值
-    //         if status[0] & 0x01 == 0 {
-    //             // 检查状态寄存器1的最低位，如果为0表示空闲，否则表示忙碌
-    //             break;
-    //         }
-    //         timeout -= 1;
-    //         if timeout == 0 {
-    //             break;
-    //         }
-    //     }
-    //     self.spi_stop();
-    //     Ok(())
-    // }
+    /// 读取状态寄存器1
+    pub fn read_status_register_1(&mut self) -> Result<u8, spi::Error> {
+        let mut buffer = [W25Q64_READ_STATUS_REGISTER_1, 0];
+        self.spi_start();
+        self.spi_transfer(&mut buffer)?;
+        self.spi_stop();
+        Ok(buffer[1])
+    }
 
+    /// 检查是否有写保护标志
+    pub fn check_write_protect(&mut self) -> Result<bool, spi::Error> {
+        let status = self.read_status_register_1()?;
+        let srp0 = status & 0x80;
+        let srp1 = status & 0x04;
+        if srp0 == 0 && srp1 == 0 {
+            // 没有写保护
+            Ok(false)
+        } else {
+            // 有写保护
+            Ok(true)
+        }
+    }
+
+    /// 定义一个辅助函数，用于等待W25Q64芯片空闲
+    pub fn wait_for_idle2(&mut self) -> Result<(), spi::Error> {
+        self.spi_start();
+        self.spi.write(&[W25Q64_READ_STATUS_REGISTER_1])?; // 发送读状态寄存器1命令
+        let mut status = [0x00; 1];
+        let mut timeout = 100000;
+        loop {
+            self.spi.transfer(&mut status)?; // 接收状态寄存器1的值
+            if status[0] & 0x01 == 0 {
+                // 检查状态寄存器1的最低位，如果为0表示空闲，否则表示忙碌
+                break;
+            }
+            timeout -= 1;
+            if timeout == 0 {
+                break;
+            }
+        }
+        self.spi_stop();
+        Ok(())
+    }
+
+    /// 定义一个辅助函数，用于等待W25Q64芯片空闲
     pub fn wait_for_idle(&mut self) -> Result<(), spi::Error> {
         self.spi_start();
         let mut timeout = 100000;
@@ -214,18 +241,21 @@ where
             (read_address >> 16) as u8,
             (read_address >> 8) as u8,
             read_address as u8,
+            // W25Q64_DUMMY_BYTE, // 发送一个虚拟字节
         ];
 
         self.spi_start();
         self.spi_write(&cmd).unwrap();
 
-        for item in &mut *data {
-            *item = W25Q64_DUMMY_BYTE;
-        }
+        // 使用fill方法来赋值为虚拟字节
+        data.fill(W25Q64_DUMMY_BYTE);
 
         // 接收请求的数据
         self.spi_transfer(data).unwrap();
         self.spi_stop();
+
+        // 调整数据字节的顺序，高位在前，低位在后
+        // data.reverse();
 
         Ok(())
     }

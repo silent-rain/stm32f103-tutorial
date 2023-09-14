@@ -61,13 +61,21 @@ fn main() -> ! {
     let (mid, did) = w25q.read_jedec_id().unwrap();
     println!("mid: {:?}, did: {:?}", mid, did);
 
+    // 读取W25Q64芯片的device_id
+    let device_id = w25q.read_device_id().unwrap();
+    println!("device_id: {:?}", device_id);
+
+    // 检查是否有写保护标志
+    let protect = w25q.check_write_protect().unwrap();
+    println!("protect: {:?}", protect);
+
     // 擦除地址所在的扇区
     w25q.sector_erase(0x000000).unwrap();
     println!("sector_erase ...");
 
     // 写入数据
-    let array_write = [0x01, 0x02, 0x03, 0x05];
-    w25q.page_program(0x000000, &array_write).unwrap();
+    let array_write = [0x01, 0x02, 0x03, 0x04];
+    // w25q.page_program(0x000000, &array_write).unwrap();
     println!("page_program ...");
 
     // 禁用写入功能
@@ -76,9 +84,9 @@ fn main() -> ! {
     delay.delay_ms(1000_u32);
 
     // 读取数据
-    let mut buffer = [0xFF; 4];
+    let mut buffer = [0; 4];
     w25q.read_data(0x000000, &mut buffer).unwrap();
-    println!("read_data ...");
+    println!("read_data: {:?}", buffer);
 
     oled::show_string(&mut scl, &mut sda, 1, 1, "MID:   DID:");
     oled::show_string(&mut scl, &mut sda, 2, 1, "W:");
