@@ -68,7 +68,7 @@ fn main() -> ! {
 
     // 写入数据
     let array_write = [0x01, 0x02, 0x03, 0x05];
-    // w25q.page_program(0x000000, &array_write).unwrap();
+    w25q.page_program(0x000000, &array_write).unwrap();
     println!("page_program ...");
 
     // 禁用写入功能

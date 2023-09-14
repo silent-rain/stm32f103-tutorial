@@ -49,7 +49,6 @@ fn main() -> ! {
     w_sck.set_speed(&mut gpioa.crl, gpio::IOPinSpeed::Mhz50);
     w_mosi.set_speed(&mut gpioa.crl, gpio::IOPinSpeed::Mhz50);
     let mut w25 = w25q64_reg::W25Q64::new(&mut w_ss, &mut w_sck, &mut w_mosi, &mut w_miso);
-    w25.init_w25q64();
 
     let (mid, did) = w25.read_id();
     println!("mid: {:?}, did: {:?}", mid, did);

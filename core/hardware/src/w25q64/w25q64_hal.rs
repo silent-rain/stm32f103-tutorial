@@ -1,7 +1,5 @@
 use super::conf::*;
 
-use defmt::println;
-
 use cortex_m::prelude::{_embedded_hal_blocking_spi_Transfer, _embedded_hal_blocking_spi_Write};
 use embedded_hal::digital::v2::OutputPin;
 use stm32f1xx_hal::pac::{self, SPI1};
@@ -41,12 +39,9 @@ where
         let mut spi = Spi::spi1(spi1, pins, mapr, mode, 1.MHz(), clocks);
         spi.bit_format(SpiBitFormat::MsbFirst);
 
-        W25Q64 { spi, ss }
-    }
-
-    /// 初始化 W25Q64
-    pub fn init(&mut self) {
-        self.spi_w_ss(1);
+        let mut w25q = W25Q64 { spi, ss };
+        w25q.spi_w_ss(1);
+        w25q
     }
 
     pub fn spi_w_ss(&mut self, bit_value: u8) {
@@ -67,16 +62,18 @@ where
         self.spi_w_ss(1);
     }
 
-    pub fn spi_swap_cmd_byte(&mut self, words: &[u8]) -> Result<(), spi::Error> {
+    /// 写入数据
+    pub fn spi_write(&mut self, words: &[u8]) -> Result<(), spi::Error> {
         while !self.spi.is_tx_empty() {}
         self.spi.write(words)?;
         while self.spi.is_rx_not_empty() {}
         Ok(())
     }
-    pub fn spi_swap_byte(&mut self, words: &mut [u8]) -> Result<(), spi::Error> {
+
+    /// 需写入并返回数据
+    pub fn spi_transfer(&mut self, words: &mut [u8]) -> Result<(), spi::Error> {
         while !self.spi.is_tx_empty() {}
         self.spi.transfer(words)?;
-        println!("=======P{:?}", words);
         while self.spi.is_rx_not_empty() {}
         Ok(())
     }
@@ -85,7 +82,7 @@ where
     pub fn write_enable(&mut self) -> Result<(), spi::Error> {
         self.spi_start();
         // 发送写使能命令
-        self.spi_swap_cmd_byte(&[W25Q64_WRITE_ENABLE])?;
+        self.spi_write(&[W25Q64_WRITE_ENABLE])?;
         self.spi_stop();
         Ok(())
     }
@@ -95,7 +92,7 @@ where
         // 禁用写入功能
         self.spi_start();
         // 发送写禁止命令
-        self.spi_swap_cmd_byte(&[W25Q64_WRITE_DISABLE])?;
+        self.spi_write(&[W25Q64_WRITE_DISABLE])?;
         self.spi_stop();
 
         Ok(())
@@ -105,10 +102,10 @@ where
     /// 使用Spi实例和片选引脚来发送和接收命令和数据
     pub fn read_jedec_id(&mut self) -> Result<(u8, u16), spi::Error> {
         self.spi_start();
-        self.spi_swap_cmd_byte(&[W25Q64_JEDEC_ID]).unwrap();
+        self.spi_write(&[W25Q64_JEDEC_ID]).unwrap();
 
         let mut buffer = [W25Q64_DUMMY_BYTE; 3];
-        self.spi_swap_byte(&mut buffer).unwrap();
+        self.spi_transfer(&mut buffer).unwrap();
         self.spi_stop();
 
         let mid = buffer[0];
@@ -181,8 +178,8 @@ where
             page_address as u8,
         ];
         self.spi_start();
-        self.spi_swap_cmd_byte(&cmd).unwrap();
-        self.spi_swap_cmd_byte(data).unwrap();
+        self.spi_write(&cmd).unwrap();
+        self.spi_write(data).unwrap();
         self.spi_stop();
 
         // 等待W25Q64芯片空闲
@@ -201,7 +198,7 @@ where
             address as u8,
         ];
         self.spi_start();
-        self.spi_swap_cmd_byte(&cmd)?;
+        self.spi_write(&cmd)?;
         self.spi_stop();
 
         self.wait_for_idle()?;
@@ -220,10 +217,14 @@ where
         ];
 
         self.spi_start();
-        self.spi_swap_cmd_byte(&cmd).unwrap();
+        self.spi_write(&cmd).unwrap();
+
+        for item in &mut *data {
+            *item = W25Q64_DUMMY_BYTE;
+        }
 
         // 接收请求的数据
-        self.spi_swap_byte(data).unwrap();
+        self.spi_transfer(data).unwrap();
         self.spi_stop();
 
         Ok(())

@@ -31,12 +31,16 @@ where
     <MISO as InputPin>::Error: core::fmt::Debug,
 {
     pub fn new(ss: &'a mut SS, sck: &'a mut SCK, mosi: &'a mut MOSI, miso: &'a mut MISO) -> Self {
-        W25Q64 {
+        let mut w25q = W25Q64 {
             ss,
             sck,
             mosi,
             miso,
-        }
+        };
+
+        w25q.spi_w_ss(1);
+        w25q.spi_w_sck(0);
+        w25q
     }
 
     pub fn spi_w_ss(&mut self, bit_value: u8) {
@@ -96,19 +100,6 @@ where
         }
 
         byte_receive
-    }
-
-    /// SPI 初始化
-    /// push pull output pin 4,5,7
-    /// pulled up input pin 6
-    pub fn init_spi(&mut self) {
-        self.spi_w_ss(1);
-        self.spi_w_sck(0);
-    }
-
-    /// 初始化 W25Q64
-    pub fn init_w25q64(&mut self) {
-        self.init_spi();
     }
 
     /// 读取 W25Q64 ID
