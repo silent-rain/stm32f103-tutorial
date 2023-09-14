@@ -56,7 +56,6 @@ fn main() -> ! {
 
     // 创建一个Spi实例
     let mut w25q = w25q64_hal::W25Q64::new(spi1, pins, &mut cs, &mut afio.mapr, clocks);
-    w25q.init();
 
     // 读取W25Q64芯片的MID和DID
     let (mid, did) = w25q.read_jedec_id().unwrap();
