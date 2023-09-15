@@ -86,6 +86,7 @@ members = [
     # SPI 通信
     "app/spi/spi_soft_w25q64",
     "app/spi/spi_hard_w25q64",
+    "app/spi/spi_w25q_crate",
     # RTIC
     "app/rtic/spawn_task_rtic",
     "app/rtic/exti_rtic",

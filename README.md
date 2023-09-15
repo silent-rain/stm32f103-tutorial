@@ -94,14 +94,15 @@
 ### I2C 通信
 
 - [I2C OLED 显示字符](./app/i2c/i2c_oled_show_character)
-- [I2C 软件读写 MPU6050 ](./app/i2c/i2c_soft_mpu6050)
-- [I2C 硬件读写 MPU6050 ](./app/i2c/i2c_hard_mpu6050)
-- [I2C MPU6050 crate 读写 ](./app/i2c/i2c_mpu6050_crate)
+- [I2C 软件读写 MPU6050](./app/i2c/i2c_soft_mpu6050)
+- [I2C 硬件读写 MPU6050](./app/i2c/i2c_hard_mpu6050)
+- [I2C MPU6050 crate 读写](./app/i2c/i2c_mpu6050_crate)
 
 ### SPI 通信
 
-- x[SPI 软件读写 W25Q64 ](./app/spi/spi_soft_w25q64)
-- x[SPI 硬件读写 W25Q64 ](./app/spi/spi_hard_w25q64)
+- x[SPI 软件读写 W25Q64](./app/spi/spi_soft_w25q64)
+- x[SPI 硬件读写 W25Q64](./app/spi/spi_hard_w25q64)
+- x[w25q crate 读写 W25Q64](./app/spi/spi_w25q_crate)
 
 ### RITC
 
