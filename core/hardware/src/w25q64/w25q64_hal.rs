@@ -232,6 +232,20 @@ where
         Ok(())
     }
 
+    /// 擦除闪存芯片上的所有扇区
+    /// 这是一项非常昂贵的手术
+    pub fn erase_chip(&mut self) -> Result<(), spi::Error> {
+        self.write_enable().unwrap();
+
+        let cmd = [W25Q64_CHIP_ERASE];
+        self.spi_start();
+        self.spi_write(&cmd)?;
+        self.spi_stop();
+
+        self.wait_for_idle()?;
+        Ok(())
+    }
+
     /// 读取数据
     /// read_address: 目标地址
     /// data: 用于存放数据

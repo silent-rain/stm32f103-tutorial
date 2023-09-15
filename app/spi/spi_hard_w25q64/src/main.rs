@@ -45,13 +45,12 @@ fn main() -> ! {
     println!("load oled...");
     let (mut scl, mut sda) = init_oled(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
 
-    // 配置SPI1的引脚和模式
+    let mut cs = gpioa.pa4.into_push_pull_output(&mut gpioa.crl);
+
     let sck = gpioa.pa5.into_alternate_push_pull(&mut gpioa.crl);
-    let mosi = gpioa.pa7.into_alternate_push_pull(&mut gpioa.crl);
     // let miso = gpioa.pa6;
     let miso = gpioa.pa6.into_pull_up_input(&mut gpioa.crl);
-    // 配置片选引脚为推挽输出
-    let mut cs = gpioa.pa4.into_push_pull_output(&mut gpioa.crl);
+    let mosi = gpioa.pa7.into_alternate_push_pull(&mut gpioa.crl);
     let pins = (sck, miso, mosi);
 
     // 创建一个Spi实例
@@ -71,6 +70,7 @@ fn main() -> ! {
 
     // 擦除地址所在的扇区
     w25q.sector_erase(0x000000).unwrap();
+    // w25q.erase_chip().unwrap();
     println!("sector_erase ...");
 
     // 写入数据
