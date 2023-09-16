@@ -1,5 +1,5 @@
 [package]
-name = "rtc_real_time_clock"
+name = "rtc_counter"
 version = "0.1.0"
 edition = "2021"
 
