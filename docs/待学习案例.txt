@@ -30,6 +30,7 @@ blinky_timer_irq.rs
 mpu9250.rs.disabled
 blinky_rtc.rs
 rtc.rs
+blinky_rtcalarm_irq.rs
 
 
 spi-dma.rs
@@ -39,7 +40,6 @@ serial-dma-circ.rs
 serial-dma-peek.rs
 serial-dma-rx.rs
 serial-dma-tx.rs
-blinky_rtcalarm_irq.rs
 
 
 i2c-bme280

@@ -93,6 +93,7 @@ members = [
     "app/rtc/rtc_bkp_dyn_data",
     "app/rtc/rtc_counter",
     "app/rtc/rtc_alarm_blinky",
+    "app/rtc/rtc_time",
     # RTIC
     "app/rtic/spawn_task_rtic",
     "app/rtic/exti_rtic",

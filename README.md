@@ -111,6 +111,7 @@
 - [BKP 断电恢复](./app/rtc/rtc_bkp)
 - [读写备份寄存器](./app/rtc/rtc_bkp_dyn_data)
 - [RTC 告警闪烁 LED](./app/rtc/rtc_alarm_blinky)
+- [TC 实时时间](./app/rtc/rtc_time)
 
 ### RITC
 
