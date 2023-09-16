@@ -12,7 +12,3 @@ cargo rp rtc_real_time_clock
 
 - 了解 BKP
 - 了解实时时钟
-
-## 接线图
-
-![](../../../images/wiring_diagram/11-2%20硬件SPI读写W25Q64.jpg)

@@ -16,4 +16,4 @@ cargo rp rtc_bkp
 
 ## 接线图
 
-![](../../../images/wiring_diagram/11-2%20硬件SPI读写W25Q64.jpg)
+![](../../../images/wiring_diagram/12-2%20读写备份寄存器.jpg)
