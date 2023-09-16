@@ -104,6 +104,12 @@
 - x[SPI 硬件读写 W25Q64](./app/spi/spi_hard_w25q64)
 - x[w25q crate 读写 W25Q64](./app/spi/spi_w25q_crate)
 
+### RTC
+
+- [RTC 实时时钟](./app/rtc/rtc_real_time_clock)
+- [BKP 断电恢复](./app/rtc/rtc_bkp)
+- [读写备份寄存器](./app/rtc/rtc_bkp_dyn_data)
+
 ### RITC
 
 - [任务调度-RTIC](./app/rtic/spawn_task_rtic)

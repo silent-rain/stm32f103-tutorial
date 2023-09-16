@@ -1291,6 +1291,45 @@ dependencies = [
 ]
 
 [[package]]
+name = "rtc_bkp"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "hardware",
+ "panic-probe",
+ "stm32f1xx-hal",
+]
+
+[[package]]
+name = "rtc_bkp_dyn_data"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "hardware",
+ "panic-probe",
+ "stm32f1xx-hal",
+]
+
+[[package]]
+name = "rtc_real_time_clock"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "hardware",
+ "panic-probe",
+ "stm32f1xx-hal",
+]
+
+[[package]]
 name = "rtic"
 version = "2.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"

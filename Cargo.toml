@@ -87,6 +87,10 @@ members = [
     "app/spi/spi_soft_w25q64",
     "app/spi/spi_hard_w25q64",
     "app/spi/spi_w25q_crate",
+    # RTC 实时时钟
+    "app/rtc/rtc_real_time_clock",
+    "app/rtc/rtc_bkp",
+    "app/rtc/rtc_bkp_dyn_data",
     # RTIC
     "app/rtic/spawn_task_rtic",
     "app/rtic/exti_rtic",
