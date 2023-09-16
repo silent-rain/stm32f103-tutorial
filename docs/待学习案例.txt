@@ -28,16 +28,21 @@ timer-interrupt-rtic.rs
 exti_rtic.rs
 blinky_timer_irq.rs
 mpu9250.rs.disabled
+blinky_rtc.rs
+rtc.rs
 
 
 spi-dma.rs
 spi-slave.rs
 spi.rs
+serial-dma-circ.rs
+serial-dma-peek.rs
+serial-dma-rx.rs
+serial-dma-tx.rs
+blinky_rtcalarm_irq.rs
 
 
 i2c-bme280
-blinky_rtc.rs
-blinky_rtcalarm_irq.rs
 can-echo.rs
 can-loopback.rs
 can-rtic.rs
@@ -47,11 +52,6 @@ enc28j60.rs.disabled
 itm.rs
 mfrc522.rs
 motor.rs.disabled
-rtc.rs
-serial-dma-circ.rs
-serial-dma-peek.rs
-serial-dma-rx.rs
-serial-dma-tx.rs
 usb_serial.rs
 usb_serial_interrupt.rs
 usb_serial_rtic.rs

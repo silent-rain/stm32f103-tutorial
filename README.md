@@ -49,6 +49,7 @@
 - [定时器中断计数-秒](./app/interrupt/timer_interrupt_count_by_seces)
 - [定时器中断计数-赫兹](./app/interrupt/timer_interrupt_count_by_hz)
 - [定时器外部时钟](./app/interrupt/timer_external_clock)
+- [RTC 告警中断闪烁 LED](./app/interrupt/rtc_alarm_blinky_irq)
 
 ### 端口重映射
 
@@ -106,7 +107,7 @@
 
 ### RTC
 
-- [RTC 实时时钟](./app/rtc/rtc_real_time_clock)
+- [RTC 实时时钟计数器](./app/rtc/rtc_counter)
 - [BKP 断电恢复](./app/rtc/rtc_bkp)
 - [读写备份寄存器](./app/rtc/rtc_bkp_dyn_data)
 - [RTC 告警闪烁 LED](./app/rtc/rtc_alarm_blinky)

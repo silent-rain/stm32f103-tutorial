@@ -46,6 +46,7 @@ members = [
     "app/interrupt/timer_interrupt_count_by_seces",
     "app/interrupt/timer_interrupt_count_by_hz",
     "app/interrupt/timer_external_clock",
+    "app/interrupt/rtc_alarm_blinky_irq",
     # 端口重映射
     "app/port_remap/disable_jtag_ports",
     # PWM 脉冲宽度调制
@@ -90,7 +91,7 @@ members = [
     # RTC 实时时钟
     "app/rtc/rtc_bkp",
     "app/rtc/rtc_bkp_dyn_data",
-    "app/rtc/rtc_real_time_clock",
+    "app/rtc/rtc_counter",
     "app/rtc/rtc_alarm_blinky",
     # RTIC
     "app/rtic/spawn_task_rtic",
