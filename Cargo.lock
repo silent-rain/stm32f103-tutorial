@@ -1291,6 +1291,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "rtc_alarm_blinky"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "hardware",
+ "nb 1.1.0",
+ "panic-probe",
+ "stm32f1xx-hal",
+]
+
+[[package]]
 name = "rtc_bkp"
 version = "0.1.0"
 dependencies = [
