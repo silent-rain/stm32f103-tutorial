@@ -1716,6 +1716,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "sleep_mode_serial_tx_and_rx"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "embedded-dma",
+ "hardware",
+ "nb 1.1.0",
+ "panic-probe",
+ "stm32f1xx-hal",
+ "unwrap-infallible",
+]
+
+[[package]]
 name = "spawn_task_rtic"
 version = "0.1.0"
 dependencies = [
@@ -1798,6 +1814,20 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 
 [[package]]
+name = "standby_mode_rtc_counter"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "hardware",
+ "nb 1.1.0",
+ "panic-probe",
+ "stm32f1xx-hal",
+]
+
+[[package]]
 name = "stm32-usbd"
 version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1865,6 +1895,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "stop_mode_infrared_sensor_count"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "hardware",
+ "panic-probe",
+ "stm32f1xx-hal",
+]
+
+[[package]]
 name = "syn"
 version = "1.0.109"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1907,6 +1950,19 @@ dependencies = [
  "cortex-m-rt",
  "defmt",
  "defmt-rtt",
+ "panic-probe",
+ "stm32f1xx-hal",
+]
+
+[[package]]
+name = "syst_freq"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "hardware",
  "panic-probe",
  "stm32f1xx-hal",
 ]

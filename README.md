@@ -111,7 +111,14 @@
 - [BKP 断电恢复](./app/rtc/rtc_bkp)
 - [读写备份寄存器](./app/rtc/rtc_bkp_dyn_data)
 - [RTC 告警闪烁 LED](./app/rtc/rtc_alarm_blinky)
-- [TC 实时时间](./app/rtc/rtc_time)
+- [RTC 实时时间](./app/rtc/rtc_time)
+
+### 省电模式
+
+- [修改系统时钟主频](./app/power/syst_freq)
+- [睡眠模式-串口发送接收](./app/power/sleep_mode_serial_tx_and_rx)
+- x[停止模式-对射式红外传感器计次](./app/power/stop_mode_infrared_sensor_count)
+- x[待机模式-实时时钟计数](./app/power/standby_mode_rtc_counter)
 
 ### RITC
 
