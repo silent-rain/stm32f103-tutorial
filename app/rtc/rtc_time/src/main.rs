@@ -57,6 +57,7 @@ fn main() -> ! {
     oled::show_string(&mut scl, &mut sda, 1, 1, "Date:XXXX-XX-XX");
     oled::show_string(&mut scl, &mut sda, 2, 1, "Time:XX:XX:XX");
     oled::show_string(&mut scl, &mut sda, 3, 1, "CNT :");
+    // oled::show_string(&mut scl, &mut sda, 4, 1, "DIV :");
     loop {
         let timestamp = rtc.current_time() as i64;
         println!("timestamp: {}", timestamp);
@@ -84,6 +85,7 @@ fn main() -> ! {
         oled::show_num(&mut scl, &mut sda, 2, 12, second, 2);
 
         oled::show_num(&mut scl, &mut sda, 3, 6, timestamp as u32, 10);
+
         delay.delay_ms(1000_u32);
     }
 }
