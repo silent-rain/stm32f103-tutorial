@@ -9,6 +9,7 @@ use defmt_rtt as _;
 use panic_probe as _;
 
 use cortex_m_rt::entry;
+use nb::block;
 use stm32f1xx_hal::gpio;
 use stm32f1xx_hal::gpio::OutputSpeed;
 use stm32f1xx_hal::pac;
@@ -49,19 +50,21 @@ fn main() -> ! {
     let mut rtc = Rtc::new(dp.RTC, &mut backup_domain);
 
     loop {
+        let alr_time = rtc.current_time();
+        let alr_time = alr_time + 10;
+        println!("alr_time: {}", alr_time);
+        rtc.set_alarm(alr_time);
+        block!(rtc.wait_alarm()).unwrap();
+
         oled::show_string(&mut scl, &mut sda, 1, 1, "CNT:");
         oled::show_string(&mut scl, &mut sda, 2, 1, "ALR:");
         // 获取不到该状态
         // oled::show_string(&mut scl, &mut sda, 3, 1, "ALRF:");
 
-        let current_time = rtc.current_time();
-        let current_time = current_time + 10;
-        rtc.set_alarm(current_time);
-
         let count = rtc.current_time();
         println!("current_time: {}", count);
         oled::show_num(&mut scl, &mut sda, 1, 6, count, 10);
-        oled::show_num(&mut scl, &mut sda, 2, 6, current_time, 10);
+        oled::show_num(&mut scl, &mut sda, 2, 6, alr_time, 10);
 
         oled::show_string(&mut scl, &mut sda, 4, 1, "running");
         delay.delay_ms(100_u32);
@@ -76,7 +79,8 @@ fn main() -> ! {
         oled::clear(&mut scl, &mut sda);
 
         // 当CPU进入深度睡眠时进入待机模式
-        pwr.cr.write(|w| w.pdds().standby_mode())
+        pwr.cr
+            .modify(|_, w| w.csbf().clear_bit().pdds().standby_mode());
     }
 }
 
