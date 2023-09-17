@@ -133,6 +133,10 @@
 - [Bindgen Hello](./core/bindgen_hello)
 - [Stm32f10x Rust 绑定](./core/stm32f10x_rs)
 
+### 其他示例
+
+- [HAL 库示例](https://github.com/stm32-rs/stm32f1xx-hal/tree/master/examples)
+
 ## 相关文档
 
 - [Archlinux 环境搭建](./docs/Archlinux环境搭建.md)
