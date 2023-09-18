@@ -120,6 +120,11 @@
 - [停止模式-对射式红外传感器计次](./app/pwr/stop_mode_infrared_sensor_count)
 - [待机模式-实时时钟计数](./app/pwr/standby_mode_rtc_counter)
 
+### WDG 看门狗
+
+- [独立看门狗](./app/wdg/iwdg)
+- x[窗口看门狗](./app/wdg/wwdg)
+
 ### RITC
 
 - [任务调度-RTIC](./app/rtic/spawn_task_rtic)

@@ -99,6 +99,9 @@ members = [
     "app/pwr/sleep_mode_serial_tx_and_rx",
     "app/pwr/stop_mode_infrared_sensor_count",
     "app/pwr/standby_mode_rtc_counter",
+    # WDG 看门狗
+    "app/wdg/iwdg",
+    "app/wdg/wwdg",
     # RTIC
     "app/rtic/spawn_task_rtic",
     "app/rtic/exti_rtic",
