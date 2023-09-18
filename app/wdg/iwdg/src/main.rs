@@ -51,24 +51,21 @@ fn main() -> ! {
     // 检查是否由于IWDG复位
     let rcc_b = unsafe { &*RCC::ptr() };
     if rcc_b.csr.read().iwdgrstf().is_reset() {
-        oled::show_string(&mut scl, &mut sda, 3, 1, "IWDGRST");
+        oled::show_string(&mut scl, &mut sda, 2, 1, "IWDGRST");
         delay.delay_ms(1000_u16);
-        // oled::show_string(&mut scl, &mut sda, 3, 1, "       ");
+        // oled::show_string(&mut scl, &mut sda, 2, 1, "       ");
         delay.delay_ms(100_u16);
 
         rcc_b.csr.modify(|_, w| w.iwdgrstf().clear_bit());
         // rcc_b.csr.reset();
     } else {
-        oled::show_string(&mut scl, &mut sda, 3, 1, "RST");
+        oled::show_string(&mut scl, &mut sda, 2, 1, "RST");
         delay.delay_ms(500_u16);
-        // oled::show_string(&mut scl, &mut sda, 3, 1, "   ");
+        // oled::show_string(&mut scl, &mut sda, 2, 1, "   ");
         delay.delay_ms(100_u16);
     }
 
-    oled::show_string(&mut scl, &mut sda, 1, 1, "Key:");
-    oled::show_string(&mut scl, &mut sda, 2, 1, "Type:");
-
-    oled::show_string(&mut scl, &mut sda, 2, 6, "IWDG TEST");
+    oled::show_string(&mut scl, &mut sda, 1, 1, "IWDG TEST");
 
     let mut watchdog = watchdog::IndependentWatchdog::new(iwdg);
 
@@ -79,17 +76,15 @@ fn main() -> ! {
     loop {
         // 按键事件
         // 按住按键不放，模拟程序卡死的情况
-        if get_key_status(&mut key, &mut delay) {
-            oled::show_string(&mut scl, &mut sda, 1, 5, "k");
-        }
+        get_key_status(&mut key, &mut delay);
 
         // Feed the IWDG to prevent a reset
         // 开始喂狗，间隔时间不能超过上面的 5000ms
         watchdog.feed();
 
-        oled::show_string(&mut scl, &mut sda, 4, 1, "FEED");
+        oled::show_string(&mut scl, &mut sda, 3, 1, "FEED");
         delay.delay_ms(200_u32);
-        oled::show_string(&mut scl, &mut sda, 4, 1, "    ");
+        oled::show_string(&mut scl, &mut sda, 3, 1, "    ");
         delay.delay_ms(600_u32);
     }
 }
