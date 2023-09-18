@@ -2,6 +2,7 @@
 #![no_std]
 #![no_main]
 
+use cortex_m::asm::wfi;
 use hardware::oled;
 
 use defmt::println;
@@ -30,6 +31,7 @@ fn main() -> ! {
     let rcc = dp.RCC.constrain();
     let syst = cp.SYST;
     let mut pwr = dp.PWR;
+    let mut scb = cp.SCB;
 
     let mut gpiob = dp.GPIOB.split();
 
@@ -48,13 +50,12 @@ fn main() -> ! {
     let mut backup_domain = rcc.bkp.constrain(dp.BKP, &mut pwr);
     // 启动RTC
     let mut rtc = Rtc::new(dp.RTC, &mut backup_domain);
-
+    let alr_value = 10;
     loop {
-        let alr_time = rtc.current_time();
-        let alr_time = alr_time + 10;
-        println!("alr_time: {}", alr_time);
-        rtc.set_alarm(alr_time);
+        rtc.set_time(0);
+        rtc.set_alarm(alr_value);
         block!(rtc.wait_alarm()).unwrap();
+        rtc.set_time(0);
 
         oled::show_string(&mut scl, &mut sda, 1, 1, "CNT:");
         oled::show_string(&mut scl, &mut sda, 2, 1, "ALR:");
@@ -64,7 +65,7 @@ fn main() -> ! {
         let count = rtc.current_time();
         println!("current_time: {}", count);
         oled::show_num(&mut scl, &mut sda, 1, 6, count, 10);
-        oled::show_num(&mut scl, &mut sda, 2, 6, alr_time, 10);
+        oled::show_num(&mut scl, &mut sda, 2, 6, alr_value, 10);
 
         oled::show_string(&mut scl, &mut sda, 4, 1, "running");
         delay.delay_ms(100_u32);
@@ -79,8 +80,15 @@ fn main() -> ! {
         oled::clear(&mut scl, &mut sda);
 
         // 当CPU进入深度睡眠时进入待机模式
-        pwr.cr
-            .modify(|_, w| w.csbf().clear_bit().pdds().standby_mode());
+        // 清除唤醒标识
+        pwr.cr.modify(|_, w| w.cwuf().set_bit());
+        // 进入待机模式
+        pwr.cr.modify(|_, w| w.pdds().set_bit());
+        // 设置SCR寄存器中的SLEEPDEEP位
+        scb.set_sleepdeep();
+
+        // 请求低功耗模式
+        wfi();
     }
 }
 

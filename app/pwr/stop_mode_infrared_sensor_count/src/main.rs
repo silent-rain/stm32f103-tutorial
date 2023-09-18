@@ -4,6 +4,7 @@
 
 use core::mem::MaybeUninit;
 
+use cortex_m::asm::wfi;
 use hardware::oled;
 
 use defmt::println;
@@ -75,7 +76,20 @@ fn main() -> ! {
         oled::show_string(&mut scl, &mut sda, 2, 1, "       ");
         delay.delay_ms(100_u32);
 
-        pwr.cr.write(|w| w.pdds().stop_mode())
+        pwr.cr.modify(|_, w| {
+            w
+                // 清除唤醒标识
+                .cwuf()
+                .set_bit()
+                // 进入停止模式
+                .lpds()
+                .set_bit()
+                .pdds()
+                .stop_mode()
+        });
+
+        // 请求低功耗模式
+        wfi();
     }
 }
 

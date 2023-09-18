@@ -117,8 +117,8 @@
 
 - [修改系统时钟主频](./app/pwr/syst_freq)
 - [睡眠模式-串口发送接收](./app/pwr/sleep_mode_serial_tx_and_rx)
-- x[停止模式-对射式红外传感器计次](./app/pwr/stop_mode_infrared_sensor_count)
-- x[待机模式-实时时钟计数](./app/pwr/standby_mode_rtc_counter)
+- [停止模式-对射式红外传感器计次](./app/pwr/stop_mode_infrared_sensor_count)
+- [待机模式-实时时钟计数](./app/pwr/standby_mode_rtc_counter)
 
 ### RITC
 
