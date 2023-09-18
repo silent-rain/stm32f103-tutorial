@@ -69,8 +69,7 @@ fn main() -> ! {
 
     let mut watchdog = watchdog::IndependentWatchdog::new(iwdg);
 
-    // 以等于1秒的重新加载值启动IWDG
-    // 1000ms
+    // 以等于5秒的重新加载值启动IWDG
     watchdog.start(5.secs());
 
     loop {
@@ -79,7 +78,7 @@ fn main() -> ! {
         get_key_status(&mut key, &mut delay);
 
         // Feed the IWDG to prevent a reset
-        // 开始喂狗，间隔时间不能超过上面的 5000ms
+        // 开始喂狗，间隔时间不能超过上面的 5s
         watchdog.feed();
 
         oled::show_string(&mut scl, &mut sda, 3, 1, "FEED");
