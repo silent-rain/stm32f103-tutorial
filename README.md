@@ -113,12 +113,12 @@
 - [RTC 告警闪烁 LED](./app/rtc/rtc_alarm_blinky)
 - [RTC 实时时间](./app/rtc/rtc_time)
 
-### 省电模式
+### PWR 电源控制
 
-- [修改系统时钟主频](./app/power/syst_freq)
-- [睡眠模式-串口发送接收](./app/power/sleep_mode_serial_tx_and_rx)
-- x[停止模式-对射式红外传感器计次](./app/power/stop_mode_infrared_sensor_count)
-- x[待机模式-实时时钟计数](./app/power/standby_mode_rtc_counter)
+- [修改系统时钟主频](./app/pwr/syst_freq)
+- [睡眠模式-串口发送接收](./app/pwr/sleep_mode_serial_tx_and_rx)
+- x[停止模式-对射式红外传感器计次](./app/pwr/stop_mode_infrared_sensor_count)
+- x[待机模式-实时时钟计数](./app/pwr/standby_mode_rtc_counter)
 
 ### RITC
 

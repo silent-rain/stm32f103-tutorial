@@ -94,11 +94,11 @@ members = [
     "app/rtc/rtc_counter",
     "app/rtc/rtc_alarm_blinky",
     "app/rtc/rtc_time",
-    # 省电模式
-    "app/power/syst_freq",
-    "app/power/sleep_mode_serial_tx_and_rx",
-    "app/power/stop_mode_infrared_sensor_count",
-    "app/power/standby_mode_rtc_counter",
+    # PWR 电源控制
+    "app/pwr/syst_freq",
+    "app/pwr/sleep_mode_serial_tx_and_rx",
+    "app/pwr/stop_mode_infrared_sensor_count",
+    "app/pwr/standby_mode_rtc_counter",
     # RTIC
     "app/rtic/spawn_task_rtic",
     "app/rtic/exti_rtic",
