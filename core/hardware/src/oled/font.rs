@@ -395,7 +395,7 @@ mod tests {
     #[test]
     fn test_oled_font_bin() {
         for c in OLED_FONT {
-            hprintln!("Hello, world!");
+            println!("Hello, world!");
         }
     }
 }
