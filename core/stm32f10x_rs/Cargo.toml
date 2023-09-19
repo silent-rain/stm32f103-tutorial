@@ -7,7 +7,7 @@ edition = "2021"
 name = "stm32f10x_rs"
 path = "src/lib.rs"
 harness = false
-crate-type = ["staticlib", "cdylib", "rlib"]
+crate-type = ["staticlib", "rlib"]
 
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

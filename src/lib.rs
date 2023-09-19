@@ -1,6 +1,6 @@
-#![deny(unsafe_code)]
 #![no_std]
 #![no_main]
+#![deny(unsafe_code)]
 
 use defmt_rtt as _; // global logger
 
