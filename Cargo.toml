@@ -16,7 +16,7 @@ harness = false
 members = [
     # 基础示例
     # "app/basic/helloworld",
-    "app/basic/panics",
+    # "app/basic/panics",
     # "app/basic/flash_tool_embed",
     "app/basic/flash_tool_defmt",
     "app/basic/unit_testsuite",
