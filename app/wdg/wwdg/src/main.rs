@@ -14,14 +14,11 @@ use stm32f1xx_hal::gpio;
 use stm32f1xx_hal::gpio::OutputSpeed;
 use stm32f1xx_hal::pac;
 use stm32f1xx_hal::pac::RCC;
-use stm32f1xx_hal::pac::WWDG;
-use stm32f1xx_hal::prelude::_fugit_ExtU32;
 use stm32f1xx_hal::prelude::_stm32_hal_flash_FlashExt;
 use stm32f1xx_hal::prelude::_stm32_hal_gpio_GpioExt;
 use stm32f1xx_hal::rcc::RccExt;
 use stm32f1xx_hal::timer::SysDelay;
 use stm32f1xx_hal::timer::SysTimerExt;
-use stm32f1xx_hal::watchdog;
 
 #[entry]
 fn main() -> ! {
@@ -53,34 +50,57 @@ fn main() -> ! {
 
     let rcc_b = unsafe { &*RCC::ptr() };
     // 检查是否由窗口看门狗复位
-    if rcc_b.csr.read().wwdgrstf().bit() {
+    if rcc_b.csr.read().wwdgrstf().is_reset() {
         oled::show_string(&mut scl, &mut sda, 2, 1, "WWDGRST");
-        delay.delay_ms(1000_u16);
-        oled::show_string(&mut scl, &mut sda, 2, 1, "       ");
-        delay.delay_ms(100_u16);
+        // delay.delay_ms(500_u16);
+        // oled::show_string(&mut scl, &mut sda, 2, 1, "       ");
+        // delay.delay_ms(100_u16);
 
         // 清除复位标志
-        rcc_b.csr.modify(|_, w| w.iwdgrstf().clear_bit());
+        rcc_b.csr.modify(|_, w| w.wwdgrstf().reset());
     } else {
-        oled::show_string(&mut scl, &mut sda, 3, 1, "RST");
-        delay.delay_ms(1000_u16);
-        oled::show_string(&mut scl, &mut sda, 3, 1, "   ");
-        delay.delay_ms(100_u16);
+        oled::show_string(&mut scl, &mut sda, 2, 1, "RST");
+        // delay.delay_ms(500_u16);
+        // oled::show_string(&mut scl, &mut sda, 2, 1, "   ");
+        // delay.delay_ms(100_u16);
     }
+
+    // 启用窗口看门狗时钟
+    rcc_b.apb1enr.modify(|_, w| w.wwdgen().enabled());
+
+    // 设置窗口看门狗的预分频值和窗口值
+    wwdg.cfr.modify(|_, w| {
+        // 设置预分频值
+        w.wdgtb()
+            // .bits(0b00)
+            .div8()
+            // 设置窗口值
+            // 当窗口看门狗的计数器的值在这个窗口值以下时，你可以安全地"喂狗"（也就是重置计数器）。
+            // 如果你在计数器的值大于这个窗口值时尝试"喂狗"，系统将会立即重置。
+            .w()
+            .bits(0x40 + 2)
+    });
+
+    // 启动窗口看门狗
+    // 这是窗口看门狗计数器的初始值。在这个例子中，我们将其设置为最大值 0x40 + 54。
+    // 这意味着窗口看门狗在超时并重置系统之前，计数器将从 0x40 + 54 倒数到0。
+    wwdg.cr
+        .modify(|_, w| w.wdga().enabled().t().bits(0x40 + 54));
 
     loop {
         // 按键事件
-        // 按住按键不放，模拟程序卡死的情况
+        // 按住按键不放，模拟程序卡死晚喂狗的情况
         get_key_status(&mut key, &mut delay);
 
-        // Feed the IWDG to prevent a reset
-        // 开始喂狗，间隔时间不能超过上面的 5s
-        // watchdog.feed();
-
         oled::show_string(&mut scl, &mut sda, 3, 1, "FEED");
-        delay.delay_ms(200_u32);
+        delay.delay_ms(20_u32);
         oled::show_string(&mut scl, &mut sda, 3, 1, "    ");
-        delay.delay_ms(600_u32);
+        delay.delay_ms(5000_u32);
+
+        // 喂狗
+        // 5-10s
+        println!("dog");
+        wwdg.cr.modify(|_, w| w.t().bits(0x40 + 54));
     }
 }
 

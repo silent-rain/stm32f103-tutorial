@@ -57,7 +57,6 @@ fn main() -> ! {
         delay.delay_ms(100_u16);
 
         rcc_b.csr.modify(|_, w| w.iwdgrstf().clear_bit());
-        // rcc_b.csr.reset();
     } else {
         oled::show_string(&mut scl, &mut sda, 2, 1, "RST");
         delay.delay_ms(500_u16);

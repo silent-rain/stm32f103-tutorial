@@ -123,7 +123,7 @@
 ### WDG 看门狗
 
 - [独立看门狗](./app/wdg/iwdg)
-- x[窗口看门狗](./app/wdg/wwdg)
+- [窗口看门狗](./app/wdg/wwdg)
 
 ### RITC
 
