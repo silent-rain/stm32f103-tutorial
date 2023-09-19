@@ -2,17 +2,15 @@
 #![no_std]
 #![no_main]
 
-use cortex_m::asm::wfi;
 use hardware::oled;
 
 use defmt::println;
 use defmt_rtt as _;
 use panic_probe as _;
 
+use cortex_m::asm::wfi;
 use cortex_m_rt::entry;
 use nb::block;
-use stm32f1xx_hal::gpio;
-use stm32f1xx_hal::gpio::OutputSpeed;
 use stm32f1xx_hal::pac;
 use stm32f1xx_hal::prelude::_embedded_hal_blocking_delay_DelayMs;
 use stm32f1xx_hal::prelude::_stm32_hal_flash_FlashExt;
@@ -43,7 +41,8 @@ fn main() -> ! {
 
     // 初始化 OLED 显示屏
     println!("load oled...");
-    let (mut scl, mut sda) = init_oled(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let (mut scl, mut sda) = oled::simple::init_oled_pin(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let mut oled = oled::OLED::new(&mut scl, &mut sda);
 
     // 设置RTC
     // 启用对备份域的写入
@@ -57,27 +56,27 @@ fn main() -> ! {
         block!(rtc.wait_alarm()).unwrap();
         rtc.set_time(0);
 
-        oled::show_string(&mut scl, &mut sda, 1, 1, "CNT:");
-        oled::show_string(&mut scl, &mut sda, 2, 1, "ALR:");
+        oled.show_string(1, 1, "CNT:");
+        oled.show_string(2, 1, "ALR:");
         // 获取不到该状态
-        // oled::show_string(&mut scl, &mut sda, 3, 1, "ALRF:");
+        // oled.show_string( 3, 1, "ALRF:");
 
         let count = rtc.current_time();
         println!("current_time: {}", count);
-        oled::show_num(&mut scl, &mut sda, 1, 6, count, 10);
-        oled::show_num(&mut scl, &mut sda, 2, 6, alr_value, 10);
+        oled.show_num(1, 6, count, 10);
+        oled.show_num(2, 6, alr_value, 10);
 
-        oled::show_string(&mut scl, &mut sda, 4, 1, "running");
+        oled.show_string(4, 1, "running");
         delay.delay_ms(100_u32);
-        oled::show_string(&mut scl, &mut sda, 4, 1, "       ");
-        delay.delay_ms(100_u32);
-
-        oled::show_string(&mut scl, &mut sda, 4, 9, "STANDBY");
-        delay.delay_ms(100_u32);
-        oled::show_string(&mut scl, &mut sda, 4, 9, "       ");
+        oled.show_string(4, 1, "       ");
         delay.delay_ms(100_u32);
 
-        oled::clear(&mut scl, &mut sda);
+        oled.show_string(4, 9, "STANDBY");
+        delay.delay_ms(100_u32);
+        oled.show_string(4, 9, "       ");
+        delay.delay_ms(100_u32);
+
+        oled.clear();
 
         // 当CPU进入深度睡眠时进入待机模式
         // 清除唤醒标识
@@ -90,24 +89,4 @@ fn main() -> ! {
         // 请求低功耗模式
         wfi();
     }
-}
-
-/// 初始化 OLED 显示屏
-pub fn init_oled(
-    pb8: gpio::Pin<'B', 8>,
-    pb9: gpio::Pin<'B', 9>,
-    crh: &mut gpio::Cr<'B', true>,
-) -> (
-    gpio::PB8<gpio::Output<gpio::OpenDrain>>,
-    gpio::PB9<gpio::Output<gpio::OpenDrain>>,
-) {
-    // 将引脚配置为作为开漏输出模式
-    let mut scl = pb8.into_open_drain_output(crh);
-    let mut sda = pb9.into_open_drain_output(crh);
-    scl.set_speed(crh, gpio::IOPinSpeed::Mhz50);
-    sda.set_speed(crh, gpio::IOPinSpeed::Mhz50);
-
-    // 始化 OLED 配置
-    oled::init_oled_config(&mut scl, &mut sda);
-    (scl, sda)
 }

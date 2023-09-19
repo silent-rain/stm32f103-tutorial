@@ -10,8 +10,6 @@ use panic_probe as _;
 
 use cortex_m::asm::wfi;
 use cortex_m_rt::entry;
-use stm32f1xx_hal::gpio;
-use stm32f1xx_hal::gpio::OutputSpeed;
 use stm32f1xx_hal::pac;
 use stm32f1xx_hal::prelude::_stm32_hal_flash_FlashExt;
 use stm32f1xx_hal::prelude::_stm32_hal_gpio_GpioExt;
@@ -40,7 +38,8 @@ fn main() -> ! {
 
     // 初始化 OLED 显示屏
     println!("load oled...");
-    let (mut scl, mut sda) = init_oled(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let (mut scl, mut sda) = oled::simple::init_oled_pin(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let mut oled = oled::OLED::new(&mut scl, &mut sda);
 
     // 设置RTC
     // 启用对备份域的写入
@@ -64,36 +63,16 @@ fn main() -> ! {
     // 将当前时间设置为0
     rtc.set_time(0);
 
-    oled::show_string(&mut scl, &mut sda, 1, 1, "R1:");
-    oled::show_string(&mut scl, &mut sda, 2, 1, "R2:");
+    oled.show_string(1, 1, "R1:");
+    oled.show_string(2, 1, "R2:");
 
     let dr1 = backup_domain.read_data_register_low(0);
     let dr2 = backup_domain.read_data_register_low(1);
 
-    oled::show_num(&mut scl, &mut sda, 1, 4, dr1 as u32, 5);
-    oled::show_num(&mut scl, &mut sda, 2, 4, dr2 as u32, 5);
+    oled.show_num(1, 4, dr1 as u32, 5);
+    oled.show_num(2, 4, dr2 as u32, 5);
 
     loop {
         wfi();
     }
-}
-
-/// 初始化 OLED 显示屏
-pub fn init_oled(
-    pb8: gpio::Pin<'B', 8>,
-    pb9: gpio::Pin<'B', 9>,
-    crh: &mut gpio::Cr<'B', true>,
-) -> (
-    gpio::PB8<gpio::Output<gpio::OpenDrain>>,
-    gpio::PB9<gpio::Output<gpio::OpenDrain>>,
-) {
-    // 将引脚配置为作为开漏输出模式
-    let mut scl = pb8.into_open_drain_output(crh);
-    let mut sda = pb9.into_open_drain_output(crh);
-    scl.set_speed(crh, gpio::IOPinSpeed::Mhz50);
-    sda.set_speed(crh, gpio::IOPinSpeed::Mhz50);
-
-    // 始化 OLED 配置
-    oled::init_oled_config(&mut scl, &mut sda);
-    (scl, sda)
 }

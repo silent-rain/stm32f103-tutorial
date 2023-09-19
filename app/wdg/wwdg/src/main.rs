@@ -11,7 +11,6 @@ use panic_probe as _;
 use cortex_m::prelude::_embedded_hal_blocking_delay_DelayMs;
 use cortex_m_rt::entry;
 use stm32f1xx_hal::gpio;
-use stm32f1xx_hal::gpio::OutputSpeed;
 use stm32f1xx_hal::pac;
 use stm32f1xx_hal::pac::RCC;
 use stm32f1xx_hal::prelude::_stm32_hal_flash_FlashExt;
@@ -41,27 +40,28 @@ fn main() -> ! {
 
     // 初始化 OLED 显示屏
     println!("load oled...");
-    let (mut scl, mut sda) = init_oled(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let (mut scl, mut sda) = oled::simple::init_oled_pin(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let mut oled = oled::OLED::new(&mut scl, &mut sda);
 
     // 按键
     let mut key = gpiob.pb1.into_pull_up_input(&mut gpiob.crl);
 
-    oled::show_string(&mut scl, &mut sda, 1, 1, "WWDG TEST");
+    oled.show_string(1, 1, "WWDG TEST");
 
     let rcc_b = unsafe { &*RCC::ptr() };
     // 检查是否由窗口看门狗复位
     if rcc_b.csr.read().wwdgrstf().is_reset() {
-        oled::show_string(&mut scl, &mut sda, 2, 1, "WWDGRST");
+        oled.show_string(2, 1, "WWDGRST");
         // delay.delay_ms(500_u16);
-        // oled::show_string(&mut scl, &mut sda, 2, 1, "       ");
+        // oled.show_string( 2, 1, "       ");
         // delay.delay_ms(100_u16);
 
         // 清除复位标志
         rcc_b.csr.modify(|_, w| w.wwdgrstf().reset());
     } else {
-        oled::show_string(&mut scl, &mut sda, 2, 1, "RST");
+        oled.show_string(2, 1, "RST");
         // delay.delay_ms(500_u16);
-        // oled::show_string(&mut scl, &mut sda, 2, 1, "   ");
+        // oled.show_string( 2, 1, "   ");
         // delay.delay_ms(100_u16);
     }
 
@@ -92,9 +92,9 @@ fn main() -> ! {
         // 按住按键不放，模拟程序卡死晚喂狗的情况
         get_key_status(&mut key, &mut delay);
 
-        oled::show_string(&mut scl, &mut sda, 3, 1, "FEED");
+        oled.show_string(3, 1, "FEED");
         delay.delay_ms(20_u32);
-        oled::show_string(&mut scl, &mut sda, 3, 1, "    ");
+        oled.show_string(3, 1, "    ");
         delay.delay_ms(5000_u32);
 
         // 喂狗
@@ -102,26 +102,6 @@ fn main() -> ! {
         println!("dog");
         wwdg.cr.modify(|_, w| w.t().bits(0x40 + 54));
     }
-}
-
-/// 初始化 OLED 显示屏
-pub fn init_oled(
-    pb8: gpio::Pin<'B', 8>,
-    pb9: gpio::Pin<'B', 9>,
-    crh: &mut gpio::Cr<'B', true>,
-) -> (
-    gpio::PB8<gpio::Output<gpio::OpenDrain>>,
-    gpio::PB9<gpio::Output<gpio::OpenDrain>>,
-) {
-    // 将引脚配置为作为开漏输出模式
-    let mut scl = pb8.into_open_drain_output(crh);
-    let mut sda = pb9.into_open_drain_output(crh);
-    scl.set_speed(crh, gpio::IOPinSpeed::Mhz50);
-    sda.set_speed(crh, gpio::IOPinSpeed::Mhz50);
-
-    // 始化 OLED 配置
-    oled::init_oled_config(&mut scl, &mut sda);
-    (scl, sda)
 }
 
 /// 获取按键的状态

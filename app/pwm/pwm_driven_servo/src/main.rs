@@ -10,7 +10,6 @@ use panic_probe as _;
 
 use cortex_m::prelude::_embedded_hal_blocking_delay_DelayMs;
 use cortex_m_rt::entry;
-use stm32f1xx_hal::gpio::OutputSpeed;
 use stm32f1xx_hal::prelude::{
     _fugit_RateExtU32, _stm32_hal_afio_AfioExt, _stm32_hal_flash_FlashExt, _stm32_hal_gpio_GpioExt,
 };
@@ -50,7 +49,8 @@ fn main() -> ! {
 
     // 初始化 OLED 显示屏
     println!("load oled...");
-    let (mut scl, mut sda) = init_oled(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let (mut scl, mut sda) = oled::simple::init_oled_pin(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let mut oled = oled::OLED::new(&mut scl, &mut sda);
 
     // 按键
     println!("load key...");
@@ -79,8 +79,8 @@ fn main() -> ! {
     println!("max_duty={:?}", max_duty);
 
     let mut angle = 0.0;
-    oled::show_string(&mut scl, &mut sda, 1, 1, "Angle:");
-    oled::show_string(&mut scl, &mut sda, 2, 1, "Duty:");
+    oled.show_string(1, 1, "Angle:");
+    oled.show_string(2, 1, "Duty:");
     loop {
         let key_num = get_key_num(&mut key, &mut delay);
         if key_num == 0 {
@@ -97,8 +97,8 @@ fn main() -> ! {
         // 6666.6   2.5ms   90度
         // 缩放: (6666.6-5333.3)/(90-45) = 29.6
         let duty = (angle * 29.6 + 1333.3) as u16;
-        oled::show_num(&mut scl, &mut sda, 1, 7, angle as u32, 5);
-        oled::show_num(&mut scl, &mut sda, 2, 6, duty.into(), 5);
+        oled.show_num(1, 7, angle as u32, 5);
+        oled.show_num(2, 6, duty.into(), 5);
         pwm.set_duty(Channel::C2, duty);
     }
 }
@@ -121,24 +121,4 @@ fn get_key_num(
         key_num = 1;
     }
     key_num
-}
-
-/// 初始化 OLED 显示屏
-pub fn init_oled(
-    pb8: gpio::Pin<'B', 8>,
-    pb9: gpio::Pin<'B', 9>,
-    crh: &mut gpio::Cr<'B', true>,
-) -> (
-    gpio::PB8<gpio::Output<gpio::OpenDrain>>,
-    gpio::PB9<gpio::Output<gpio::OpenDrain>>,
-) {
-    // 将引脚配置为作为开漏输出模式
-    let mut scl = pb8.into_open_drain_output(crh);
-    let mut sda = pb9.into_open_drain_output(crh);
-    scl.set_speed(crh, gpio::IOPinSpeed::Mhz50);
-    sda.set_speed(crh, gpio::IOPinSpeed::Mhz50);
-
-    // 始化 OLED 配置
-    hardware::oled::init_oled_config(&mut scl, &mut sda);
-    (scl, sda)
 }

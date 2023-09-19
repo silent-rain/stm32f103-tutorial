@@ -15,7 +15,7 @@ use cortex_m::peripheral::NVIC;
 use cortex_m::prelude::_embedded_hal_blocking_delay_DelayMs;
 use cortex_m_rt::entry;
 use stm32f1xx_hal::flash::{self, FlashExt};
-use stm32f1xx_hal::gpio::{self, gpioa, gpiob, Edge, ExtiPin, GpioExt, Input, OutputSpeed, PullUp};
+use stm32f1xx_hal::gpio::{gpioa, gpiob, Edge, ExtiPin, GpioExt, Input, PullUp};
 use stm32f1xx_hal::pac::interrupt;
 use stm32f1xx_hal::prelude::_stm32_hal_afio_AfioExt;
 use stm32f1xx_hal::rcc::{self, RccExt};
@@ -40,6 +40,11 @@ fn main() -> ! {
     // 封装具有自定义精度的阻塞延迟函数
     let mut delay = sys_delay(flash, rcc, system_timer);
 
+    // 初始化 OLED 显示屏
+    println!("load oled...");
+    let (mut scl, mut sda) = oled::simple::init_oled_pin(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let mut oled = oled::OLED::new(&mut scl, &mut sda);
+
     // 上电延时
     delay.delay_ms(20u16);
 
@@ -56,21 +61,9 @@ fn main() -> ! {
         infrared_sensor.trigger_on_edge(&mut exti, Edge::Rising);
     }
 
-    // 初始化 OLED 显示屏
-    let mut scl = gpiob.pb8.into_open_drain_output(&mut gpiob.crh);
-    let mut sda = gpiob.pb9.into_open_drain_output(&mut gpiob.crh);
-    scl.set_speed(&mut gpiob.crh, gpio::IOPinSpeed::Mhz50);
-    sda.set_speed(&mut gpiob.crh, gpio::IOPinSpeed::Mhz50);
-    scl.set_high();
-    sda.set_high();
-
-    // 初始化 OLED 配置
-    println!("load oled...");
-    oled::init_oled_config(&mut scl, &mut sda);
-
-    oled::show_string(&mut scl, &mut sda, 1, 1, "Count:");
+    oled.show_string(1, 1, "Count:");
     loop {
-        oled::show_num(&mut scl, &mut sda, 1, 7, get_sensor_count(), 5);
+        oled.show_num(1, 7, get_sensor_count(), 5);
     }
 }
 

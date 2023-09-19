@@ -11,8 +11,6 @@ use panic_probe as _;
 
 use cortex_m::prelude::_embedded_hal_blocking_delay_DelayMs;
 use cortex_m_rt::entry;
-use stm32f1xx_hal::gpio;
-use stm32f1xx_hal::gpio::OutputSpeed;
 use stm32f1xx_hal::pac;
 use stm32f1xx_hal::prelude::{_stm32_hal_flash_FlashExt, _stm32_hal_gpio_GpioExt};
 use stm32f1xx_hal::rcc::RccExt;
@@ -39,7 +37,8 @@ fn main() -> ! {
 
     // 初始化 OLED 显示屏
     println!("load oled...");
-    let (mut scl, mut sda) = init_oled(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let (mut scl, mut sda) = oled::simple::init_oled_pin(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let mut oled = oled::OLED::new(&mut scl, &mut sda);
 
     // MPU6050 初始化
     let mpu_scl = gpiob.pb10.into_alternate_open_drain(&mut gpiob.crh);
@@ -47,8 +46,8 @@ fn main() -> ! {
     let mut mpu = mpu6050_hal::Mpu6050::new((mpu_scl, mpu_sda), i2c2, clocks);
 
     let id = mpu.get_id();
-    oled::show_string(&mut scl, &mut sda, 1, 1, "ID:");
-    oled::show_hex_num(&mut scl, &mut sda, 1, 4, id as u32, 2);
+    oled.show_string(1, 1, "ID:");
+    oled.show_hex_num(1, 4, id as u32, 2);
 
     // 循环读取加速度和角速度数据
     loop {
@@ -57,34 +56,14 @@ fn main() -> ! {
         println!("Accel: ({}, {}, {})", data.acc_x, data.acc_y, data.acc_z);
         println!("Gyro: ({}, {}, {})", data.gyro_x, data.gyro_y, data.gyro_z);
 
-        oled::show_signed_num(&mut scl, &mut sda, 2, 1, data.acc_x as i32, 5);
-        oled::show_signed_num(&mut scl, &mut sda, 3, 1, data.acc_y as i32, 5);
-        oled::show_signed_num(&mut scl, &mut sda, 4, 1, data.acc_z as i32, 5);
-        oled::show_signed_num(&mut scl, &mut sda, 2, 8, data.gyro_x as i32, 5);
-        oled::show_signed_num(&mut scl, &mut sda, 3, 8, data.gyro_y as i32, 5);
-        oled::show_signed_num(&mut scl, &mut sda, 4, 8, data.gyro_z as i32, 5);
+        oled.show_signed_num(2, 1, data.acc_x as i32, 5);
+        oled.show_signed_num(3, 1, data.acc_y as i32, 5);
+        oled.show_signed_num(4, 1, data.acc_z as i32, 5);
+        oled.show_signed_num(2, 8, data.gyro_x as i32, 5);
+        oled.show_signed_num(3, 8, data.gyro_y as i32, 5);
+        oled.show_signed_num(4, 8, data.gyro_z as i32, 5);
 
         // 延时一秒
         delay.delay_ms(1000_u32);
     }
-}
-
-/// 初始化 OLED 显示屏
-pub fn init_oled(
-    pb8: gpio::Pin<'B', 8>,
-    pb9: gpio::Pin<'B', 9>,
-    crh: &mut gpio::Cr<'B', true>,
-) -> (
-    gpio::PB8<gpio::Output<gpio::OpenDrain>>,
-    gpio::PB9<gpio::Output<gpio::OpenDrain>>,
-) {
-    // 将引脚配置为作为开漏输出模式
-    let mut scl = pb8.into_open_drain_output(crh);
-    let mut sda = pb9.into_open_drain_output(crh);
-    scl.set_speed(crh, gpio::IOPinSpeed::Mhz50);
-    sda.set_speed(crh, gpio::IOPinSpeed::Mhz50);
-
-    // 始化 OLED 配置
-    hardware::oled::init_oled_config(&mut scl, &mut sda);
-    (scl, sda)
 }

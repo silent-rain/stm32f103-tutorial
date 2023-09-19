@@ -11,7 +11,6 @@ use panic_probe as _;
 use cortex_m::prelude::_embedded_hal_blocking_delay_DelayMs;
 use cortex_m_rt::entry;
 use stm32f1xx_hal::gpio;
-use stm32f1xx_hal::gpio::OutputSpeed;
 use stm32f1xx_hal::pac;
 use stm32f1xx_hal::pac::RCC;
 use stm32f1xx_hal::prelude::_fugit_ExtU32;
@@ -43,7 +42,8 @@ fn main() -> ! {
 
     // 初始化 OLED 显示屏
     println!("load oled...");
-    let (mut scl, mut sda) = init_oled(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let (mut scl, mut sda) = oled::simple::init_oled_pin(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let mut oled = oled::OLED::new(&mut scl, &mut sda);
 
     // 按键
     let mut key = gpiob.pb1.into_pull_up_input(&mut gpiob.crl);
@@ -51,20 +51,20 @@ fn main() -> ! {
     // 检查是否由于IWDG复位
     let rcc_b = unsafe { &*RCC::ptr() };
     if rcc_b.csr.read().iwdgrstf().is_reset() {
-        oled::show_string(&mut scl, &mut sda, 2, 1, "IWDGRST");
+        oled.show_string(2, 1, "IWDGRST");
         delay.delay_ms(1000_u16);
-        // oled::show_string(&mut scl, &mut sda, 2, 1, "       ");
+        // oled.show_string(2, 1, "       ");
         delay.delay_ms(100_u16);
 
         rcc_b.csr.modify(|_, w| w.iwdgrstf().clear_bit());
     } else {
-        oled::show_string(&mut scl, &mut sda, 2, 1, "RST");
+        oled.show_string(2, 1, "RST");
         delay.delay_ms(500_u16);
-        // oled::show_string(&mut scl, &mut sda, 2, 1, "   ");
+        // oled.show_string(2, 1, "   ");
         delay.delay_ms(100_u16);
     }
 
-    oled::show_string(&mut scl, &mut sda, 1, 1, "IWDG TEST");
+    oled.show_string(1, 1, "IWDG TEST");
 
     let mut watchdog = watchdog::IndependentWatchdog::new(iwdg);
 
@@ -80,31 +80,11 @@ fn main() -> ! {
         // 开始喂狗，间隔时间不能超过上面的 5s
         watchdog.feed();
 
-        oled::show_string(&mut scl, &mut sda, 3, 1, "FEED");
+        oled.show_string(3, 1, "FEED");
         delay.delay_ms(200_u32);
-        oled::show_string(&mut scl, &mut sda, 3, 1, "    ");
+        oled.show_string(3, 1, "    ");
         delay.delay_ms(600_u32);
     }
-}
-
-/// 初始化 OLED 显示屏
-pub fn init_oled(
-    pb8: gpio::Pin<'B', 8>,
-    pb9: gpio::Pin<'B', 9>,
-    crh: &mut gpio::Cr<'B', true>,
-) -> (
-    gpio::PB8<gpio::Output<gpio::OpenDrain>>,
-    gpio::PB9<gpio::Output<gpio::OpenDrain>>,
-) {
-    // 将引脚配置为作为开漏输出模式
-    let mut scl = pb8.into_open_drain_output(crh);
-    let mut sda = pb9.into_open_drain_output(crh);
-    scl.set_speed(crh, gpio::IOPinSpeed::Mhz50);
-    sda.set_speed(crh, gpio::IOPinSpeed::Mhz50);
-
-    // 始化 OLED 配置
-    oled::init_oled_config(&mut scl, &mut sda);
-    (scl, sda)
 }
 
 /// 获取按键的状态

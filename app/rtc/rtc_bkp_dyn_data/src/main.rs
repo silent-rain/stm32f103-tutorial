@@ -11,7 +11,6 @@ use panic_probe as _;
 use cortex_m::prelude::_embedded_hal_blocking_delay_DelayMs;
 use cortex_m_rt::entry;
 use stm32f1xx_hal::gpio;
-use stm32f1xx_hal::gpio::OutputSpeed;
 use stm32f1xx_hal::pac;
 use stm32f1xx_hal::prelude::_stm32_hal_flash_FlashExt;
 use stm32f1xx_hal::prelude::_stm32_hal_gpio_GpioExt;
@@ -41,7 +40,8 @@ fn main() -> ! {
 
     // 初始化 OLED 显示屏
     println!("load oled...");
-    let (mut scl, mut sda) = init_oled(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let (mut scl, mut sda) = oled::simple::init_oled_pin(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let mut oled = oled::OLED::new(&mut scl, &mut sda);
 
     // 按键
     let mut key = gpiob.pb1.into_pull_up_input(&mut gpiob.crl);
@@ -68,8 +68,8 @@ fn main() -> ! {
     // 将当前时间设置为0
     rtc.set_time(0);
 
-    oled::show_string(&mut scl, &mut sda, 1, 1, "R:");
-    oled::show_string(&mut scl, &mut sda, 2, 1, "W:");
+    oled.show_string(1, 1, "R:");
+    oled.show_string(2, 1, "W:");
 
     let mut array_write = [0x1234, 0x5678];
     loop {
@@ -81,36 +81,16 @@ fn main() -> ! {
             backup_domain.write_data_register_low(0, array_write[0]);
             backup_domain.write_data_register_low(1, array_write[1]);
 
-            oled::show_num(&mut scl, &mut sda, 1, 3, array_write[0] as u32, 4);
-            oled::show_num(&mut scl, &mut sda, 1, 8, array_write[1] as u32, 4);
+            oled.show_num(1, 3, array_write[0] as u32, 4);
+            oled.show_num(1, 8, array_write[1] as u32, 4);
         }
 
         let dr1 = backup_domain.read_data_register_low(0);
         let dr2 = backup_domain.read_data_register_low(1);
 
-        oled::show_num(&mut scl, &mut sda, 2, 3, dr1 as u32, 4);
-        oled::show_num(&mut scl, &mut sda, 2, 8, dr2 as u32, 4);
+        oled.show_num(2, 3, dr1 as u32, 4);
+        oled.show_num(2, 8, dr2 as u32, 4);
     }
-}
-
-/// 初始化 OLED 显示屏
-pub fn init_oled(
-    pb8: gpio::Pin<'B', 8>,
-    pb9: gpio::Pin<'B', 9>,
-    crh: &mut gpio::Cr<'B', true>,
-) -> (
-    gpio::PB8<gpio::Output<gpio::OpenDrain>>,
-    gpio::PB9<gpio::Output<gpio::OpenDrain>>,
-) {
-    // 将引脚配置为作为开漏输出模式
-    let mut scl = pb8.into_open_drain_output(crh);
-    let mut sda = pb9.into_open_drain_output(crh);
-    scl.set_speed(crh, gpio::IOPinSpeed::Mhz50);
-    sda.set_speed(crh, gpio::IOPinSpeed::Mhz50);
-
-    // 始化 OLED 配置
-    oled::init_oled_config(&mut scl, &mut sda);
-    (scl, sda)
 }
 
 /// 获取按键的状态

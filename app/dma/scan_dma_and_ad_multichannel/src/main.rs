@@ -15,11 +15,9 @@ use stm32f1xx_hal::adc;
 use stm32f1xx_hal::adc::Adc;
 use stm32f1xx_hal::adc::SetChannels;
 use stm32f1xx_hal::flash;
-use stm32f1xx_hal::gpio;
 use stm32f1xx_hal::gpio::gpioa;
 use stm32f1xx_hal::gpio::gpiob;
 use stm32f1xx_hal::gpio::Analog;
-use stm32f1xx_hal::gpio::OutputSpeed;
 use stm32f1xx_hal::gpio::{PA0, PA1, PA2, PA3};
 use stm32f1xx_hal::pac;
 use stm32f1xx_hal::pac::adc1;
@@ -79,7 +77,8 @@ fn main() -> ! {
 
     // 初始化 OLED 显示屏
     println!("load oled...");
-    let (mut scl, mut sda) = init_oled(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let (mut scl, mut sda) = oled::simple::init_oled_pin(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let mut oled = oled::OLED::new(&mut scl, &mut sda);
 
     // 初始化 ADC
     let adc1 = dp.ADC1;
@@ -113,38 +112,18 @@ fn main() -> ! {
     // 消耗AdcDma结构体，将adc配置恢复到以前的状态，并在正常模式下返回adc结构体。
     // let (_adc1, _adc_ch0, _dma_ch1) = adc_dma.split();
 
-    oled::show_string(&mut scl, &mut sda, 1, 1, "AD0:");
-    oled::show_string(&mut scl, &mut sda, 2, 1, "AD1:");
-    oled::show_string(&mut scl, &mut sda, 3, 1, "AD2:");
-    oled::show_string(&mut scl, &mut sda, 4, 1, "AD3:");
+    oled.show_string(1, 1, "AD0:");
+    oled.show_string(2, 1, "AD1:");
+    oled.show_string(3, 1, "AD2:");
+    oled.show_string(4, 1, "AD3:");
 
-    oled::show_num(&mut scl, &mut sda, 1, 5, buf[1].into(), 4);
-    oled::show_num(&mut scl, &mut sda, 2, 5, buf[2].into(), 4);
-    oled::show_num(&mut scl, &mut sda, 3, 5, buf[3].into(), 4);
-    oled::show_num(&mut scl, &mut sda, 4, 5, buf[4].into(), 4);
+    oled.show_num(1, 5, buf[1].into(), 4);
+    oled.show_num(2, 5, buf[2].into(), 4);
+    oled.show_num(3, 5, buf[3].into(), 4);
+    oled.show_num(4, 5, buf[4].into(), 4);
 
     println!("loop");
     loop {
         wfi();
     }
-}
-
-/// 初始化 OLED 显示屏
-pub fn init_oled(
-    pb8: gpio::Pin<'B', 8>,
-    pb9: gpio::Pin<'B', 9>,
-    crh: &mut gpio::Cr<'B', true>,
-) -> (
-    gpio::PB8<gpio::Output<gpio::OpenDrain>>,
-    gpio::PB9<gpio::Output<gpio::OpenDrain>>,
-) {
-    // 将引脚配置为作为开漏输出模式
-    let mut scl = pb8.into_open_drain_output(crh);
-    let mut sda = pb9.into_open_drain_output(crh);
-    scl.set_speed(crh, gpio::IOPinSpeed::Mhz50);
-    sda.set_speed(crh, gpio::IOPinSpeed::Mhz50);
-
-    // 始化 OLED 配置
-    hardware::oled::init_oled_config(&mut scl, &mut sda);
-    (scl, sda)
 }

@@ -10,8 +10,6 @@ use panic_probe as _;
 
 use cortex_m::asm::wfi;
 use cortex_m_rt::entry;
-use stm32f1xx_hal::gpio;
-use stm32f1xx_hal::gpio::OutputSpeed;
 use stm32f1xx_hal::pac;
 use stm32f1xx_hal::prelude::_embedded_hal_blocking_delay_DelayMs;
 use stm32f1xx_hal::prelude::_fugit_RateExtU32;
@@ -47,7 +45,8 @@ fn main() -> ! {
 
     // 初始化 OLED 显示屏
     println!("load oled...");
-    let (mut scl, mut sda) = init_oled(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let (mut scl, mut sda) = oled::simple::init_oled_pin(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let mut oled = oled::OLED::new(&mut scl, &mut sda);
 
     let cs = {
         let mut cs = gpioa.pa4.into_push_pull_output(&mut gpioa.crl);
@@ -112,44 +111,24 @@ fn main() -> ! {
         addr += BUF as u32;
     }
 
-    oled::show_string(&mut scl, &mut sda, 1, 1, "MID:   DID:");
-    oled::show_string(&mut scl, &mut sda, 2, 1, "W:");
-    oled::show_string(&mut scl, &mut sda, 3, 1, "R:");
+    oled.show_string(1, 1, "MID:   DID:");
+    oled.show_string(2, 1, "W:");
+    oled.show_string(3, 1, "R:");
 
-    // oled::show_hex_num(&mut scl, &mut sda, 1, 5, mid as u32, 2);
-    // oled::show_hex_num(&mut scl, &mut sda, 1, 12, did as u32, 4);
+    // oled.show_hex_num(1, 5, mid as u32, 2);
+    // oled.show_hex_num(1, 12, did as u32, 4);
 
-    oled::show_hex_num(&mut scl, &mut sda, 2, 3, array_write[0] as u32, 2);
-    oled::show_hex_num(&mut scl, &mut sda, 2, 6, array_write[1] as u32, 2);
-    oled::show_hex_num(&mut scl, &mut sda, 2, 9, array_write[2] as u32, 2);
-    oled::show_hex_num(&mut scl, &mut sda, 2, 12, array_write[3] as u32, 2);
+    oled.show_hex_num(2, 3, array_write[0] as u32, 2);
+    oled.show_hex_num(2, 6, array_write[1] as u32, 2);
+    oled.show_hex_num(2, 9, array_write[2] as u32, 2);
+    oled.show_hex_num(2, 12, array_write[3] as u32, 2);
 
-    oled::show_hex_num(&mut scl, &mut sda, 3, 3, buffer[0] as u32, 2);
-    oled::show_hex_num(&mut scl, &mut sda, 3, 6, buffer[1] as u32, 2);
-    oled::show_hex_num(&mut scl, &mut sda, 3, 9, buffer[2] as u32, 2);
-    oled::show_hex_num(&mut scl, &mut sda, 3, 12, buffer[3] as u32, 2);
+    oled.show_hex_num(3, 3, buffer[0] as u32, 2);
+    oled.show_hex_num(3, 6, buffer[1] as u32, 2);
+    oled.show_hex_num(3, 9, buffer[2] as u32, 2);
+    oled.show_hex_num(3, 12, buffer[3] as u32, 2);
 
     loop {
         wfi();
     }
-}
-
-/// 初始化 OLED 显示屏
-pub fn init_oled(
-    pb8: gpio::Pin<'B', 8>,
-    pb9: gpio::Pin<'B', 9>,
-    crh: &mut gpio::Cr<'B', true>,
-) -> (
-    gpio::PB8<gpio::Output<gpio::OpenDrain>>,
-    gpio::PB9<gpio::Output<gpio::OpenDrain>>,
-) {
-    // 将引脚配置为作为开漏输出模式
-    let mut scl = pb8.into_open_drain_output(crh);
-    let mut sda = pb9.into_open_drain_output(crh);
-    scl.set_speed(crh, gpio::IOPinSpeed::Mhz50);
-    sda.set_speed(crh, gpio::IOPinSpeed::Mhz50);
-
-    // 始化 OLED 配置
-    oled::init_oled_config(&mut scl, &mut sda);
-    (scl, sda)
 }

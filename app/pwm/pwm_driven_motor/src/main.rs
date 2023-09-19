@@ -49,7 +49,8 @@ fn main() -> ! {
 
     // 初始化 OLED 显示屏
     println!("load oled...");
-    let (mut scl, mut sda) = init_oled(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let (mut scl, mut sda) = oled::simple::init_oled_pin(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let mut oled = oled::OLED::new(&mut scl, &mut sda);
 
     // 按键
     println!("load key...");
@@ -84,7 +85,7 @@ fn main() -> ! {
     delay.delay_ms(1000_u32);
 
     let mut speed = 0;
-    oled::show_string(&mut scl, &mut sda, 1, 1, "Speed:");
+    oled.show_string(1, 1, "Speed:");
     println!("loop");
     loop {
         let key_num = get_key_num(&mut key, &mut delay);
@@ -95,7 +96,7 @@ fn main() -> ! {
             }
         }
         set_speed(&mut ain1, &mut ain2, &mut pwm, speed);
-        oled::show_signed_num(&mut scl, &mut sda, 1, 7, speed, 3);
+        oled.show_signed_num(1, 7, speed, 3);
     }
 }
 
@@ -147,24 +148,4 @@ fn set_speed(
             (max_duty as f32 * (-speed as f32 / 100.0)) as u16,
         );
     }
-}
-
-/// 初始化 OLED 显示屏
-pub fn init_oled(
-    pb8: gpio::Pin<'B', 8>,
-    pb9: gpio::Pin<'B', 9>,
-    crh: &mut gpio::Cr<'B', true>,
-) -> (
-    gpio::PB8<gpio::Output<gpio::OpenDrain>>,
-    gpio::PB9<gpio::Output<gpio::OpenDrain>>,
-) {
-    // 将引脚配置为作为开漏输出模式
-    let mut scl = pb8.into_open_drain_output(crh);
-    let mut sda = pb9.into_open_drain_output(crh);
-    scl.set_speed(crh, gpio::IOPinSpeed::Mhz50);
-    sda.set_speed(crh, gpio::IOPinSpeed::Mhz50);
-
-    // 始化 OLED 配置
-    hardware::oled::init_oled_config(&mut scl, &mut sda);
-    (scl, sda)
 }

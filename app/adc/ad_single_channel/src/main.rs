@@ -14,10 +14,8 @@ use stm32f1xx_hal::adc;
 use stm32f1xx_hal::adc::Adc;
 use stm32f1xx_hal::adc::SampleTime;
 use stm32f1xx_hal::flash;
-use stm32f1xx_hal::gpio;
 use stm32f1xx_hal::gpio::gpioa;
 use stm32f1xx_hal::gpio::gpiob;
-use stm32f1xx_hal::gpio::OutputSpeed;
 use stm32f1xx_hal::pac;
 use stm32f1xx_hal::pac::adc1;
 use stm32f1xx_hal::prelude::_fugit_RateExtU32;
@@ -70,7 +68,8 @@ fn main() -> ! {
 
     // 初始化 OLED 显示屏
     println!("load oled...");
-    let (mut scl, mut sda) = init_oled(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let (mut scl, mut sda) = oled::simple::init_oled_pin(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let mut oled = oled::OLED::new(&mut scl, &mut sda);
 
     // Configure analog input
     let mut ch0 = gpioa.pa0.into_analog(&mut gpioa.crl);
@@ -101,8 +100,8 @@ fn main() -> ! {
     // 使用不连续转换（每次转换3个通道）
     adc1.set_discontinuous_mode(Some(1));
 
-    oled::show_string(&mut scl, &mut sda, 1, 1, "ADValue:");
-    oled::show_string(&mut scl, &mut sda, 2, 1, "Volatge:0.00V");
+    oled.show_string(1, 1, "ADValue:");
+    oled.show_string(2, 1, "Volatge:0.00V");
     println!("loop ...");
 
     loop {
@@ -119,39 +118,12 @@ fn main() -> ! {
             "ad value={:?} voltege={:?} temperature={:?} vref={:?}",
             ad_value, voltege, temperature, vref
         );
-        oled::show_num(&mut scl, &mut sda, 1, 9, ad_value as u32, 4);
+        oled.show_num(1, 9, ad_value as u32, 4);
         // 获取电压整数部分
-        oled::show_num(&mut scl, &mut sda, 2, 9, voltege as u32, 1);
+        oled.show_num(2, 9, voltege as u32, 1);
         // 获取电压小数部分
-        oled::show_num(
-            &mut scl,
-            &mut sda,
-            2,
-            11,
-            ((voltege * 100.0) % 100.0) as u32,
-            2,
-        );
+        oled.show_num(2, 11, ((voltege * 100.0) % 100.0) as u32, 2);
 
         delay.delay_ms(100_u32);
     }
-}
-
-/// 初始化 OLED 显示屏
-pub fn init_oled(
-    pb8: gpio::Pin<'B', 8>,
-    pb9: gpio::Pin<'B', 9>,
-    crh: &mut gpio::Cr<'B', true>,
-) -> (
-    gpio::PB8<gpio::Output<gpio::OpenDrain>>,
-    gpio::PB9<gpio::Output<gpio::OpenDrain>>,
-) {
-    // 将引脚配置为作为开漏输出模式
-    let mut scl = pb8.into_open_drain_output(crh);
-    let mut sda = pb9.into_open_drain_output(crh);
-    scl.set_speed(crh, gpio::IOPinSpeed::Mhz50);
-    sda.set_speed(crh, gpio::IOPinSpeed::Mhz50);
-
-    // 始化 OLED 配置
-    hardware::oled::init_oled_config(&mut scl, &mut sda);
-    (scl, sda)
 }

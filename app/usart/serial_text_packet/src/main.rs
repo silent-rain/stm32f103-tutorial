@@ -55,7 +55,8 @@ fn main() -> ! {
 
     // 初始化 OLED 显示屏
     println!("load oled...");
-    let (mut scl, mut sda) = init_oled(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let (mut scl, mut sda) = oled::simple::init_oled_pin(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
+    let mut oled = oled::OLED::new(&mut scl, &mut sda);
 
     let mut led = gpioa.pa0.into_push_pull_output(&mut gpioa.crl);
     // 设置其输出速度（50 MHz）。
@@ -93,28 +94,28 @@ fn main() -> ! {
         cortex_m::peripheral::NVIC::unmask(pac::Interrupt::USART1);
     }
 
-    oled::show_string(&mut scl, &mut sda, 1, 1, "TxPacket");
-    oled::show_string(&mut scl, &mut sda, 3, 1, "RxPacket");
+    oled.show_string(1, 1, "TxPacket");
+    oled.show_string(3, 1, "RxPacket");
     loop {
         // 接收数据
         if get_rx_fkag() == RxFlag::End {
-            oled::show_string(&mut scl, &mut sda, 4, 1, "                ");
-            oled::show_string(&mut scl, &mut sda, 4, 1, "                ");
+            oled.show_string(4, 1, "                ");
+            oled.show_string(4, 1, "                ");
 
             if get_rx_packet().as_str().trim_end_matches('\0') == "LED_ON" {
                 led.set_low();
                 send_packet("LED_ON_OK\r\n");
-                oled::show_string(&mut scl, &mut sda, 2, 1, "                ");
-                oled::show_string(&mut scl, &mut sda, 2, 1, "LED_ON_OK");
+                oled.show_string(2, 1, "                ");
+                oled.show_string(2, 1, "LED_ON_OK");
             } else if get_rx_packet().as_str().trim_end_matches('\0') == "LED_OFF" {
                 led.set_high();
                 send_packet("LED_OFF_OK\r\n");
-                oled::show_string(&mut scl, &mut sda, 2, 1, "                ");
-                oled::show_string(&mut scl, &mut sda, 2, 1, "LED_OFF_OK");
+                oled.show_string(2, 1, "                ");
+                oled.show_string(2, 1, "LED_OFF_OK");
             } else {
                 send_packet("ERROR_COMMAND\r\n");
-                oled::show_string(&mut scl, &mut sda, 2, 1, "                ");
-                oled::show_string(&mut scl, &mut sda, 2, 1, "ERROR_COMMAND");
+                oled.show_string(2, 1, "                ");
+                oled.show_string(2, 1, "ERROR_COMMAND");
             }
 
             unsafe {
@@ -216,24 +217,4 @@ unsafe fn USART1() {
             }
         }
     })
-}
-
-/// 初始化 OLED 显示屏
-pub fn init_oled(
-    pb8: gpio::Pin<'B', 8>,
-    pb9: gpio::Pin<'B', 9>,
-    crh: &mut gpio::Cr<'B', true>,
-) -> (
-    gpio::PB8<gpio::Output<gpio::OpenDrain>>,
-    gpio::PB9<gpio::Output<gpio::OpenDrain>>,
-) {
-    // 将引脚配置为作为开漏输出模式
-    let mut scl = pb8.into_open_drain_output(crh);
-    let mut sda = pb9.into_open_drain_output(crh);
-    scl.set_speed(crh, gpio::IOPinSpeed::Mhz50);
-    sda.set_speed(crh, gpio::IOPinSpeed::Mhz50);
-
-    // 始化 OLED 配置
-    hardware::oled::init_oled_config(&mut scl, &mut sda);
-    (scl, sda)
 }
