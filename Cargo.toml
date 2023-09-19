@@ -103,7 +103,7 @@ members = [
     "app/wdg/iwdg",
     "app/wdg/wwdg",
     # RTIC
-    "app/rtic/spawn_task_rtic",
+    # "app/rtic/spawn_task_rtic", // nightly
     "app/rtic/exti_rtic",
     "app/rtic/timer_interrupt_rtic",
     # 常用外设工具库
