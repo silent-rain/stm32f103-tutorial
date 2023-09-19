@@ -390,7 +390,7 @@ pub const OLED_FONT: [[u8; 16]; 95] = [
 mod tests {
     use super::*;
 
-    use cortex_m_semihosting::hprintln;
+    use defmt::println;
 
     #[test]
     fn test_oled_font_bin() {
