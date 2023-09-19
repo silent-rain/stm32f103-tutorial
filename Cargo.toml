@@ -105,7 +105,7 @@ members = [
     # RTIC
     # "app/rtic/spawn_task_rtic", // nightly
     "app/rtic/exti_rtic",
-    "app/rtic/timer_interrupt_rtic",
+    # "app/rtic/timer_interrupt_rtic",
     # 常用外设工具库
     "core/hardware",
     "core/ffi_hello",

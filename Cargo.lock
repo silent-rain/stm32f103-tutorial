@@ -1942,20 +1942,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "timer_interrupt_rtic"
-version = "0.1.0"
-dependencies = [
- "cortex-m",
- "cortex-m-rt",
- "defmt",
- "defmt-rtt",
- "embedded-hal 0.2.7",
- "panic-probe",
- "rtic",
- "stm32f1xx-hal",
-]
-
-[[package]]
 name = "turns_user_led"
 version = "0.1.0"
 dependencies = [
