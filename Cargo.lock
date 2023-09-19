@@ -1434,14 +1434,13 @@ dependencies = [
 
 [[package]]
 name = "rtic-monotonics"
-version = "1.2.0"
+version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "51ae55abf361b093dc1b9d6f20666313674ba314584bce49ba1a1366c99186d1"
+checksum = "77e9f99e2119d5bdd927c45a31ef9e8d9888f02ede3e357bcbd7ab79c426e02d"
 dependencies = [
  "atomic-polyfill 1.0.3",
  "cfg-if",
  "cortex-m",
- "embedded-hal 1.0.0-rc.1",
  "fugit",
  "rtic-time",
 ]
@@ -2132,9 +2131,9 @@ dependencies = [
 
 [[package]]
 name = "typenum"
-version = "1.17.0"
+version = "1.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "42ff0bf0c66b8238c6f3b578df37d0b7848e55df8577b3f74f92a69acceeb825"
+checksum = "497961ef93d974e23eb6f433eb5fe1b7930b659f06d12dec6fc44a8f554c0bba"
 
 [[package]]
 name = "ufmt-write"
