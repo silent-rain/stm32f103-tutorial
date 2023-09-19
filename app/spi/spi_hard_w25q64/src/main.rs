@@ -1,6 +1,6 @@
-#![allow(clippy::empty_loop)]
 #![no_std]
 #![no_main]
+#![allow(clippy::empty_loop)]
 
 use hardware::{oled, w25q64::w25q64_hal};
 

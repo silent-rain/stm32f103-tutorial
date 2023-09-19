@@ -385,17 +385,3 @@ pub const OLED_FONT: [[u8; 16]; 95] = [
         0x00,
     ], //~ 94
 ];
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    use defmt::println;
-
-    #[test]
-    fn test_oled_font_bin() {
-        for c in OLED_FONT {
-            println!("Hello, world!");
-        }
-    }
-}

@@ -1,5 +1,7 @@
-#![no_main]
 #![no_std]
+#![no_main]
+
+use panic_probe as _;
 
 pub mod key;
 pub mod mpu6050;

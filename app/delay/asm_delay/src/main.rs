@@ -1,6 +1,6 @@
-#![deny(unsafe_code)]
 #![no_std]
 #![no_main]
+#![deny(unsafe_code)]
 
 use cortex_m::asm;
 use defmt::println;

@@ -1,6 +1,6 @@
-#![allow(clippy::empty_loop)]
 #![no_std]
 #![no_main]
+#![allow(clippy::empty_loop)]
 
 use hardware::mpu6050::mpu6050_hal;
 use hardware::oled;

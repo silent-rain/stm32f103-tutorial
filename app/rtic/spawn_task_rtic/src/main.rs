@@ -1,7 +1,7 @@
+#![no_std]
+#![no_main]
 #![deny(unsafe_code)]
 #![deny(warnings)]
-#![no_main]
-#![no_std]
 #![feature(type_alias_impl_trait)]
 
 use defmt::println;

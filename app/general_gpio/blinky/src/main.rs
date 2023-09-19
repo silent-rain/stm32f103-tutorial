@@ -5,9 +5,7 @@
 //! Note: Without additional hardware, PC13 should not be used to drive an LED, see page 5.1.2 of
 //! the reference manual for an explanation. This is not an issue on the blue pill.
 
-// 不使用 Rust 标准库；
 #![no_std]
-// 标记该程序没有使用标准的 main 函数作为程序入口；
 #![no_main]
 
 // 用于处理错误情况；

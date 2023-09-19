@@ -1,6 +1,6 @@
-#![allow(clippy::empty_loop)]
 #![no_std]
 #![no_main]
+#![allow(clippy::empty_loop)]
 
 use cortex_m::prelude::_embedded_hal_blocking_delay_DelayMs;
 use defmt::println;

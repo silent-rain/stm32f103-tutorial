@@ -1,9 +1,9 @@
 //! OLED I2C 通信协议显示字符
 
-#![allow(clippy::empty_loop)]
-#![deny(unsafe_code)]
 #![no_std]
 #![no_main]
+#![allow(clippy::empty_loop)]
+#![deny(unsafe_code)]
 
 use hardware::oled;
 

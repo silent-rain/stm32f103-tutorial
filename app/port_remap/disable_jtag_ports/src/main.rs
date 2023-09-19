@@ -1,8 +1,7 @@
 //! Disables the JTAG ports to give access to pb3, pb4 and PA15
-
-#![deny(unsafe_code)]
-#![no_main]
 #![no_std]
+#![no_main]
+#![deny(unsafe_code)]
 
 use defmt_rtt as _;
 use panic_probe as _;

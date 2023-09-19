@@ -1,6 +1,6 @@
-#![allow(clippy::empty_loop)]
-#![no_main]
 #![no_std]
+#![no_main]
+#![allow(clippy::empty_loop)]
 
 use panic_semihosting as _;
 //use panic_itm as _;

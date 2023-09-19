@@ -1,13 +1,11 @@
 //! Prints "Hello, world" on the OpenOCD console
-
+#![no_std]
+// 标记该程序没有使用标准的 main 函数作为程序入口；
+#![no_main]
 // 允许有空的循环结构；
 #![allow(clippy::empty_loop)]
 // 禁止使用 Rust 的 unsafe 代码；
 #![deny(unsafe_code)]
-// 标记该程序没有使用标准的 main 函数作为程序入口；
-#![no_main]
-// 不使用 Rust 标准库；
-#![no_std]
 
 // 用于处理错误情况；
 use panic_semihosting as _;

@@ -15,9 +15,9 @@ harness = false
 [workspace]
 members = [
     # 基础示例
-    # "app/basic/helloworld",
-    # "app/basic/panics",
-    # "app/basic/flash_tool_embed",
+    "app/basic/helloworld",
+    "app/basic/panics",
+    "app/basic/flash_tool_embed",
     "app/basic/flash_tool_defmt",
     "app/basic/unit_testsuite",
     # 延迟
@@ -104,8 +104,8 @@ members = [
     "app/wdg/wwdg",
     # RTIC
     # "app/rtic/spawn_task_rtic", // nightly
-    # "app/rtic/exti_rtic",
-    # "app/rtic/timer_interrupt_rtic",
+    "app/rtic/exti_rtic",
+    "app/rtic/timer_interrupt_rtic",
     # 常用外设工具库
     "core/hardware",
     "core/ffi_hello",

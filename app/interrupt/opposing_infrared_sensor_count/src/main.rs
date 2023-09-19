@@ -1,7 +1,7 @@
 //! OLED I2C 通信协议显示字符
-#![allow(clippy::empty_loop)]
 #![no_std]
 #![no_main]
+#![allow(clippy::empty_loop)]
 
 use core::mem::MaybeUninit;
 
