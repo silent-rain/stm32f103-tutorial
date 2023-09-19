@@ -15,9 +15,9 @@ harness = false
 [workspace]
 members = [
     # 基础示例
-    "app/basic/helloworld",
+    # "app/basic/helloworld",
     "app/basic/panics",
-    "app/basic/flash_tool_embed",
+    # "app/basic/flash_tool_embed",
     "app/basic/flash_tool_defmt",
     "app/basic/unit_testsuite",
     # 延迟
