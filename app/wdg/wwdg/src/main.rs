@@ -57,7 +57,7 @@ fn main() -> ! {
         // delay.delay_ms(100_u16);
 
         // 清除复位标志
-        rcc_b.csr.modify(|_, w| w.wwdgrstf().reset());
+        rcc_b.csr.modify(|_, w| w.wwdgrstf().clear_bit());
     } else {
         oled.show_string(2, 1, "RST");
         // delay.delay_ms(500_u16);
