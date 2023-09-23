@@ -51,18 +51,20 @@ fn main() -> ! {
     let rcc_b = unsafe { &*RCC::ptr() };
     // 检查是否由窗口看门狗复位
     if rcc_b.csr.read().wwdgrstf().is_reset() {
-        oled.show_string(2, 1, "WWDGRST");
+        // oled.show_string(2, 1, "WWDGRST");
         // delay.delay_ms(500_u16);
         // oled.show_string( 2, 1, "       ");
         // delay.delay_ms(100_u16);
+        println!("WWDGRST..");
 
         // 清除复位标志
         rcc_b.csr.modify(|_, w| w.wwdgrstf().clear_bit());
     } else {
-        oled.show_string(2, 1, "RST");
+        // oled.show_string(2, 1, "RST");
         // delay.delay_ms(500_u16);
         // oled.show_string( 2, 1, "   ");
         // delay.delay_ms(100_u16);
+        println!("RST..");
     }
 
     // 启用窗口看门狗时钟
@@ -75,31 +77,39 @@ fn main() -> ! {
             // .bits(0b00)
             .div8()
             // 设置窗口值
-            // 当窗口看门狗的计数器的值在这个窗口值以下时，你可以安全地"喂狗"（也就是重置计数器）。
-            // 如果你在计数器的值大于这个窗口值时尝试"喂狗"，系统将会立即重置。
             .w()
-            .bits(0x40 + 2)
+            .bits(0x40 + 21) // 30ms
     });
 
     // 启动窗口看门狗
-    // 这是窗口看门狗计数器的初始值。在这个例子中，我们将其设置为最大值 0x40 + 54。
-    // 这意味着窗口看门狗在超时并重置系统之前，计数器将从 0x40 + 54 倒数到0。
+    // 窗口看门狗计数器的初始值，设置为最大值 0x40 | 54。
+    // 窗口时间范围 30ms-50ms
     wwdg.cr
-        .modify(|_, w| w.wdga().enabled().t().bits(0x40 + 54));
+        .modify(|_, w| w.wdga().enabled().t().bits(0x40 + 54)); // 50ms
 
+    // 验证窗口时间
+    // for i in 0..600 {
+    //     delay.delay_ms(1_u32);
+    //     println!("{:?}", i);
+    // }
+
+    println!("loop..");
     loop {
         // 按键事件
         // 按住按键不放，模拟程序卡死晚喂狗的情况
         get_key_status(&mut key, &mut delay);
 
-        oled.show_string(3, 1, "FEED");
-        delay.delay_ms(20_u32);
-        oled.show_string(3, 1, "    ");
-        delay.delay_ms(5000_u32);
+        // oled 显示比较耗时
+        // oled.show_string(3, 1, "FEED");
+        // delay.delay_ms(20_u32);
+        // oled.show_string(3, 1, "    ");
+        // delay.delay_ms(20_u32);
+
+        // delay.delay_ms(30_u32); // 过快喂狗
+        // delay.delay_ms(50_u32); // 超时
+        delay.delay_ms(40_u32);
 
         // 喂狗
-        // 5-10s
-        println!("dog");
         wwdg.cr.modify(|_, w| w.t().bits(0x40 + 54));
     }
 }
