@@ -102,10 +102,12 @@ members = [
     # WDG 看门狗
     "app/wdg/iwdg",
     "app/wdg/wwdg",
-    # RTIC
+    # RITC 实时中断驱动并发
     # "app/rtic/spawn_task_rtic", // nightly
     "app/rtic/exti_rtic",
     "app/rtic/timer_interrupt_rtic",
+    # FreeRTOS 实时操作系统
+    # "app/free_rtos/free_rtos_blinky", # nightly
     # 常用外设工具库
     "core/hardware",
     "core/ffi_hello",

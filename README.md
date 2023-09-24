@@ -125,11 +125,15 @@
 - [独立看门狗](./app/wdg/iwdg)
 - [窗口看门狗](./app/wdg/wwdg)
 
-### RITC
+### RITC 实时中断驱动并发
 
 - [任务调度-RTIC](./app/rtic/spawn_task_rtic)
 - x[EXTI 中断-RTIC](./app/rtic/exti_rtic)
 - x[TIM 定时器中断-RTIC](./app/rtic/timer_interrupt_rtic)
+
+### FreeRTOS 实时操作系统
+
+- x[FreeRTOS-闪烁](./app/free_rtos/free_rtos_blinky)
 
 ### 常用外设工具库封装
 

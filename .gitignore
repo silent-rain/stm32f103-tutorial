@@ -3,6 +3,9 @@
 # 仿真仓库代码
 scripts/renode/
 
+# FreeRTOS 内核
+app/free_rtos/free_rtos_blinky/FreeRTOS-KernelV10.6.1
+
 # 临时测试代码
 examples/examples
 examples/stm32*
