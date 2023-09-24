@@ -169,3 +169,4 @@
 - [Linux 系统下使用 cutecom 进行串口通信（一）](https://zhuanlan.zhihu.com/p/371813518)
 - [Linux 下 minicom 串口助手的使用](https://www.cnblogs.com/xingboy/p/16538932.html)
 - [实时中断驱动的并发](https://rtic.rs/2/book/en/)
+- [FreeRTOS](https://www.freertos.org/zh-cn-cmn-s/a00104.html)
