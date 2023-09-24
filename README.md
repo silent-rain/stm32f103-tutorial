@@ -1,10 +1,13 @@
-# STM32F103 开发板使用案例
+# Rust 嵌入式开发教程之 STM32F103
 
-这是一个关于 STM32F103 开发板使用案例，记录一些使用 Rust 语言进行开发测试的案例。
+这是一个关于 STM32F103 开发板使用案例，记录一些使用 Rust 语言进行学习嵌入式开发的示例。
 
-该教程将主要根据 [B 站江科大](https://www.bilibili.com/video/BV1th411z7sn?p=1&vd_source=c459b4f4f90bc42bb5ddb5baf12e1bc7) 的视频教学进行学习嵌入式开发。示例中将会借用 `B 站江科大` 视频配套资料中的一些资源进行展示。
+该教程将主要根据 [B 站江科大](https://www.bilibili.com/video/BV1th411z7sn?p=1&vd_source=c459b4f4f90bc42bb5ddb5baf12e1bc7) 的视频教学进行学习 Rust 语言的嵌入式开发。示例中将会借用 `B 站江科大` 视频配套资料中的一些资源进行展示。
 
-同时也会借用 `stm32f1xx-hal` 开发板库中的示例，进行整合在一起学习。
+同时也会结合 `stm32f1xx-hal` 开发板库中的示例，进行整合在一起学习。
+
+![](./images/BluePillPinout.jpg)
+注：图片来源于网络
 
 ## 示例目录
 
@@ -144,7 +147,7 @@
 
 ### 其他示例
 
-- [HAL 库示例](https://github.com/stm32-rs/stm32f1xx-hal/tree/master/examples)
+- [stm32f1xx-hal 库示例](https://github.com/stm32-rs/stm32f1xx-hal/tree/master/examples)
 
 ## 相关文档
 
