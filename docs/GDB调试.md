@@ -41,7 +41,7 @@
 arm-none-eabi-gdb -iex 'add-auto-load-safe-path .' -q target/thumbv7m-none-eabi/debug/hello
 ```
 
-## 调试案例
+## 调试案例 1
 
 ```shell
 $ # 在一个不同的终端上
@@ -74,7 +74,7 @@ $3 = (i32 *) 0x2000fffc
 
 ```
 
-## 案例 2
+## 调试案例 2
 
 - 如果仿真卡死, 在 Renode 中进行重启仿真
   ```shell

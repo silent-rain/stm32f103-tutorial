@@ -3,6 +3,7 @@
 ## 仿真配置文件
 
 ```shell
+# @scripts/stm32f103.resc
 cat stm32f103.resc
 ```
 

@@ -32,7 +32,6 @@
 - [闪烁 LED](./app/general_gpio/blinky)
 - [运行中更改 GPIO 模式](./app/general_gpio/multi_mode_gpio)
 - [动态设置 GPIO 模式](./app/general_gpio/dynamic_gpio)
-- [闪烁 LED](./app/general_gpio/blinky)
 - [计时器闪烁 LED](./app/general_gpio/timer_blinky)
 - [延迟闪烁 LED](./app/general_gpio/delay_blinky)
 - [TIM2 通用定时器延迟闪烁 LED](./app/general_gpio/tim2_timer_delay_blinky)
@@ -152,15 +151,15 @@
 ## 相关文档
 
 - [Archlinux 环境搭建](./docs/Archlinux环境搭建.md)
-- [编译与部署](./docs/编译与部署.md)
+- [编译与烧录](./docs/编译与烧录.md)
 - [术语介绍](./docs/术语介绍.md)
 - [GDB 调试](./docs/GDB调试.md)
 - [Renode 仿真模拟](./docs/Renode仿真模拟.md)
 - [Linux st-link 配置](./docs/Linux%20st-link配置.md)
-- [Defmt 单元测试](./docs/Defmt%20单元测试.md)
 - [Openocd 使用指南](./docs/Openocd使用指南.md)
 - [Minicom 使用文档](./docs/Minicom使用文档.md)
-- [Q&A](./docs/Q&A.md)
+- [Defmt 单元测试](./docs/Defmt%20单元测试.md)
+- [问题答疑 Q&A](./docs/Q&A.md)
 
 ## 参考文档
 
