@@ -28,4 +28,4 @@ cargo rp pwm_driven_servo
 
 ## 接线图
 
-![](../../images/6-4%20PWM驱动舵机.jpg)
+![](../../../images/wiring_diagram/6-4%20PWM驱动舵机.jpg)

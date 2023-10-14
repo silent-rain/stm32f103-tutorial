@@ -35,19 +35,18 @@ fn main() -> ! {
     let mut gpiob = dp.GPIOB.split();
 
     // 将 pin 12 引脚配置为推挽式输出。
-    let mut led = gpiob.pb12.into_push_pull_output(&mut gpiob.crh);
+    let mut buzzer = gpiob.pb12.into_push_pull_output(&mut gpiob.crh);
     // 设置其输出速度（50 MHz）。
-    // 然后在接下来的代码中，我们将使用该引脚来控制 LED 的状态。
-    led.set_speed(&mut gpiob.crh, IOPinSpeed::Mhz50);
+    buzzer.set_speed(&mut gpiob.crh, IOPinSpeed::Mhz50);
 
     // 具有自定义精度的阻塞延迟
     let mut delay = cp.SYST.delay(&clocks);
 
-    // 等待计时器触发更新并更改LED的状态
+    // 等待计时器触发更新并更改引脚的状态
     loop {
-        led.set_low();
+        buzzer.set_low();
         delay.delay_ms(500_u16);
-        led.set_high();
+        buzzer.set_high();
         delay.delay(1.secs());
     }
 }

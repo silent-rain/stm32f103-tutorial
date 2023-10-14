@@ -20,4 +20,4 @@ cargo rp timer_external_clock
 
 ## 接线图
 
-![](../../images/6-2%20定时器外部时钟.jpg)
+![](../../../images/wiring_diagram/6-2%20定时器外部时钟.jpg)

@@ -15,4 +15,4 @@ cargo rp timer_interrupt_count_by_seces
 
 ## 接线图
 
-![](../../images/6-1%20定时器定时中断.jpg)
+![](../../../images/wiring_diagram/6-1%20定时器定时中断.jpg)

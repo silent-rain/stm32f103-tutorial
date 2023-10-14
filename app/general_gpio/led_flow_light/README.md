@@ -14,4 +14,4 @@ cargo rp led_flow_light
 
 ## 接线图
 
-![](../../images/3-2%20LED流水灯.jpg)
+![](../../../images/wiring_diagram/3-2%20LED流水灯.jpg)

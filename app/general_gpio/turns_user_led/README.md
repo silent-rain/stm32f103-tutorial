@@ -16,5 +16,5 @@ cargo rp turns_user_led
 
 ## 接线图
 
-![](../../images/2-1%20工程模板.jpg)
-![](../../images/3-1%20LED闪烁.jpg)
+![](../../../images/wiring_diagram/2-1%20工程模板.jpg)
+![](../../../images/wiring_diagram/3-1%20LED闪烁.jpg)

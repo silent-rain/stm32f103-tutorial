@@ -14,4 +14,4 @@ cargo rp pwm_led
 
 ## 接线图
 
-![](../../images/6-3%20PWM驱动LED呼吸灯.jpg)
+![](../../../images/wiring_diagram/6-3%20PWM驱动LED呼吸灯.jpg)

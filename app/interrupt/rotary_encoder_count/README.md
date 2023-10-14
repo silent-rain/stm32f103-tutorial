@@ -18,4 +18,4 @@ cargo rp rotary_encoder_count
 
 ## 接线图
 
-![](../../images/5-2%20旋转编码器计次.jpg)
+![](../../../images/wiring_diagram/5-2%20旋转编码器计次.jpg)

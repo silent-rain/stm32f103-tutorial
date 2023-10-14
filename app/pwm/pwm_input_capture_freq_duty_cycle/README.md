@@ -16,4 +16,4 @@ cargo rp pwm_input_capture_freq_duty_cycle
 
 ## 接线图
 
-![](../../images/6-7%20PWMI模式测频率占空比.jpg)
+![](../../../images/wiring_diagram/6-7%20PWMI模式测频率占空比.jpg)

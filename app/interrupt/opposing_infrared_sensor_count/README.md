@@ -15,4 +15,4 @@ cargo rp opposing_infrared_sensor_count
 
 ## 接线图
 
-![](../../images/5-1%20对射式红外传感器计次.jpg)
+![](../../../images/wiring_diagram/5-1%20对射式红外传感器计次.jpg)

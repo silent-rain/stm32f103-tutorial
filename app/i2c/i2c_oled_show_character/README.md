@@ -25,7 +25,7 @@ cargo rp i2c_oled_show_character
 
 ## 接线图
 
-![](../../images/4-1%20OLED显示屏.jpg)
+![](../../../images/wiring_diagram/4-1%20OLED显示屏.jpg)
 
 ## 相关文档
 

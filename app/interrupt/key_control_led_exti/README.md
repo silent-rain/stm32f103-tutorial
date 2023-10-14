@@ -16,4 +16,4 @@ cargo rp key_control_led_exti
 
 ## 接线图
 
-![](../../images/3-4%20按键控制LED.jpg)
+![](../../../images/wiring_diagram/3-4%20按键控制LED.jpg)

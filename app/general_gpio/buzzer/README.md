@@ -14,4 +14,4 @@ cargo rp buzzer
 
 ## 接线图
 
-![](../../images/3-3%20蜂鸣器.jpg)
+![](../../../images/wiring_diagram/3-3%20蜂鸣器.jpg)

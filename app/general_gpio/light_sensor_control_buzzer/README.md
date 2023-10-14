@@ -15,4 +15,4 @@ cargo rp light_sensor_control_buzzer
 
 ## 接线图
 
-![](../../images/3-5%20光敏传感器控制蜂鸣器.jpg)
+![](../../../images/wiring_diagram/3-5%20光敏传感器控制蜂鸣器.jpg)
