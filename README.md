@@ -130,8 +130,8 @@
 ### RITC 实时中断驱动并发
 
 - [任务调度-RTIC](./app/rtic/spawn_task_rtic)
-- x[EXTI 中断-RTIC](./app/rtic/exti_rtic)
-- x[TIM 定时器中断-RTIC](./app/rtic/timer_interrupt_rtic)
+- [EXTI 中断-RTIC](./app/rtic/exti_rtic)
+- [TIM 定时器中断-RTIC](./app/rtic/timer_interrupt_rtic)
 
 ### FreeRTOS 实时操作系统
 

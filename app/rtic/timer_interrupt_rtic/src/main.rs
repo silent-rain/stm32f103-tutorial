@@ -7,8 +7,8 @@ use panic_probe as _;
 
 use stm32f1xx_hal::flash::FlashExt;
 use stm32f1xx_hal::gpio;
-use stm32f1xx_hal::gpio::PinState;
-use stm32f1xx_hal::pac;
+use stm32f1xx_hal::gpio::OutputSpeed;
+use stm32f1xx_hal::pac::{Interrupt, NVIC, TIM1};
 use stm32f1xx_hal::prelude::_fugit_ExtU32;
 use stm32f1xx_hal::prelude::_stm32_hal_gpio_GpioExt;
 use stm32f1xx_hal::prelude::_stm32_hal_rcc_RccExt;
@@ -25,27 +25,35 @@ mod app {
 
     #[local]
     struct Local {
-        led: gpio::PC13<gpio::Output<gpio::PushPull>>,
-        timer_handler: CounterMs<pac::TIM1>,
+        led: gpio::PA0<gpio::Output<gpio::PushPull>>,
+        timer_handler: CounterMs<TIM1>,
     }
 
     #[init]
-    fn init(cx: init::Context) -> (Shared, Local) {
-        let mut flash = cx.device.FLASH.constrain();
-        let rcc = cx.device.RCC.constrain();
+    fn init(ctx: init::Context) -> (Shared, Local) {
+        let mut flash = ctx.device.FLASH.constrain();
+        let rcc = ctx.device.RCC.constrain();
+        let mut nvic = ctx.core.NVIC;
+
+        let mut gpioa = ctx.device.GPIOA.split();
 
         let clocks = rcc.cfgr.freeze(&mut flash.acr);
 
         // LED
-        let mut gpioc = cx.device.GPIOC.split();
-        let led = gpioc
-            .pc13
-            .into_push_pull_output_with_state(&mut gpioc.crh, PinState::High);
+        let mut led = gpioa.pa0.into_push_pull_output(&mut gpioa.crl);
+        led.set_speed(&mut gpioa.crl, gpio::IOPinSpeed::Mhz50);
 
         // TIM1 定时器
-        let mut timer = cx.device.TIM1.counter_ms(&clocks);
+        let mut timer = ctx.device.TIM1.counter_ms(&clocks);
         timer.start(1.secs()).unwrap();
         timer.listen(Event::Update);
+
+        unsafe {
+            // Enable interruptions
+            NVIC::unmask(Interrupt::TIM2);
+            // 设置中断的优先级
+            nvic.set_priority(Interrupt::TIM2, 1);
+        }
 
         // 初始化静态资源以稍后通过RTIC使用它们
         (
