@@ -27,7 +27,7 @@ pub const W25Q64_RELEASE_POWER_DOWN_HPM_DEVICE_ID: u8 = 0xAB;
 pub const W25Q64_MANUFACTURER_DEVICE_ID: u8 = 0x90;
 pub const W25Q64_READ_UNIQUE_ID: u8 = 0x4B;
 // 读ID命令
-pub const W25Q64_JEDEC_ID: u8 = 0x9F;
+pub const W25Q64_JEDEC_DEVICE_ID: u8 = 0x9F;
 // 读数据命令
 pub const W25Q64_READ_DATA: u8 = 0x03;
 pub const W25Q64_FAST_READ: u8 = 0x0B;

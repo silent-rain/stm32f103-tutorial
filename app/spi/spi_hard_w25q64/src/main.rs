@@ -10,6 +10,7 @@ use panic_probe as _;
 
 use cortex_m::asm::wfi;
 use cortex_m_rt::entry;
+use stm32f1xx_hal::gpio::{IOPinSpeed, OutputSpeed};
 use stm32f1xx_hal::pac;
 use stm32f1xx_hal::prelude::_embedded_hal_blocking_delay_DelayMs;
 use stm32f1xx_hal::prelude::{
@@ -44,23 +45,31 @@ fn main() -> ! {
     let (mut scl, mut sda) = oled::simple::init_oled_pin(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
     let mut oled = oled::OLED::new(&mut scl, &mut sda);
 
+    // 将PA4引脚初始化为推挽输出
     let mut cs = gpioa.pa4.into_push_pull_output(&mut gpioa.crl);
+    cs.set_speed(&mut gpioa.crl, IOPinSpeed::Mhz50);
 
-    let sck = gpioa.pa5.into_alternate_push_pull(&mut gpioa.crl);
-    // let miso = gpioa.pa6;
+    // 将PA5引脚初始化为复用推挽输出
+    let mut sck = gpioa.pa5.into_alternate_push_pull(&mut gpioa.crl);
+    sck.set_speed(&mut gpioa.crl, IOPinSpeed::Mhz50);
+    // 将PA6引脚初始化为上拉输入
     let miso = gpioa.pa6.into_pull_up_input(&mut gpioa.crl);
-    let mosi = gpioa.pa7.into_alternate_push_pull(&mut gpioa.crl);
-    let pins = (sck, miso, mosi);
+    // 将PA7引脚初始化为复用推挽输出
+    let mut mosi = gpioa.pa7.into_alternate_push_pull(&mut gpioa.crl);
+    mosi.set_speed(&mut gpioa.crl, IOPinSpeed::Mhz50);
 
     // 创建一个Spi实例
+    let pins = (sck, miso, mosi);
     let mut w25q = w25q64_hal::W25Q64::new(spi1, pins, &mut cs, &mut afio.mapr, clocks);
 
+    delay.delay_ms(1000_u32);
+
     // 读取W25Q64芯片的MID和DID
-    let (mid, did) = w25q.read_jedec_id().unwrap();
+    let (mid, did) = w25q.read_jedec_device_id().unwrap();
     println!("mid: {:?}, did: {:?}", mid, did);
 
     // 读取W25Q64芯片的device_id
-    let device_id = w25q.read_device_id().unwrap();
+    let device_id = w25q.read_manufacturer_device_id().unwrap();
     println!("device_id: {:?}", device_id);
 
     // 检查是否有写保护标志
@@ -68,17 +77,16 @@ fn main() -> ! {
     println!("protect: {:?}", protect);
 
     // 擦除地址所在的扇区
+    println!("sector_erase ...");
     w25q.sector_erase(0x000000).unwrap();
     // w25q.erase_chip().unwrap();
-    println!("sector_erase ...");
+
+    delay.delay_ms(1000_u32);
 
     // 写入数据
+    println!("page_program ...");
     let array_write = [0x01, 0x02, 0x03, 0x04];
     // w25q.page_program(0x000000, &array_write).unwrap();
-    println!("page_program ...");
-
-    // 禁用写入功能
-    // w25q.write_disable().unwrap();
 
     delay.delay_ms(1000_u32);
 
@@ -91,14 +99,18 @@ fn main() -> ! {
     oled.show_string(2, 1, "W:");
     oled.show_string(3, 1, "R:");
 
+    // 显示MID
     oled.show_hex_num(1, 5, mid as u32, 2);
+    // 显示DID
     oled.show_hex_num(1, 12, did as u32, 4);
 
+    // 显示写入数据的测试数组
     oled.show_hex_num(2, 3, array_write[0] as u32, 2);
     oled.show_hex_num(2, 6, array_write[1] as u32, 2);
     oled.show_hex_num(2, 9, array_write[2] as u32, 2);
     oled.show_hex_num(2, 12, array_write[3] as u32, 2);
 
+    // 显示读取数据的测试数组
     oled.show_hex_num(3, 3, buffer[0] as u32, 2);
     oled.show_hex_num(3, 6, buffer[1] as u32, 2);
     oled.show_hex_num(3, 9, buffer[2] as u32, 2);

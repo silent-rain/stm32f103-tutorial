@@ -51,13 +51,16 @@ fn main() -> ! {
     w_mosi.set_speed(&mut gpioa.crl, gpio::IOPinSpeed::Mhz50);
     let mut w25 = w25q64_reg::W25Q64::new(&mut w_ss, &mut w_sck, &mut w_mosi, &mut w_miso);
 
+    println!("read_id");
     let (mid, did) = w25.read_id();
     println!("mid: {:?}, did: {:?}", mid, did);
 
     let array_write: [u8; 4] = [0x01, 0x02, 0x03, 0x04];
     let mut array_read: [u8; 4] = [0; 4];
 
+    println!("sector_erase");
     w25.sector_erase(0x000000);
+    println!("page_program");
     w25.page_program(0x000000, &array_write);
 
     w25.read_data(0x000000, &mut array_read);

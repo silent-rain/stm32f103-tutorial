@@ -2,6 +2,7 @@ use super::conf::*;
 
 use cortex_m::prelude::{_embedded_hal_blocking_spi_Transfer, _embedded_hal_blocking_spi_Write};
 use embedded_hal::digital::v2::OutputPin;
+use embedded_hal::spi::FullDuplex;
 use stm32f1xx_hal::pac::{self, SPI1};
 use stm32f1xx_hal::prelude::_fugit_RateExtU32;
 use stm32f1xx_hal::spi::{Master, Pins, Spi, Spi1NoRemap, SpiBitFormat};
@@ -30,21 +31,25 @@ where
         mapr: &'a mut afio::MAPR,
         clocks: rcc::Clocks,
     ) -> Self {
+        // 配置 SPI 的极性、相位
         let mode = spi::Mode {
-            polarity: spi::Polarity::IdleLow,
-            phase: spi::Phase::CaptureOnFirstTransition,
+            polarity: spi::Polarity::IdleLow,            // SPI极性，选择低极性
+            phase: spi::Phase::CaptureOnFirstTransition, // SPI相位，选择第一个时钟边沿采样，极性和相位决定选择SPI模式0
         };
 
         // 创建一个Spi实例
         let mut spi = Spi::spi1(spi1, pins, mapr, mode, 1.MHz(), clocks);
-        // 选择用于数据传输的帧格式
+        // 先行位，选择高位先行
         spi.bit_format(SpiBitFormat::MsbFirst);
 
         let mut w25q = W25Q64 { spi, ss };
+        // 设置默认电平, SS默认高电平
         w25q.spi_w_ss(1);
         w25q
     }
 
+    /// SPI起始
+    /// 此函数需要用户实现内容，当BitValue为0时，需要置SS为低电平，当BitValue为1时，需要置SS为高电平
     pub fn spi_w_ss(&mut self, bit_value: u8) {
         if bit_value == 0 {
             // 拉低片选信号，开始通信
@@ -55,10 +60,14 @@ where
         }
     }
 
+    /// SPI起始
+    /// 拉低SS，开始时序
     pub fn spi_start(&mut self) {
         self.spi_w_ss(0);
     }
 
+    /// SPI终止
+    /// 拉高SS，终止时序
     pub fn spi_stop(&mut self) {
         self.spi_w_ss(1);
     }
@@ -77,6 +86,17 @@ where
         self.spi.transfer(words)?;
         while self.spi.is_rx_not_empty() {}
         Ok(())
+    }
+
+    /// SPI交换传输一个字节，使用SPI模式0
+    /// ByteSend：要发送的一个字节
+    /// 返 回 值：接收的一个字节
+    fn _spi_swap_byte(&mut self, byte_send: u8) -> u8 {
+        // 发送一个字节
+        self.spi.send(byte_send).unwrap();
+
+        // 接收一个字节, 返回接收到的字节
+        self.spi.read().unwrap()
     }
 
     /// 启用写入功能
@@ -102,9 +122,9 @@ where
     /// 读取W25Q64芯片的 JEDEC ID
     /// 使用Spi实例和片选引脚来发送和接收命令和数据
     /// 0xEF4017: 代表W25Q64芯片
-    pub fn read_jedec_id(&mut self) -> Result<(u8, u16), spi::Error> {
+    pub fn read_jedec_device_id(&mut self) -> Result<(u8, u16), spi::Error> {
         self.spi_start();
-        self.spi_write(&[W25Q64_JEDEC_ID]).unwrap();
+        self.spi_write(&[W25Q64_JEDEC_DEVICE_ID]).unwrap();
 
         let mut buffer = [W25Q64_DUMMY_BYTE; 3];
         self.spi_transfer(&mut buffer).unwrap();
@@ -120,13 +140,13 @@ where
     ///
     /// 使用Spi实例和片选引脚来发送和接收命令和数据
     /// 0xEF16: 代表W25Q64芯片
-    pub fn read_device_id(&mut self) -> Result<u16, spi::Error> {
+    pub fn read_manufacturer_device_id(&mut self) -> Result<u16, spi::Error> {
         let cmd = [W25Q64_MANUFACTURER_DEVICE_ID, 0, 0, 0, 0, 0];
         let mut buffer = [0; 6];
 
         self.spi_start();
-        self.spi.write(&cmd).unwrap();
-        self.spi.transfer(&mut buffer).unwrap();
+        self.spi.write(&cmd)?;
+        self.spi.transfer(&mut buffer)?;
         self.spi_stop();
 
         let device_id = (buffer[0] as u16) << 8 | buffer[1] as u16;
@@ -161,7 +181,9 @@ where
         self.spi_start();
         self.spi.write(&[W25Q64_READ_STATUS_REGISTER_1])?; // 发送读状态寄存器1命令
         let mut status = [0x00; 1];
-        let mut timeout = 100000;
+        let mut timeout = 100000; // 给定超时计数时间
+
+        // 循环等待忙标志位
         loop {
             self.spi.transfer(&mut status)?; // 接收状态寄存器1的值
             if status[0] & 0x01 == 0 {
@@ -196,17 +218,18 @@ where
     /// page_address: 设定页地址
     /// data: 要写入的数据
     pub fn page_program(&mut self, page_address: u32, data: &[u8]) -> Result<(), spi::Error> {
-        self.write_enable().unwrap();
+        self.write_enable()?;
 
-        let cmd = [
-            W25Q64_PAGE_PROGRAM,
-            (page_address >> 16) as u8,
-            (page_address >> 8) as u8,
-            page_address as u8,
-        ];
         self.spi_start();
-        self.spi_write(&cmd).unwrap();
-        self.spi_write(data).unwrap();
+        let cmd = [
+            W25Q64_PAGE_PROGRAM,        // 页编程的指令
+            (page_address >> 16) as u8, // 地址23~16位
+            (page_address >> 8) as u8,  // 地址15~8位
+            page_address as u8,         // 地址7~0位
+        ];
+        self.spi_write(&cmd)?;
+        // 在起始地址后写入数据
+        self.spi_write(data)?;
         self.spi_stop();
 
         // 等待W25Q64芯片空闲
@@ -216,15 +239,15 @@ where
 
     /// 擦除地址所在的扇区
     pub fn sector_erase(&mut self, address: u32) -> Result<(), spi::Error> {
-        self.write_enable().unwrap();
+        self.write_enable()?;
 
-        let cmd = [
-            W25Q64_SECTOR_ERASE_4KB,
-            (address >> 16) as u8,
-            (address >> 8) as u8,
-            address as u8,
-        ];
         self.spi_start();
+        let cmd = [
+            W25Q64_SECTOR_ERASE_4KB, // 扇区擦除的指令
+            (address >> 16) as u8,   // 地址23~16位
+            (address >> 8) as u8,    // 地址15~8位
+            address as u8,           // 地址7~0位
+        ];
         self.spi_write(&cmd)?;
         self.spi_stop();
 
@@ -237,8 +260,8 @@ where
     pub fn erase_chip(&mut self) -> Result<(), spi::Error> {
         self.write_enable().unwrap();
 
-        let cmd = [W25Q64_CHIP_ERASE];
         self.spi_start();
+        let cmd = [W25Q64_CHIP_ERASE];
         self.spi_write(&cmd)?;
         self.spi_stop();
 
@@ -250,27 +273,24 @@ where
     /// read_address: 目标地址
     /// data: 用于存放数据
     pub fn read_data(&mut self, read_address: u32, data: &mut [u8]) -> Result<(), spi::Error> {
-        let cmd = [
-            W25Q64_READ_DATA,
-            (read_address >> 16) as u8,
-            (read_address >> 8) as u8,
-            read_address as u8,
-            // W25Q64_DUMMY_BYTE, // 发送一个虚拟字节
-        ];
-
         self.spi_start();
-        self.spi_write(&cmd).unwrap();
+        let cmd = [
+            W25Q64_READ_DATA,           // 读取数据的指令
+            (read_address >> 16) as u8, // 地址23~16位
+            (read_address >> 8) as u8,  // 地址15~8位
+            read_address as u8,         // 地址7~0位
+        ];
+        self.spi_write(&cmd)?;
 
         // 使用fill方法来赋值为虚拟字节
         data.fill(W25Q64_DUMMY_BYTE);
 
         // 接收请求的数据
-        self.spi_transfer(data).unwrap();
+        self.spi_transfer(data)?;
         self.spi_stop();
 
         // 调整数据字节的顺序，高位在前，低位在后
         // data.reverse();
-
         Ok(())
     }
 }

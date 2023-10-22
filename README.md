@@ -172,3 +172,14 @@
 - [Linux 下 minicom 串口助手的使用](https://www.cnblogs.com/xingboy/p/16538932.html)
 - [实时中断驱动的并发](https://rtic.rs/2/book/en/)
 - [FreeRTOS](https://www.freertos.org/zh-cn-cmn-s/a00104.html)
+
+
+在 Wayland 中启用输入法
+编辑/etc/environment文件。
+
+你需要在/etc/environment修改配置文件。
+
+INPUT_METHOD=fcitx
+GTK_IM_MODULE=fcitx
+QT_IM_MODULE=fcitx
+XMODIFIERS=@im=fcitx

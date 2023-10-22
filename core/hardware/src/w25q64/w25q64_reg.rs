@@ -105,7 +105,7 @@ where
     /// 读取 W25Q64 ID
     pub fn read_id(&mut self) -> (u8, u16) {
         self.spi_start();
-        self.spi_swap_byte(W25Q64_JEDEC_ID);
+        self.spi_swap_byte(W25Q64_JEDEC_DEVICE_ID);
 
         let mid = self.spi_swap_byte(W25Q64_DUMMY_BYTE);
         let mut did = self.spi_swap_byte(W25Q64_DUMMY_BYTE) as u16; // 64
