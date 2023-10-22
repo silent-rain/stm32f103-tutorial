@@ -42,9 +42,13 @@ fn main() -> ! {
     let mut oled = oled::OLED::new(&mut scl, &mut sda);
 
     // 初始化 W25Q64
+    // 推挽输出模式
     let mut w_ss = gpioa.pa4.into_push_pull_output(&mut gpioa.crl);
+    // 推挽输出模式
     let mut w_sck = gpioa.pa5.into_push_pull_output(&mut gpioa.crl);
+    // 推挽输出模式
     let mut w_mosi = gpioa.pa7.into_push_pull_output(&mut gpioa.crl);
+    // 上拉输入模式
     let mut w_miso = gpioa.pa6.into_pull_up_input(&mut gpioa.crl);
     w_ss.set_speed(&mut gpioa.crl, gpio::IOPinSpeed::Mhz50);
     w_sck.set_speed(&mut gpioa.crl, gpio::IOPinSpeed::Mhz50);

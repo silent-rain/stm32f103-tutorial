@@ -37,8 +37,9 @@ where
             mosi,
             miso,
         };
-
+        // SS 默认高电平
         w25q.spi_w_ss(1);
+        // SCK 默认低电平
         w25q.spi_w_sck(0);
         w25q
     }
@@ -85,20 +86,31 @@ where
         self.spi_w_ss(1);
     }
 
-    /// SPI 交换字节
+    /// SPI 交换传输一个字节，使用 SPI 模式 0
+    /// ByteSend 要发送的一个字节
+    /// 返回接收的一个字节
     pub fn spi_swap_byte(&mut self, byte_send: u8) -> u8 {
+        // 定义接收的数据，并赋初值 0x00，此处必须赋初值 0x00，后面会用到
         let mut byte_receive = 0x00;
 
+        // 循环 8 次，依次交换每一位数据
         for i in 0..8 {
+            // 使用掩码的方式取出 ByteSend 的指定一位数据并写入到 MOSI 线
             self.spi_w_mosi(byte_send & (0x80 >> i));
+            // 拉高 SCK，上升沿移出数据
             self.spi_w_sck(1);
 
+            // 读取 MISO 数据，并存储到 Byte 变量
+            // 当 MISO 为 1 时，置变量指定位为 1，当 MISO 为 0 时，不做处理，指定位为默认的初值 0
             if self.spi_r_miso() == 1 {
                 byte_receive |= 0x80 >> i;
             }
+
+            // 拉低 SCK，下降沿移入数据
             self.spi_w_sck(0);
         }
 
+        // 返回接收到的一个字节数据
         byte_receive
     }
 
