@@ -54,6 +54,8 @@ fn main() -> ! {
     sck.set_speed(&mut gpioa.crl, IOPinSpeed::Mhz50);
     // 将PA6引脚初始化为上拉输入
     let miso = gpioa.pa6.into_pull_up_input(&mut gpioa.crl);
+    // 不使用 MISO 引脚
+    // let miso = NoMiso;
     // 将PA7引脚初始化为复用推挽输出
     let mut mosi = gpioa.pa7.into_alternate_push_pull(&mut gpioa.crl);
     mosi.set_speed(&mut gpioa.crl, IOPinSpeed::Mhz50);
@@ -64,17 +66,23 @@ fn main() -> ! {
 
     delay.delay_ms(1000_u32);
 
-    // 读取W25Q64芯片的MID和DID
-    let (mid, did) = w25q.read_jedec_device_id().unwrap();
-    println!("mid: {:?}, did: {:?}", mid, did);
+    // 读取芯片的JEDEC设备ID
+    let (manufacturer_id, memory_type, capacity) = w25q.read_jedec_device_id().unwrap();
+    println!(
+        "manufacturer_id: {:02X}, memory_type: {:02X}, capacity: {:02X}",
+        manufacturer_id, memory_type, capacity
+    );
 
-    // 读取W25Q64芯片的device_id
-    let device_id = w25q.read_manufacturer_device_id().unwrap();
-    println!("device_id: {:?}", device_id);
+    // 读取芯片的制造商和设备ID
+    let (manufacturer_id, device_id) = w25q.read_manufacturer_device_id().unwrap();
+    println!(
+        "manufacturer_id: {:02X}, device_id: {:02X}",
+        manufacturer_id, device_id
+    );
 
     // 检查是否有写保护标志
-    let protect = w25q.check_write_protect().unwrap();
-    println!("protect: {:?}", protect);
+    // let protect = w25q.check_write_protect().unwrap();
+    // println!("protect: {:?}", protect);
 
     // 擦除地址所在的扇区
     println!("sector_erase ...");
@@ -88,33 +96,33 @@ fn main() -> ! {
     let array_write = [0x01, 0x02, 0x03, 0x04];
     // w25q.page_program(0x000000, &array_write).unwrap();
 
-    delay.delay_ms(1000_u32);
-
     // 读取数据
     let mut buffer = [0; 4];
     w25q.read_data(0x000000, &mut buffer).unwrap();
     println!("read_data: {:?}", buffer);
 
     oled.show_string(1, 1, "MID:   DID:");
-    oled.show_string(2, 1, "W:");
-    oled.show_string(3, 1, "R:");
+    oled.show_string(2, 1, "TYP:   CAP:");
+    oled.show_string(3, 1, "W:");
+    oled.show_string(4, 1, "R:");
 
-    // 显示MID
-    oled.show_hex_num(1, 5, mid as u32, 2);
-    // 显示DID
-    oled.show_hex_num(1, 12, did as u32, 4);
+    oled.show_hex_num(1, 5, manufacturer_id as u32, 2);
+    oled.show_hex_num(1, 12, device_id as u32, 4);
+
+    oled.show_hex_num(2, 5, memory_type as u32, 2);
+    oled.show_hex_num(2, 12, capacity as u32, 4);
 
     // 显示写入数据的测试数组
-    oled.show_hex_num(2, 3, array_write[0] as u32, 2);
-    oled.show_hex_num(2, 6, array_write[1] as u32, 2);
-    oled.show_hex_num(2, 9, array_write[2] as u32, 2);
-    oled.show_hex_num(2, 12, array_write[3] as u32, 2);
+    oled.show_hex_num(3, 3, array_write[0] as u32, 2);
+    oled.show_hex_num(3, 6, array_write[1] as u32, 2);
+    oled.show_hex_num(3, 9, array_write[2] as u32, 2);
+    oled.show_hex_num(3, 12, array_write[3] as u32, 2);
 
     // 显示读取数据的测试数组
-    oled.show_hex_num(3, 3, buffer[0] as u32, 2);
-    oled.show_hex_num(3, 6, buffer[1] as u32, 2);
-    oled.show_hex_num(3, 9, buffer[2] as u32, 2);
-    oled.show_hex_num(3, 12, buffer[3] as u32, 2);
+    oled.show_hex_num(4, 3, buffer[0] as u32, 2);
+    oled.show_hex_num(4, 6, buffer[1] as u32, 2);
+    oled.show_hex_num(4, 9, buffer[2] as u32, 2);
+    oled.show_hex_num(4, 12, buffer[3] as u32, 2);
 
     loop {
         wfi();

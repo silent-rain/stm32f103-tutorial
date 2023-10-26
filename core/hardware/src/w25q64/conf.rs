@@ -23,10 +23,10 @@ pub const W25Q64_POWER_DOWN: u8 = 0xB9;
 pub const W25Q64_HIGH_PERFORMANCE_MODE: u8 = 0xA3;
 pub const W25Q64_CONTINUOUS_READ_MODE_RESET: u8 = 0xFF;
 pub const W25Q64_RELEASE_POWER_DOWN_HPM_DEVICE_ID: u8 = 0xAB;
-// 读MID和DID命令
+// 读取芯片的制造商和设备ID
 pub const W25Q64_MANUFACTURER_DEVICE_ID: u8 = 0x90;
 pub const W25Q64_READ_UNIQUE_ID: u8 = 0x4B;
-// 读ID命令
+// 读取芯片的JEDEC设备ID
 pub const W25Q64_JEDEC_DEVICE_ID: u8 = 0x9F;
 // 读数据命令
 pub const W25Q64_READ_DATA: u8 = 0x03;

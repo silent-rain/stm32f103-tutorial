@@ -114,6 +114,15 @@ where
         byte_receive
     }
 
+    /// 写入并返回数据
+    pub fn spi_swap_bytes(&mut self, bytes: &mut [u8]) {
+        self.spi_start();
+        for byte in bytes {
+            *byte = self.spi_swap_byte(*byte);
+        }
+        self.spi_stop();
+    }
+
     /// 读取 W25Q64 ID
     pub fn read_id(&mut self) -> (u8, u16) {
         self.spi_start();
@@ -126,6 +135,34 @@ where
         self.spi_stop();
 
         (mid, did)
+    }
+
+    /// 读取芯片的JEDEC设备ID
+    /// 使用Spi实例和片选引脚来发送和接收命令和数据
+    pub fn read_jedec_device_id(&mut self) -> (u8, u8, u8) {
+        let mut buffer = [0; 4];
+        buffer[0] = W25Q64_JEDEC_DEVICE_ID;
+        self.spi_swap_bytes(&mut buffer);
+
+        let manufacturer_id = buffer[1];
+        let memory_type = buffer[2];
+        let capacity = buffer[3];
+        (manufacturer_id, memory_type, capacity)
+    }
+
+    /// 读取芯片的制造商和设备ID
+    ///
+    /// 使用Spi实例和片选引脚来发送和接收命令和数据
+    /// 0xEF16: 代表W25Q64芯片
+    pub fn read_manufacturer_device_id(&mut self) -> (u16, u16) {
+        let mut buffer = [0; 7];
+        buffer[0] = W25Q64_MANUFACTURER_DEVICE_ID;
+        // 发送读取制造商和设备ID的命令
+        self.spi_swap_bytes(&mut buffer);
+
+        let manufacturer_id = buffer[4] as u16;
+        let device_id = (buffer[5] as u16) << 8 | buffer[6] as u16;
+        (manufacturer_id, device_id)
     }
 
     /// 启用写入功能
