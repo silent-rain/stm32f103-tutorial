@@ -127,6 +127,11 @@
 - [独立看门狗](./app/wdg/iwdg)
 - [窗口看门狗](./app/wdg/wwdg)
 
+### FLASH
+
+- [读写内部 FLASH](./app/flash/internal_flash)
+- [读取芯片 ID](./app/flash/read_chip_id)
+
 ### RITC 实时中断驱动并发
 
 - [任务调度-RTIC](./app/rtic/spawn_task_rtic)
