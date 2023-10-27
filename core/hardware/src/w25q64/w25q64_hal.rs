@@ -192,7 +192,6 @@ where
                 break;
             }
         }
-        self.spi_stop();
         Ok(())
     }
 
@@ -275,19 +274,12 @@ where
             (read_address >> 8) as u8,  // 地址15~8位
             read_address as u8,         // 地址7~0位
         ];
-        // self.spi_write(&cmd)?;
-        // self.spi_transfer(data)?;
-
         self.spi_start();
         self.spi.write(&cmd)?;
-        let data2 = self.spi.transfer(data)?;
+        self.spi.transfer(data)?;
         self.spi_stop();
 
-        println!("data {:#?}", data2);
         println!("data {:#?}", data);
-
-        // 调整数据字节的顺序，高位在前，低位在后
-        // data.reverse();
         Ok(())
     }
 }

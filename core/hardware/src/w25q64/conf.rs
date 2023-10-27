@@ -12,9 +12,10 @@ pub const W25Q64_WRITE_STATUS_REGISTER: u8 = 0x01;
 // 页编程命令
 pub const W25Q64_PAGE_PROGRAM: u8 = 0x02;
 pub const W25Q64_QUAD_PAGE_PROGRAM: u8 = 0x32;
+// 块擦除命令
 pub const W25Q64_BLOCK_ERASE_64KB: u8 = 0xD8;
 pub const W25Q64_BLOCK_ERASE_32KB: u8 = 0x52;
-// Sector Erase命令
+// 扇区擦除命令
 pub const W25Q64_SECTOR_ERASE_4KB: u8 = 0x20;
 pub const W25Q64_CHIP_ERASE: u8 = 0xC7;
 pub const W25Q64_ERASE_SUSPEND: u8 = 0x75;

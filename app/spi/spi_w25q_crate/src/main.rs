@@ -56,8 +56,8 @@ fn main() -> ! {
 
     let spi = {
         let sck = gpioa.pa5.into_alternate_push_pull(&mut gpioa.crl);
-        let mosi = gpioa.pa7.into_alternate_push_pull(&mut gpioa.crl);
         let miso = gpioa.pa6.into_pull_up_input(&mut gpioa.crl);
+        let mosi = gpioa.pa7.into_alternate_push_pull(&mut gpioa.crl);
         let pins = (sck, miso, mosi);
 
         let mode = spi::Mode {
@@ -72,22 +72,16 @@ fn main() -> ! {
 
     // 读取制造商特定设备ID
     let id = flash.read_jedec_id().unwrap();
-    println!("device_id {:?}", id.device_id());
+    println!("device_id {:02X}", id.device_id());
 
     // 该芯片的JEDEC制造商代码
     let jedec_id = id.mfr_code();
-    println!("jedec_id {:?}", jedec_id);
-
-    // 启用写入功能
-    flash.write_enable().unwrap();
+    println!("jedec_id {:02X}", jedec_id);
 
     // 擦除地址所在的扇区
     flash.erase_block(0x000000).unwrap();
     // flash.erase_sectors(0x000000, 1).unwrap();
     println!("sector_erase ...");
-
-    // 启用写入功能
-    flash.write_enable().unwrap();
 
     // 写入数据
     let mut array_write = [0x01, 0x02, 0x03, 0x04];
