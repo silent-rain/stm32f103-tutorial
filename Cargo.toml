@@ -106,7 +106,7 @@ members = [
     "app/flash/internal_flash",
     "app/flash/read_chip_id",
     # RITC 实时中断驱动并发
-    # "app/rtic/spawn_task_rtic", // nightly
+    # "app/rtic/spawn_task_rtic",      # nightly
     "app/rtic/exti_rtic",
     "app/rtic/timer_interrupt_rtic",
     # FreeRTOS 实时操作系统

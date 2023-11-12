@@ -42,8 +42,7 @@ fn main() -> ! {
 
     // 初始化 OLED 显示屏
     println!("load oled...");
-    let (mut scl, mut sda) = oled::simple::init_oled_pin(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
-    let mut oled = oled::OLED::new(&mut scl, &mut sda);
+    let mut oled = oled::simple::init_oled(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
 
     // 上电延时
     delay.delay_ms(20u16);

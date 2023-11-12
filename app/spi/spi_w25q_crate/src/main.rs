@@ -45,8 +45,7 @@ fn main() -> ! {
 
     // 初始化 OLED 显示屏
     println!("load oled...");
-    let (mut scl, mut sda) = oled::simple::init_oled_pin(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
-    let mut oled = oled::OLED::new(&mut scl, &mut sda);
+    let mut oled = oled::simple::init_oled(gpiob.pb8, gpiob.pb9, &mut gpiob.crh);
 
     let cs = {
         let mut cs = gpioa.pa4.into_push_pull_output(&mut gpioa.crl);

@@ -1,21 +1,19 @@
 //! OLED 通用工具函数封装
-#![allow(unused)]
-
 use super::font::OLED_FONT;
 
 use embedded_hal::digital::v2::OutputPin;
-use stm32f1xx_hal::gpio::{self, OutputSpeed};
+use stm32f1xx_hal::gpio::{OpenDrain, Output, PB8, PB9};
 
-pub struct OLED<'a, Scl, Sda>
+pub struct OLED<Scl, Sda>
 where
     Scl: OutputPin,
     Sda: OutputPin,
 {
-    scl: &'a mut Scl,
-    sda: &'a mut Sda,
+    scl: Scl,
+    sda: Sda,
 }
 
-impl<'a, Scl, Sda> OLED<'a, Scl, Sda>
+impl<Scl, Sda> OLED<Scl, Sda>
 where
     Scl: OutputPin,
     Sda: OutputPin,
@@ -23,7 +21,7 @@ where
     /// 初始化 OLED 配置
     /// 注意需要提前进行端口初始化
     /// 注意上电延时
-    pub fn new(scl: &'a mut Scl, sda: &'a mut Sda) -> Self {
+    pub fn new(scl: Scl, sda: Sda) -> Self {
         let mut oled = OLED { scl, sda };
         oled.init();
         oled
@@ -128,7 +126,7 @@ where
     }
 }
 
-impl<'a, Scl, Sda> OLED<'a, Scl, Sda>
+impl<Scl, Sda> OLED<Scl, Sda>
 where
     Scl: OutputPin,
     Sda: OutputPin,

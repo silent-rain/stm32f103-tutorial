@@ -1,4 +1,6 @@
-//! OLED 工具库
+//! OLED 显示屏
+#![allow(unused)]
+
 pub mod font;
 pub mod simple;
 pub mod utils;
