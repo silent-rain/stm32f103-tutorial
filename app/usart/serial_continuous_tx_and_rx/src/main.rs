@@ -66,13 +66,13 @@ fn main() -> ! {
     println!("loop");
     loop {
         // let buffer: &mut [u8] = &mut [0; 5];
-        // hardware::serial::receive_bytes(&mut rx, buffer);
+        // hardware::serial::recv_bytes(&mut rx, buffer);
         // println!("received = {:?}", buffer);
         // for c in buffer {
         //     println!("c = {:?}", *c as char);
         // }
 
-        let received = hardware::serial::receive_string(&mut rx);
+        let received = hardware::serial::recv_string(&mut rx);
         let s = received.as_str();
         println!("received = {:#?}", s);
     }

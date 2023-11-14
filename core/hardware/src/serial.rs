@@ -1,33 +1,33 @@
-//!串行接口常用工具集
+//! 串行接口常用工具集
 
 use core::u32;
 use heapless::String;
 
 use nb::block;
-use stm32f1xx_hal::serial;
+use stm32f1xx_hal::serial::{Instance, Rx, Tx};
 use unwrap_infallible::UnwrapInfallible;
 
 /// 发送字节
-pub fn send_byte<USART>(tx: &mut serial::Tx<USART>, word: u8)
+pub fn send_byte<USART>(tx: &mut Tx<USART>, word: u8)
 where
-    USART: serial::Instance,
+    USART: Instance,
 {
     // tx.write(word)
     block!(tx.write(word)).unwrap_infallible()
 }
 
 /// 发送字节数组
-pub fn send_bytes<USART>(tx: &mut serial::Tx<USART>, words: &[u8])
+pub fn send_bytes<USART>(tx: &mut Tx<USART>, words: &[u8])
 where
-    USART: serial::Instance,
+    USART: Instance,
 {
     words.iter().for_each(|w| send_byte(tx, *w));
 }
 
 /// 发送字符串
-pub fn send_string<USART>(tx: &mut serial::Tx<USART>, words: &str)
+pub fn send_string<USART>(tx: &mut Tx<USART>, words: &str)
 where
-    USART: serial::Instance,
+    USART: Instance,
 {
     for word in words.as_bytes() {
         if *word == b'\0' {
@@ -38,9 +38,9 @@ where
 }
 
 /// 发送数字
-pub fn send_number<USART>(tx: &mut serial::Tx<USART>, number: u32)
+pub fn send_number<USART>(tx: &mut Tx<USART>, number: u32)
 where
-    USART: serial::Instance,
+    USART: Instance,
 {
     let mut length = 0;
     loop {
@@ -57,11 +57,19 @@ where
     }
 }
 
+/// 接收字节
+pub fn recv_byte<USART>(rx: &mut Rx<USART>) -> u8
+where
+    USART: Instance,
+{
+    block!(rx.read()).unwrap()
+}
+
 /// 接收字节数组
 /// 最大长度: 4096
-pub fn receive_bytes<USART>(rx: &mut serial::Rx<USART>, buffer: &mut [u8])
+pub fn recv_bytes<USART>(rx: &mut Rx<USART>, buffer: &mut [u8])
 where
-    USART: serial::Instance,
+    USART: Instance,
 {
     let mut widx: usize = 0;
     loop {
@@ -78,9 +86,9 @@ where
 
 /// 接收字符串
 /// 最大长度: 4096
-pub fn receive_string<USART>(rx: &mut serial::Rx<USART>) -> String<4096>
+pub fn recv_string<USART>(rx: &mut Rx<USART>) -> String<4096>
 where
-    USART: serial::Instance,
+    USART: Instance,
 {
     let mut s: String<4096> = String::new();
 
