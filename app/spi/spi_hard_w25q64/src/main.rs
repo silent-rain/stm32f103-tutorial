@@ -93,7 +93,7 @@ fn main() -> ! {
     // 写入数据
     println!("page_program ...");
     let array_write = [0x01, 0x02, 0x03, 0x04];
-    // w25q.page_program(0x000000, &array_write).unwrap();
+    w25q.page_program(0x000000, &array_write).unwrap();
 
     // 读取数据
     let mut buffer = [0; 4];

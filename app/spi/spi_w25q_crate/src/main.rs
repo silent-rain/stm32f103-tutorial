@@ -83,26 +83,31 @@ fn main() -> ! {
     println!("sector_erase ...");
 
     // 写入数据
+    // 该函数会情况数组
     let mut array_write = [0x01, 0x02, 0x03, 0x04];
+    println!("buffer1: {:?}", array_write);
     flash.write_bytes(0x000000, &mut array_write).unwrap();
+    println!("buffer2: {:?}", array_write); // buffer2: [255, 255, 255, 255]
     println!("page_program ...");
 
     delay.delay_ms(1000_u32);
 
     // 读取数据
     let mut buffer = [0; 4];
+
     flash.read(0x000000, &mut buffer).unwrap();
     println!("read_data: {:?}", buffer);
 
-    let mut addr = 0;
-    const BUF: usize = 32;
-    let mut buf = [0; BUF];
-    while addr < 1024 {
-        flash.read(addr, &mut buf).unwrap();
-        println!("read_data: {:?}", buf);
+    // 打印所有区块
+    // let mut addr = 0;
+    // const BUF: usize = 32;
+    // let mut buf = [0; BUF];
+    // while addr < 1024 {
+    //     flash.read(addr, &mut buf).unwrap();
+    //     println!("read_data: {:?}", buf);
 
-        addr += BUF as u32;
-    }
+    //     addr += BUF as u32;
+    // }
 
     oled.show_string(1, 1, "MID:   DID:");
     oled.show_string(2, 1, "W:");
