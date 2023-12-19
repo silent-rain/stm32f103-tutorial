@@ -15,7 +15,7 @@ panic-probe = {version = "0.3.1", features = ["print-defmt"]}
 embedded-dma = "0.2.0"
 nb = "1.1.0"
 unwrap-infallible = "0.1.5"
-heapless = "0.7.16"
+heapless = "0.8.0"
 
 [dependencies.hardware]
 path = "../../../core/hardware"
