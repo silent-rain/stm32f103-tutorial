@@ -1,0 +1,19 @@
+[package]
+name = "spi_nrf24l01"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+cortex-m = { version = "0.7.7", features = ["critical-section-single-core"] }
+cortex-m-rt = "0.7.3"
+stm32f1xx-hal = { version = "0.10.0", features = ["rt", "stm32f103", "medium"] }
+defmt = "0.3.5"
+defmt-rtt = "0.4.0"
+panic-probe = { version = "0.3.1", features = ["print-defmt"] }
+nb = "1.1.0"
+unwrap-infallible = "0.1.5"
+heapless = "0.8.0"
+# SPI - 2.4 GHz 无线通信
+embedded-nrf24l01 = "0.2.0"
